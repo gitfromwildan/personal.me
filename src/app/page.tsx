@@ -2,12 +2,12 @@ import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { ResumeCard } from "@/components/resume-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import SparklesText from "@/components/magicui/sparkles-text";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
+import Image from 'next/image';
 import Markdown from "react-markdown";
-import { WorkdeskCard } from "@/components/workdesk-card";
+import { ProjectCard } from "@/components/project-card";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -51,17 +51,25 @@ export default function PageHome() {
       </section>
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
+            <BlurFade delay={BLUR_FADE_DELAY * 9}>
             <h2 className="text-xl font-bold">Skills</h2>
-          </BlurFade>
-          <div className="flex flex-wrap gap-1">
+            </BlurFade>
+            <div className="flex flex-wrap gap-2 items-center">
             {DATA.skills.map((skill, id) => (
-              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <Badge key={skill}>{skill}</Badge>
-              </BlurFade>
+                <BlurFade key={skill.icon} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
+                <div className="flex items-center gap-1 p-1 border rounded-2xl bg-gray-100 dark:bg-slate-50">
+                    <Image
+                    src={skill.icon}
+                    alt={skill.name}
+                    width={48}
+                    height={48}
+                    className="w-[52px] h-[52px]"
+                    />
+                </div>
+                </BlurFade>
             ))}
-          </div>
-        </div>
+            </div>
+         </div>
       </section>
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
@@ -88,67 +96,46 @@ export default function PageHome() {
           ))}
         </div>
       </section>
-{/*       <section id="education">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-xl font-bold">Education</h2>
-          </BlurFade>
-          {DATA.education.map((education, id) => (
-            <BlurFade
-              key={education.school}
-              delay={BLUR_FADE_DELAY * 8 + id * 0.05}
-            >
-              <ResumeCard
-                key={education.school}
-                href={education.href}
-                logoUrl={education.logoUrl}
-                altText={education.school}
-                title={education.school}
-                subtitle={education.degree}
-                period={`${education.start} - ${education.end}`}
-              />
-            </BlurFade>
-          ))}
-        </div>
-      </section> */}
-      <section id="techstack">
+      <section id="projects">
         <div className="space-y-12 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 13}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  Work Desk
+                  My Projects
                 </div>
                 <h2>
-                <SparklesText 
+                <SparklesText
                 className="text-3xl font-bold tracking-tighter sm:text-5xl"
-                text="From The Work Desk"
+                text="Check out my latest work"
                 />
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                a List of the Software and Hardware that I use to work on each Project.
+                    I've worked on a variety of projects, from simple websites to complex web applications. Here are a few of my favorites.
                 </p>
               </div>
             </div>
           </BlurFade>
-          <BlurFade delay={BLUR_FADE_DELAY * 14}>
-            <ul className="mb-4 ml-4 divide-y divide-dashed border-l">
-              {DATA.workdesk.map((workdesk, id) => (
-                <BlurFade
-                  key={workdesk.title + workdesk.tagline}
-                  delay={BLUR_FADE_DELAY * 15 + id * 0.05}
-                >
-                  <WorkdeskCard
-                    tagline={workdesk.tagline}
-                    title={workdesk.title}
-                    description={workdesk.description}
-                    image={workdesk.image}
-                    links={workdesk.links}
-                  />
-                </BlurFade>
-              ))}
-            </ul>
-          </BlurFade>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
+            {DATA.projects.map((project, id) => (
+              <BlurFade
+                key={project.title}
+                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+              >
+                <ProjectCard
+                  href={project.href}
+                  key={project.title}
+                  title={project.title}
+                  description={project.description}
+                  dates={project.dates}
+                  tags={project.technologies}
+                  image={project.image}
+                  video={project.video}
+                  links={project.links}
+                />
+              </BlurFade>
+            ))}
+          </div>
         </div>
       </section>
       <section id="contact">
@@ -159,7 +146,7 @@ export default function PageHome() {
                 Contact
               </div>
               <h2>
-              <SparklesText 
+              <SparklesText
                 className="text-3xl font-bold tracking-tighter sm:text-5xl"
                 text="Get in Touch"
                 />
