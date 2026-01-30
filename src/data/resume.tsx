@@ -14,33 +14,33 @@ export const DATA = {
   avatarUrl: "/me.png",
   skills: [
     {
-        name: "Tailwindcss",
-        icon: "/icon/tailwindcss.svg",
-      },
-      {
-        name: "React",
-        icon: "/icon/react.svg",
-      },
-      {
-        name: "NextJS",
-        icon: "/icon/nextjs.svg",
-      },
-      {
-        name: "Javascript",
-        icon: "/icon/javascript.svg",
-      },
-      {
-        name: "Typescript",
-        icon: "/icon/typescript.svg",
-      },
-      {
-        name: "NodeJS",
-        icon: "/icon/node.svg",
-      },
-      {
-        name: "Bun",
-        icon: "/icon/bun.svg",
-      },
+      name: "Tailwindcss",
+      icon: "/icon/tailwindcss.svg",
+    },
+    {
+      name: "React",
+      icon: "/icon/react.svg",
+    },
+    {
+      name: "NextJS",
+      icon: "/icon/nextjs.svg",
+    },
+    {
+      name: "Javascript",
+      icon: "/icon/javascript.svg",
+    },
+    {
+      name: "Typescript",
+      icon: "/icon/typescript.svg",
+    },
+    {
+      name: "NodeJS",
+      icon: "/icon/node.svg",
+    },
+    {
+      name: "Bun",
+      icon: "/icon/bun.svg",
+    },
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
@@ -64,7 +64,7 @@ export const DATA = {
       },
       Youtube: {
         name: "Youtube",
-        url: "https://www.youtube.com/@wildan.nrs_",
+        url: "https://www.youtube.com/@wildandotdev",
         icon: Icons.youtube,
         navbar: true,
       },
