@@ -1,6 +1,7 @@
-import { AuroraText } from "@/components/magicui/aurora-text";
-import BlurFade from "@/components/magicui/blur-fade";
-import BlurFadeText from "@/components/magicui/blur-fade-text";
+import { AuroraText } from "@/components/ui/aurora-text";
+import BlurFade from "@/components/ui/blur-fade";
+import BlurFadeText from "@/components/ui/blur-fade-text";
+import { HyperText } from "@/components/ui/hyper-text";
 import { ResumeCard } from "@/components/resume-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
@@ -18,12 +19,11 @@ export default function PageHome() {
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <div className="gap-2 flex justify-between">
             <div className="flex-col flex flex-1 space-y-1.5">
-              <BlurFadeText
-                delay={BLUR_FADE_DELAY}
-                className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
-                yOffset={8}
-                text={`Hi, I'm ${DATA.name.split(" ")[0]} 👋`}
-              />
+              <HyperText
+                className="text-3xl font-bold tracking-tighter sm:text-5xl"
+              >
+                {`Hi, I'm ${DATA.name.split(" ")[0]}`}
+              </HyperText>
               <BlurFadeText
                 className="max-w-[600px] md:text-xl"
                 delay={BLUR_FADE_DELAY}
@@ -44,7 +44,19 @@ export default function PageHome() {
           <h2> <AuroraText className="text-xl font-bold">About</AuroraText></h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <Markdown className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert">
+          <Markdown
+            className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert"
+            components={{
+              a: ({ node, ...props }) => (
+                <Link
+                  href={props.href || "#"}
+                  target="_blank"
+                  className="underline decoration-muted-foreground underline-offset-4 hover:text-primary transition-colors"
+                  {...props}
+                />
+              ),
+            }}
+          >
             {DATA.summary}
           </Markdown>
         </BlurFade>
@@ -126,7 +138,6 @@ export default function PageHome() {
                   key={project.title}
                   title={project.title}
                   description={project.description}
-                  dates={project.dates}
                   tags={project.technologies}
                   image={project.image}
                   video={project.video}

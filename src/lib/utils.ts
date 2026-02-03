@@ -35,3 +35,14 @@ export function formatDate(date: string) {
     return `${fullDate} (${yearsAgo}y ago)`;
   }
 }
+
+export function formatDateDMY(date: string) {
+  if (!date.includes("T")) {
+    date = `${date}T00:00:00`;
+  }
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}

@@ -1,9 +1,14 @@
 import { getBlogPosts, getPost } from "@/data/blog";
 import { DATA } from "@/data/resume";
 import { formatDate } from "@/lib/utils";
+import { globalComponents } from "@/lib/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import { rehypeCopyAttrs, remarkCodeTitle } from "@/lib/plugin";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,8 +16,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-  BreadcrumbEllipsis,
 } from "@/components/ui/breadcrumb"
+import { AuroraText } from "@/components/ui/aurora-text";
 
 
 export async function generateStaticParams() {
@@ -31,7 +36,7 @@ export async function generateMetadata({
 
   let {
     title,
-    publishedAt: publishedTime,
+    date: publishedTime,
     summary: description,
     image,
   } = post.metadata;
@@ -84,8 +89,8 @@ export default async function Blog({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
+            datePublished: post.metadata.date,
+            dateModified: post.metadata.date,
             description: post.metadata.summary,
             image: post.metadata.image
               ? `${DATA.url}${post.metadata.image}`
@@ -99,34 +104,56 @@ export default async function Blog({
         }}
       />
       <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{post.metadata.title}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{post.metadata.title}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
       </Breadcrumb>
-      <h1 className="title font-medium text-2xl tracking-tighter max-w-[650px]">
+      <AuroraText className="title font-medium text-2xl tracking-tighter max-w-[650px]">
         {post.metadata.title}
-      </h1>
+      </AuroraText>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
         <Suspense fallback={<p className="h-5" />}>
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            {formatDate(post.metadata.publishedAt)}
+            {formatDate(post.metadata.date)}
           </p>
         </Suspense>
       </div>
-      <article
-        className="prose dark:prose-invert"
-        dangerouslySetInnerHTML={{ __html: post.source }}
-      ></article>
+      <article className="prose dark:prose-invert">
+        <MDXRemote
+          source={post.source}
+          components={globalComponents}
+          options={{
+            mdxOptions: {
+              remarkPlugins: [remarkGfm, remarkCodeTitle],
+              rehypePlugins: [
+                rehypeCopyAttrs,
+                [
+                  rehypePrettyCode,
+                  {
+                    theme: {
+                      light: "github-light",
+                      dark: "github-dark",
+                    },
+                    keepBackground: false,
+                    defaultColor: false,
+                  },
+                ],
+                () => rehypeCopyAttrs(),
+              ],
+            },
+          }}
+        />
+      </article>
     </section>
   );
 }

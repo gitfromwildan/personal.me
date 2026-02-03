@@ -1,0 +1,126 @@
+---
+title: "Git Guide: Terminal Edition"
+summary: "Ditch the GUI. Here is how to use Git like a pro directly from your terminal. Serious power, casual vibes."
+date: "2026-02-04"
+---
+
+Let's be real. Graphical User Interfaces (GUIs) for Git are nice, but the **terminal** is where the real magic happens. It's faster, more powerful, and honestly, it just looks cooler.
+
+If you're ready to take off the training wheels, this guide is for you.
+
+## Installation
+
+Before you can be a Git wizard, you need to install it. If `git --version` gives you an error, you need this.
+
+<Card title="Download Git" icon="Download" href="https://git-scm.com/downloads" target="_blank">
+  Get the latest version for Mac, Windows, or Linux from the official site.
+</Card>
+
+## First Time Setup
+
+Before you start committing code, you need to tell Git who you are. This identifies the author of the work.
+
+<Tabs defaultValue="config">
+  <TabsList>
+    <TabsTrigger value="config">Configuration</TabsTrigger>
+    <TabsTrigger value="check">Verify</TabsTrigger>
+  </TabsList>
+  <TabsContent value="config">
+    Run these commands once to set your identity:
+    ```bash
+    git config --global user.name "Your Name"
+    git config --global user.email "your.email@example.com"
+    ```
+  </TabsContent>
+  <TabsContent value="check">
+    Check if it worked:
+    ```bash
+    git config --list
+    ```
+  </TabsContent>
+</Tabs>
+
+## The Daily Workflow
+
+Most of your time with Git will be a repeatable cycle. Here is the standard flow for saving your work.
+
+<Stepper>
+  <StepperItem title="Step 1: Check Status">
+    Always know where you stand. Access the current state of your repository.
+    ```bash
+    git status
+    ```
+  </StepperItem>
+  <StepperItem title="Step 2: Stage Changes">
+    Pick the files you want to save.
+    ```bash
+    git add .
+    ```
+    *Pro tip: `.` adds everything. Use specific filenames to be more precise.*
+  </StepperItem>
+  <StepperItem title="Step 3: Commit">
+    Save the snapshot with a meaningful message.
+    ```bash
+    git commit -m "fix: resolve infinite loop in login"
+    ```
+  </StepperItem>
+  <StepperItem title="Step 4: Push">
+    Send it to the cloud (GitHub/GitLab).
+    ```bash
+    git push origin main
+    ```
+  </StepperItem>
+</Stepper>
+
+## Common Commands Cheat Sheet
+
+Stuck? Here are some commands you'll reach for often.
+
+<AccordionGroup>
+  <Accordion title="I messed up, how do I undo?" icon="Undo">
+    If you haven't committed yet:
+    ```bash
+    git restore <filename>
+    ```
+    If you staged it but didn't commit:
+    ```bash
+    git restore --staged <filename>
+    ```
+  </Accordion>
+  <Accordion title="How do I create a new branch?" icon="GitBranch">
+    Branches are cheap. Make a new one for every feature.
+    ```bash
+    git checkout -b feature/new-cool-thing
+    ```
+  </Accordion>
+  <Accordion title="My history is messy, can I squash it?" icon="GitMerge">
+    Yes, but be careful. Interactive rebase is your friend.
+    ```bash
+    git rebase -i HEAD~3
+    ```
+    *This lets you edit the last 3 commits.*
+  </Accordion>
+</AccordionGroup>
+
+<br />
+
+## Essential Resources
+
+Don't memorize everything. bookmark these references.
+
+<CardGroup cols={2}>
+  <Card title="GitHub Docs" icon="Book" target="_blank" href="https://docs.github.com/en/get-started">
+    The official documentation. Comprehensive and clear.
+  </Card>
+  <Card title="Oh Shit, Git!?" icon="AlertCircle" target="_blank" href="https://ohshitgit.com/">
+    For when you *really* mess up. We've all been there.
+  </Card>
+</CardGroup>
+
+## Final Thoughts
+
+Mastering the terminal takes muscle memory. Force yourself to use it for a week, and you'll never go back to clicking buttons.
+
+<div className="flex gap-2 my-4">
+  <Button text="Follow on GitHub" href="https://github.com/gitfromwildan" target="_blank" size="sm" />
+</div>

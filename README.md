@@ -16,6 +16,3 @@ Born in 1994, I have a deep passion for programming and love building web applic
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/gitfromwildan/gitfromwildan/output/pacman-contribution-graph.svg">
   <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/gitfromwildan/gitfromwildan/output/pacman-contribution-graph.svg">
 </picture>
-
-#### Github Stats
-[![Wildan's GitHub stats](https://github-readme-stats.vercel.app/api?username=gitfromwildan&show_icons=true&theme=merko)](https://github.com/gitfromwildan)

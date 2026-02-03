@@ -1,11 +1,56 @@
 ---
 title: "Hello World"
-publishedAt: "2024-10-30"
-summary: "My first post on my new blog."
+summary: "The world will not change you, but you must bring change to the world."
+date: "2026-02-03"
 ---
 
-Hi there!
+Startups. It’s a word that evokes images of sleepless nights, caffeine-fueled coding sessions, and the electric thrill of building something from nothing. My journey wasn't a straight line; it was a series of pivots, bugs, and eventually, breakthroughs.
 
-```jsx
-console.log("Hello World");
+It all started with a simple idea: **What if we could predict the future?**
+
+Okay, maybe not *predict* it, but at least prevent disasters. I was obsessed with stability. I wanted to write code that was bulletproof.
+
+I remember my first "aha!" moment. I was staring at a screen, debugging a critical crash in our rocket guidance system (a side project, obviously). The logic was flawed. It looked something like this:
+
+```javascript:index.js
+function isRocketAboutToCrash() {
+  // The logic was backward!
+  if (!isStable()) {
+    return true; 
+  }
+}
 ```
+
+I realized that defining `stability` was harder than it looked.
+
+## The Pivot
+
+We decided to shift gears. Instead of rockets, we looked at **data**. The world was drowning in it, but nobody knew how to speak its language.
+
+We started building an API to translate chaos into clarity. I switched to TypeScript because, let's be honest, `undefined` is not a function you want to see at 3 AM.
+
+```typescript:api/server.ts showLineNumbers {6-8}
+import express from 'express';
+
+const app = express();
+const PORT = 3000;
+
+// The endpoint that changed everything
+app.get('/clarity', (req, res) => {
+  res.send({ message: 'Chaos tamed.' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+That modest endpoint was the seed. From there, we grew. We learned that technology isn't just about code; it's about the people who use it.
+
+## Lessons Learned
+
+Every line of code tells a story. Some are tragedies (legacy codebases), some are comedies (fixing a bug only to create three more), but the best ones are epics—where you overcome the odds to ship something beautiful.
+
+I’m writing this blog to document those stories. To share the snippets, the failures, and the small victories that make engineering so addictive.
+
+So, **Hello World**. Let’s build something amazing together.

@@ -1,0 +1,123 @@
+---
+title: "Write with Markdown"
+summary: "A chill guide on how to write content using our awesome markdown components. No stress, just vibes."
+date: "2026-02-04"
+---
+
+Yo! Welcome to the editor. If you're reading this, you probably want to know how to make your blog posts look **sick** using our custom components. 
+
+Don't worry, it's super easy. I got you. Let's break it down, casual style.
+
+## The Basics
+
+Writing here is just like writing standard Markdown, but with superpowers. You can bold stuff, *italicize* it, or even add code blocks like a pro.
+
+```javascript:vibes.js
+const mood = "chill";
+console.log(`Current vibe: ${mood}`);
+```
+
+But that's boring. Let's get to the cool stuff.
+
+## Custom Components
+
+We have a bunch of custom components you can use directly in your MDX files. Here's the cheat sheet.
+
+### Cards
+Want to link to something in style? Use a card. It's like a button, but bigger and with more personality.
+
+<CardGroup cols={2}>
+  <Card title="Github" icon="Github" href="https://github.com/gitfromwildan">
+    Check out my open source work.
+  </Card>
+  <Card title="X" icon="Twitter" href="https://x.com/wildan_nrss">
+    Follow me for random tech hot takes.
+  </Card>
+</CardGroup>
+
+**How to write it:**
+```mdx
+<CardGroup cols={2}>
+  <Card title="Github" icon="Github" href="...">
+    Check out my open source work.
+  </Card>
+  // write the same card for X...
+</CardGroup>
+```
+
+### Accordions
+Got a lot of text but don't want to clutter the page? Hide it in an accordion. Peek-a-boo!
+
+<AccordionGroup>
+  <Accordion title="Is this difficult to learn?" icon="HelpCircle">
+    Nope! It's actually super intuitive once you get the hang of it.
+  </Accordion>
+  <Accordion title="Can I use icons?" icon="Star">
+    Absolutely. We use Lucide icons, so you have plenty of choices.
+  </Accordion>
+</AccordionGroup>
+
+**The code:**
+```mdx
+<AccordionGroup>
+  <Accordion title="Question?" icon="HelpCircle">
+    Answer goes here!
+  </Accordion>
+  // write the same accordion for Can I use icons?...
+</AccordionGroup>
+```
+
+### Tabs
+Perfect for showing different options, like code in different languages or multiple steps.
+
+<Tabs defaultValue="npm">
+  <TabsList>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+    <TabsTrigger value="bun">bun</TabsTrigger>
+  </TabsList>
+  <TabsContent value="npm">
+    ```bash
+    npm install @docubook/create@latest
+    ```
+  </TabsContent>
+  <TabsContent value="pnpm">
+    ```bash
+    pnpm add @docubook/create@latest
+    ```
+  </TabsContent>
+  <TabsContent value="bun">
+    ```bash
+    bun add @docubook/create@latest
+    ```
+  </TabsContent>
+</Tabs>
+
+### Stepper
+Want to guide someone through a process? The Stepper component is your best friend.
+
+<Stepper>
+  <StepperItem title="Step 1: Relax">
+    Take a deep breath. You're doing great.
+  </StepperItem>
+  <StepperItem title="Step 2: Write">
+    Just start typing. Don't overthink it.
+  </StepperItem>
+  <StepperItem title="Step 3: Publish">
+    Hit that deploy button and share it with the world!
+  </StepperItem>
+</Stepper>
+
+### Buttons
+Sometimes a simple link isn't enough. You need a **Button**.
+
+<div className="flex gap-2">
+  <Button text="Primary Action" href="#" />
+  <Button text="Secondary" href="#" variation="outline" />
+</div>
+
+## Wrapping Up
+
+See? Writing with Markdown is a breeze. It's clean, fast, and handles all the heavy lifting for you. 
+
+Now go forth and create something awesome! 🚀

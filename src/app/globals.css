@@ -64,6 +64,7 @@
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
   }
+
   .theme {
     --animate-aurora: aurora 8s ease-in-out infinite alternate;
   }
@@ -122,48 +123,103 @@ h3 code {
   }
 }
 
+/* Code block base styling */
 pre {
-  @apply !px-0 rounded-lg overflow-x-auto py-4 glass
+  @apply !px-0 rounded-lg overflow-x-auto !m-0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background: hsl(var(--muted) / 0.5) !important;
+  border: 1px solid hsl(var(--border));
+}
+
+.dark pre {
+  background: hsl(220 10% 10% / 0.95) !important;
+  border-color: hsl(var(--border));
 }
 
 pre [data-line] {
-  @apply px-4
+  @apply px-4;
 }
 
 code {
   @apply text-sm md:text-base !leading-loose;
 }
 
+/* Inline code styling (not inside pre) */
+:not(pre)>code {
+  @apply relative rounded bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold border border-border text-foreground;
+}
+
+:not(pre)>code::before,
+:not(pre)>code::after {
+  content: none !important;
+}
+
 pre>code {
   counter-reset: line;
 }
 
+/* Light/dark theme code colors - use shiki syntax highlighting */
 code[data-theme*=" "],
 code[data-theme*=" "] span {
-  color: var(--shiki-light);
   @apply !bg-transparent;
-  /* let glass shine through */
 }
 
-@media (prefers-color-scheme: dark) {
-
-  code[data-theme*=" "],
-  code[data-theme*=" "] span {
-    color: var(--shiki-dark);
-    @apply !bg-transparent;
-  }
+/* Default color for code block text (non-tokenized parts) */
+code[data-theme*=" "] {
+  color: #24292e;
+  /* Github Light default */
 }
 
-code[data-line-numbers] {
-  counter-reset: line;
+.dark code[data-theme*=" "] {
+  color: #e1e4e8;
+  /* Github Dark default */
 }
 
-code[data-line-numbers]>[data-line]::before {
-  counter-increment: line;
-  content: counter(line);
-  @apply inline-block w-4 mr-4 text-right text-gray-500;
+/* Light mode: Enhanced container styling */
+:root .code-block-wrapper {
+  background-color: #f6f8fa !important;
+  /* Github light gray */
+  border: 1px solid #d0d7de !important;
 }
 
+:root .code-block-title {
+  background-color: #f6f8fa !important;
+  border-bottom: 1px solid #d0d7de !important;
+}
+
+/* Dark mode adjustments */
+.dark .code-block-wrapper {
+  background-color: #0d1117 !important;
+  /* Github dark bg */
+  border-color: #30363d !important;
+}
+
+.dark .code-block-title {
+  background-color: #0d1117 !important;
+  border-bottom-color: #30363d !important;
+}
+
+/* Light mode: use shiki-light variable for proper syntax highlighting */
+:root code[data-theme*=" "] span {
+  color: var(--shiki-light) !important;
+}
+
+/* Dark mode: use shiki-dark variable for proper syntax highlighting */
+.dark code[data-theme*=" "] span {
+  color: var(--shiki-dark) !important;
+}
+
+/* Fallback for code without syntax highlighting (plaintext) */
+:root code[data-theme*=" "]:not(:has(span)) {
+  color: hsl(220 10% 25%);
+}
+
+.dark code[data-theme*=" "]:not(:has(span)) {
+  color: hsl(220 10% 85%);
+}
+
+/* Line numbers */
 code {
   counter-reset: line;
 }
@@ -171,13 +227,11 @@ code {
 code>[data-line]::before {
   counter-increment: line;
   content: counter(line);
-
-  /* Other styling */
   display: inline-block;
-  width: 1rem;
-  margin-right: 2rem;
+  width: 2rem;
+  margin-right: 1.5rem;
   text-align: right;
-  color: gray;
+  color: hsl(var(--muted-foreground) / 0.5);
 }
 
 code[data-line-numbers-max-digits="2"]>[data-line]::before {
@@ -188,36 +242,123 @@ code[data-line-numbers-max-digits="3"]>[data-line]::before {
   width: 3rem;
 }
 
+/* Line highlighting - light blue background with left border */
+/* Increased specificity to override transparent background */
+code[data-theme*=" "] [data-highlighted-line] {
+  background-color: hsl(210 100% 85%) !important;
+  border-left: 3px solid hsl(210 100% 50%);
+  padding-left: calc(1rem - 3px);
+  margin-left: 0;
+  display: block;
+}
+
+.dark code[data-theme*=" "] [data-highlighted-line] {
+  background-color: hsl(210 100% 32% / 0.8) !important;
+  border-left-color: hsl(210 100% 60%);
+}
+
+[data-highlighted-chars] {
+  @apply bg-blue-500/20 rounded px-1 py-0.5;
+}
+
+/* Code block wrapper styling */
+.code-block-wrapper {
+  position: relative;
+  @apply my-4 rounded-lg overflow-hidden;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.5);
+}
+
+.dark .code-block-wrapper {
+  background: hsl(220 10% 10% / 0.95);
+}
+
+.code-block-wrapper pre {
+  @apply !rounded-t-none !mt-0 !mb-0 !border-0;
+  background: transparent !important;
+}
+
+/* Code block title bar */
+.code-block-title {
+  @apply flex items-center justify-between px-4 py-2 text-sm font-mono;
+  background: hsl(var(--muted) / 0.8);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.dark .code-block-title {
+  background: hsl(220 10% 15%);
+}
+
+/* Copy button styling */
+.code-block-copy-btn {
+  @apply p-1.5 rounded-md transition-colors;
+  color: hsl(var(--muted-foreground));
+}
+
+.code-block-copy-btn:hover {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Markdown Table Styling */
+  table {
+    @apply border-collapse text-sm;
+  }
+
+  table th,
+  table td {
+    @apply border border-border !px-4 !py-2 text-left;
+  }
+
+  table th {
+    @apply bg-muted/50 font-semibold;
+  }
+
+  table tr:nth-child(2n) {
+    @apply bg-muted/20;
   }
 }
 
 @theme inline {
   @keyframes aurora {
-  0% {
-    background-position: 0% 50%;
-    transform: rotate(-5deg) scale(0.9);
+    0% {
+      background-position: 0% 50%;
+      transform: rotate(-5deg) scale(0.9);
     }
-  25% {
-    background-position: 50% 100%;
-    transform: rotate(5deg) scale(1.1);
+
+    25% {
+      background-position: 50% 100%;
+      transform: rotate(5deg) scale(1.1);
     }
-  50% {
-    background-position: 100% 50%;
-    transform: rotate(-3deg) scale(0.95);
+
+    50% {
+      background-position: 100% 50%;
+      transform: rotate(-3deg) scale(0.95);
     }
-  75% {
-    background-position: 50% 0%;
-    transform: rotate(3deg) scale(1.05);
+
+    75% {
+      background-position: 50% 0%;
+      transform: rotate(3deg) scale(1.05);
     }
-  100% {
-    background-position: 0% 50%;
-    transform: rotate(-5deg) scale(0.9);
+
+    100% {
+      background-position: 0% 50%;
+      transform: rotate(-5deg) scale(0.9);
     }
   }
+}
+
+
+/* Hide rehype-pretty-code generated title if present */
+[data-rehype-pretty-code-title] {
+  display: none !important;
 }

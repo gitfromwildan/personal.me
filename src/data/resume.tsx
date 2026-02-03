@@ -4,13 +4,13 @@ import { HomeIcon, PencilLineIcon } from "lucide-react";
 export const DATA = {
   name: "Wildan Nursahidan",
   initials: "WNN",
-  url: "https://wildan.me",
+  url: "https://wildan.dev",
   location: "West Java, Indonesia",
-  locationLink: "https://www.google.com/maps/place/sanfrancisco",
+  locationLink: "https://www.google.com/maps/place/indonesia",
   description:
-    "a Frontend Developers and Wordpress Enthusiast. I love building things and helping people. Very active on Telegram.",
+    "Turning coffee into Frontend code and Open Source contributions. I build things that (mostly) work and love helping people. You can usually summon me on Telegram.",
   summary:
-    "From 2019 until now, I have spent a lot of time and money learning web design, have a deep passion for programming and love building web applications. I am Author of [DocuBook](https://docubook.pro/) a documentation web framework build with React.",
+    `I've been diving into web design since 2019 (and yes, I spent a fortune on courses). I eventually built [DocuBook](https://docubook.pro/)—a React documentation framework—because the existing tools just didn't 'click' for me. So, I made my own! I love building tools that actually help people.`,
   avatarUrl: "/me.png",
   skills: [
     {
@@ -47,7 +47,7 @@ export const DATA = {
     { href: "/blog", icon: PencilLineIcon, label: "Blog" },
   ],
   contact: {
-    email: "edpwildan@gmail.com",
+    email: "email@wildan.dev",
     tel: "+6285186666941",
     social: {
       GitHub: {
@@ -70,7 +70,7 @@ export const DATA = {
       },
       Email: {
         name: "Send Email",
-        url: "mailto:edpwildan@gmailcom",
+        url: "mailto:email@wildan.dev",
         icon: Icons.email,
         navbar: true,
       },
@@ -119,7 +119,6 @@ export const DATA = {
     {
       title: "My Portfolio",
       href: "https://github.com/gitfromwildan/personal.me",
-      dates: "28 Okt 2024 -  30 Okt 2024",
       active: true,
       description:
         "Developed a personal portfolio website using Next.js, TypeScript, and Tailwind CSS. This template is open source and available on GitHub.",
@@ -144,7 +143,6 @@ export const DATA = {
     {
       title: "Ortoo Links",
       href: "https://github.com/gitfromwildan/shop.bio",
-      dates: "01 Nov 2024 - 02 Nov 2024",
       active: true,
       description:
         "Biolink template for digital product listings such as ebooks, video courses and digital downloads complete with checkout to external links.",
@@ -153,7 +151,6 @@ export const DATA = {
         "Typescript",
         "TailwindCSS",
         "Shadcn UI",
-        "Magic UI",
       ],
       links: [
         {
