@@ -24,6 +24,18 @@ const Accordion: React.FC<AccordionProps> = ({
     const [isOpen, setIsOpen] = useState(defaultOpen);
     const Icon = icon ? (Icons[icon] as React.FC<{ className?: string }>) : null;
 
+    const isExpanded = isInGroup
+        ? groupContext?.activeId === title
+        : isOpen;
+
+    const handleToggle = () => {
+        if (isInGroup) {
+            groupContext?.setActiveId(isExpanded ? null : title);
+        } else {
+            setIsOpen(!isOpen);
+        }
+    };
+
     return (
         <div
             className={cn(
@@ -33,13 +45,13 @@ const Accordion: React.FC<AccordionProps> = ({
         >
             <button
                 type="button"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={handleToggle}
                 className="flex items-center gap-2 w-full px-4 h-12 transition-colors bg-muted/40 dark:bg-muted/20 hover:bg-muted/70 dark:hover:bg-muted/70"
             >
                 <ChevronRight
                     className={cn(
                         "w-4 h-4 text-muted-foreground transition-transform duration-200 flex-shrink-0",
-                        isOpen && "rotate-90"
+                        isExpanded && "rotate-90"
                     )}
                 />
                 {Icon && <Icon className="text-foreground w-4 h-4 flex-shrink-0" />}
@@ -48,7 +60,7 @@ const Accordion: React.FC<AccordionProps> = ({
                 </h3>
             </button>
 
-            {isOpen && (
+            {isExpanded && (
                 <div className="px-4 py-3 dark:bg-muted/10 bg-muted/15">{children}</div>
             )}
         </div>

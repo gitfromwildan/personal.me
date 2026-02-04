@@ -117,6 +117,34 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "DocuBook",
+      href: "https://github.com/DocuBook/docubook",
+      active: true,
+      description:
+        "DocuBook is a modern documentation platform for building, deploying, and managing your docs with ease.",
+      technologies: [
+        "TypeScript",
+        "React",
+        "Next.js",
+        "TailwindCSS",
+        "MDX",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://docubook.pro",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/DocuBook/docubook",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/DocuBook.webp",
+      video: "",
+    },
+    {
       title: "My Portfolio",
       href: "https://github.com/gitfromwildan/personal.me",
       active: true,
@@ -136,31 +164,8 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "",
-      video:
-        "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjNkZm93eHJlamtlamhucnB4Ym5xamdyenhqd3BrNjNmbGRjYWcwYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QtSyqQC5gK3mT49hdJ/giphy.mp4",
-    },
-    {
-      title: "Ortoo Links",
-      href: "https://github.com/gitfromwildan/shop.bio",
-      active: true,
-      description:
-        "Biolink template for digital product listings such as ebooks, video courses and digital downloads complete with checkout to external links.",
-      technologies: [
-        "Next.js",
-        "Typescript",
-        "TailwindCSS",
-        "Shadcn UI",
-      ],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/gitfromwildan/shop.bio",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "",
-      video: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExam40MXlranNrcGtydDVtcTU4d3VibXFqajJpZ3h3OGM2YjltNnYwZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nIoccBCOnlPvuVHzAf/giphy.mp4",
+      image: "/personal.jpeg",
+      video: "",
     },
   ],
 } as const;

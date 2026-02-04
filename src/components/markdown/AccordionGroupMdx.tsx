@@ -13,8 +13,12 @@ const AccordionGroup: React.FC<AccordionGroupProps> = ({
     children,
     className,
 }) => {
+    const [activeId, setActiveId] = React.useState<string | null>(null);
+
     return (
-        <AccordionGroupContext.Provider value={{ inGroup: true }}>
+        <AccordionGroupContext.Provider
+            value={{ inGroup: true, activeId, setActiveId }}
+        >
             <div className={cn("border rounded-lg overflow-hidden", className)}>
                 {children}
             </div>
