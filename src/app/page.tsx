@@ -140,7 +140,6 @@ export default function PageHome() {
                   description={project.description}
                   tags={project.technologies}
                   image={project.image}
-                  video={project.video}
                   links={project.links}
                 />
               </BlurFade>

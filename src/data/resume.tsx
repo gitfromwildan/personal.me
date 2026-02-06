@@ -142,7 +142,6 @@ export const DATA = {
         },
       ],
       image: "/DocuBook.webp",
-      video: "",
     },
     {
       title: "My Portfolio",
@@ -165,7 +164,6 @@ export const DATA = {
         },
       ],
       image: "/personal.jpeg",
-      video: "",
     },
   ],
 } as const;
