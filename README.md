@@ -1,16 +1,48 @@
-> I'm a **Frontend Developer** from Bandung, West Java - Indonesia.
-Born in 1994, I have a deep passion for programming and love building web applications.
+# Personal Portfolio
 
-> Author of [DocuBook](https://docubook.pro/), a documentation web framework build with React
+Personal portfolio and blog built with **Next.js**, **TypeScript**, and **Tailwind CSS**.
 
-#### Skills
-[![My Skills](https://skillicons.dev/icons?i=tailwindcss,react,js,ts,nodejs,bun,git)](https://docubook.pro)
+## Tech Stack
 
-#### Connect with Me
-[![facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/wildan.nrsh) [![telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/wildannrs) [![instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/wildan.nrs) [![threads](https://img.shields.io/badge/Threads-000000?style=for-the-badge&logo=Threads&logoColor=white)](https://www.threads.com/@wildan.nrs) [![X](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/wildan_nrss)
+- [Next.js](https://nextjs.org/) — React framework
+- [TypeScript](https://www.typescriptlang.org/) — Type safety
+- [Tailwind CSS](https://tailwindcss.com/) — Utility-first styling
+- [Shadcn UI](https://ui.shadcn.com/) — UI components
+- [Magic UI](https://magicui.design/) — Animated components
+- [Framer Motion](https://www.framer.com/motion/) — Animations
+- [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) — MDX blog posts
+- [next-themes](https://github.com/pacocoursey/next-themes) — Dark/light mode
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/gitfromwildan/gitfromwildan/output/pacman-contribution-graph-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/gitfromwildan/gitfromwildan/output/pacman-contribution-graph.svg">
-  <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/gitfromwildan/gitfromwildan/output/pacman-contribution-graph.svg">
-</picture>
+## Features
+
+- Hero, About, Skills, Work Experience, Projects, and Contact sections
+- Blog with MDX support
+- Dark/light mode toggle
+- Responsive dock navigation
+- Animated UI with blur-fade, aurora text, and hyper text effects
+
+## Getting Started
+
+```bash
+bun install
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Project Structure
+
+```
+src/
+├── app/          # Next.js app router pages
+├── components/   # React components (ui, navbar, cards, markdown)
+├── data/         # Resume data and content
+└── lib/          # Utilities, MDX config, plugins
+content/          # MDX blog posts
+public/           # Static assets (images, icons)
+```
+
+## Links
+
+- [Live site](https://wildan.dev)
+- [DocuBook](https://docubook.pro/) — My documentation framework
