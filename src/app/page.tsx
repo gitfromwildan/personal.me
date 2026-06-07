@@ -44,21 +44,22 @@ export default function PageHome() {
           <h2> <AuroraText className="text-xl font-bold">About</AuroraText></h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <Markdown
-            className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert"
-            components={{
-              a: ({ node, ...props }) => (
-                <Link
-                  href={props.href || "#"}
-                  target="_blank"
-                  className="underline decoration-muted-foreground underline-offset-4 hover:text-primary transition-colors"
-                  {...props}
-                />
-              ),
-            }}
-          >
-            {DATA.summary}
-          </Markdown>
+          <div className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert">
+            <Markdown
+              components={{
+                a: ({ ...props }) => (
+                  <Link
+                    href={props.href || "#"}
+                    target="_blank"
+                    className="underline decoration-muted-foreground underline-offset-4 hover:text-primary transition-colors"
+                    {...props}
+                  />
+                ),
+              }}
+            >
+              {DATA.summary}
+            </Markdown>
+          </div>
         </BlurFade>
       </section>
       <section id="skills">
