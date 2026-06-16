@@ -1,131 +1,185 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "tw-animate-css";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 210 11.1% 3.53%;
+/* ─── Theme Tokens ─── */
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-    --card: 0 0% 100%;
-    --card-foreground: 210 11.1% 3.53%;
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 11.1% 3.53%;
+  --radius: 0.5rem;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-aurora: aurora 8s ease-in-out infinite alternate;
 
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-
-    --radius: 0.5rem;
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
   }
-
-  .dark {
-    --background: 210 11.1% 3.53%;
-    --foreground: 0 0% 98%;
-
-    --card: 210 11.1% 3.53%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 210 11.1% 3.53%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
   }
-
-  .theme {
-    --animate-aurora: aurora 8s ease-in-out infinite alternate;
+  @keyframes aurora {
+    0%   { background-position: 0% 50%; transform: rotate(-5deg) scale(0.9); }
+    25%  { background-position: 50% 100%; transform: rotate(5deg) scale(1.1); }
+    50%  { background-position: 100% 50%; transform: rotate(-3deg) scale(0.95); }
+    75%  { background-position: 50% 0%; transform: rotate(3deg) scale(1.05); }
+    100% { background-position: 0% 50%; transform: rotate(-5deg) scale(0.9); }
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+/* ─── Dark Mode ─── */
+@variant dark (&:is(.dark *));
 
-  body {
-    @apply bg-background text-foreground relative min-h-screen font-sans antialiased;
-  }
-
-  /* Mesh Gradient Background */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    background:
-      radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.08), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(66, 235, 212, 0.15), transparent 25%);
-    background-size: cover;
-    pointer-events: none;
-  }
-
-  .dark body::before {
-    background:
-      radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.15), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.15), transparent 25%);
-  }
-
+/* ─── CSS Custom Properties (Light) ─── */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 210 11.1% 3.53%;
+  --card: 0 0% 100%;
+  --card-foreground: 210 11.1% 3.53%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 11.1% 3.53%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
 }
 
-@layer utilities {
-  .glass {
-    @apply bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-sm;
-  }
-
-  .glass-hover {
-    @apply hover:bg-white/60 dark:hover:bg-black/60 transition-all duration-300;
-  }
+/* ─── CSS Custom Properties (Dark) ─── */
+.dark {
+  --background: 210 11.1% 3.53%;
+  --foreground: 0 0% 98%;
+  --card: 210 11.1% 3.53%;
+  --card-foreground: 0 0% 98%;
+  --popover: 210 11.1% 3.53%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
 }
 
+/* ─── Base Styles ─── */
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Mesh Gradient Background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(66, 235, 212, 0.15), transparent 25%);
+  background-size: cover;
+  pointer-events: none;
+}
+
+.dark body::before {
+  background:
+    radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.15), transparent 25%);
+}
+
+/* ─── Utility Classes ─── */
+.glass {
+  background-color: rgb(255 255 255 / 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.dark .glass {
+  background-color: rgb(0 0 0 / 0.4);
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.glass-hover {
+  transition: all 0.3s;
+}
+
+.glass-hover:hover {
+  background-color: rgb(255 255 255 / 0.6);
+}
+
+.dark .glass-hover:hover {
+  background-color: rgb(0 0 0 / 0.6);
+}
+
+/* ─── Code Block Styling ─── */
 h3 code {
-  @apply !text-lg;
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
 }
 
 @media (min-width: 768px) {
   h3 code {
-    @apply !text-xl;
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
   }
 }
 
-/* Code block base styling */
 pre {
-  @apply !px-0 rounded-lg overflow-x-auto !m-0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0 !important;
   padding-top: 1rem;
   padding-bottom: 1rem;
   background: hsl(var(--muted) / 0.5) !important;
@@ -138,48 +192,60 @@ pre {
 }
 
 pre [data-line] {
-  @apply px-4;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 code {
-  @apply text-sm md:text-base !leading-loose;
+  font-size: 0.875rem;
+  line-height: 2 !important;
 }
 
-/* Inline code styling (not inside pre) */
-:not(pre)>code {
-  @apply relative rounded bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold border border-border text-foreground;
+@media (min-width: 768px) {
+  code {
+    font-size: 1rem;
+  }
 }
 
-:not(pre)>code::before,
-:not(pre)>code::after {
+/* Inline code */
+:not(pre) > code {
+  position: relative;
+  border-radius: 0.25rem;
+  background-color: hsl(var(--muted) / 0.5);
+  padding: 0.2rem 0.3rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+:not(pre) > code::before,
+:not(pre) > code::after {
   content: none !important;
 }
 
-pre>code {
+pre > code {
   counter-reset: line;
 }
 
-/* Light/dark theme code colors - use shiki syntax highlighting */
+/* Shiki theme scoping */
 code[data-theme*=" "],
 code[data-theme*=" "] span {
-  @apply !bg-transparent;
+  background-color: transparent !important;
 }
 
-/* Default color for code block text (non-tokenized parts) */
 code[data-theme*=" "] {
   color: #24292e;
-  /* Github Light default */
 }
 
 .dark code[data-theme*=" "] {
   color: #e1e4e8;
-  /* Github Dark default */
 }
 
-/* Light mode: Enhanced container styling */
+/* Code block wrapper */
 :root .code-block-wrapper {
   background-color: #f6f8fa !important;
-  /* Github light gray */
   border: 1px solid #d0d7de !important;
 }
 
@@ -188,10 +254,8 @@ code[data-theme*=" "] {
   border-bottom: 1px solid #d0d7de !important;
 }
 
-/* Dark mode adjustments */
 .dark .code-block-wrapper {
   background-color: #0d1117 !important;
-  /* Github dark bg */
   border-color: #30363d !important;
 }
 
@@ -200,17 +264,14 @@ code[data-theme*=" "] {
   border-bottom-color: #30363d !important;
 }
 
-/* Light mode: use shiki-light variable for proper syntax highlighting */
 :root code[data-theme*=" "] span {
   color: var(--shiki-light) !important;
 }
 
-/* Dark mode: use shiki-dark variable for proper syntax highlighting */
 .dark code[data-theme*=" "] span {
   color: var(--shiki-dark) !important;
 }
 
-/* Fallback for code without syntax highlighting (plaintext) */
 :root code[data-theme*=" "]:not(:has(span)) {
   color: hsl(220 10% 25%);
 }
@@ -224,7 +285,7 @@ code {
   counter-reset: line;
 }
 
-code>[data-line]::before {
+code > [data-line]::before {
   counter-increment: line;
   content: counter(line);
   display: inline-block;
@@ -234,16 +295,15 @@ code>[data-line]::before {
   color: hsl(var(--muted-foreground) / 0.5);
 }
 
-code[data-line-numbers-max-digits="2"]>[data-line]::before {
+code[data-line-numbers-max-digits="2"] > [data-line]::before {
   width: 2rem;
 }
 
-code[data-line-numbers-max-digits="3"]>[data-line]::before {
+code[data-line-numbers-max-digits="3"] > [data-line]::before {
   width: 3rem;
 }
 
-/* Line highlighting - light blue background with left border */
-/* Increased specificity to override transparent background */
+/* Highlighted lines */
 code[data-theme*=" "] [data-highlighted-line] {
   background-color: hsl(210 100% 85%) !important;
   border-left: 3px solid hsl(210 100% 50%);
@@ -258,13 +318,18 @@ code[data-theme*=" "] [data-highlighted-line] {
 }
 
 [data-highlighted-chars] {
-  @apply bg-blue-500/20 rounded px-1 py-0.5;
+  background-color: rgb(59 130 246 / 0.2);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
 }
 
-/* Code block wrapper styling */
+/* Code block wrapper */
 .code-block-wrapper {
   position: relative;
-  @apply my-4 rounded-lg overflow-hidden;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
   border: 1px solid hsl(var(--border));
   background: hsl(var(--muted) / 0.5);
 }
@@ -274,13 +339,21 @@ code[data-theme*=" "] [data-highlighted-line] {
 }
 
 .code-block-wrapper pre {
-  @apply !rounded-t-none !mt-0 !mb-0 !border-0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border: 0 !important;
   background: transparent !important;
 }
 
-/* Code block title bar */
 .code-block-title {
-  @apply flex items-center justify-between px-4 py-2 text-sm font-mono;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   background: hsl(var(--muted) / 0.8);
   border-bottom: 1px solid hsl(var(--border));
 }
@@ -289,9 +362,10 @@ code[data-theme*=" "] [data-highlighted-line] {
   background: hsl(220 10% 15%);
 }
 
-/* Copy button styling */
 .code-block-copy-btn {
-  @apply p-1.5 rounded-md transition-colors;
+  padding: 0.375rem;
+  border-radius: 0.375rem;
+  transition: color 0.2s, background-color 0.2s;
   color: hsl(var(--muted-foreground));
 }
 
@@ -300,63 +374,27 @@ code[data-theme*=" "] [data-highlighted-line] {
   color: hsl(var(--foreground));
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  /* Markdown Table Styling */
-  table {
-    @apply border-collapse text-sm;
-  }
-
-  table th,
-  table td {
-    @apply border border-border !px-4 !py-2 text-left;
-  }
-
-  table th {
-    @apply bg-muted/50 font-semibold;
-  }
-
-  table tr:nth-child(2n) {
-    @apply bg-muted/20;
-  }
+/* Tables */
+table {
+  border-collapse: collapse;
+  font-size: 0.875rem;
 }
 
-@theme inline {
-  @keyframes aurora {
-    0% {
-      background-position: 0% 50%;
-      transform: rotate(-5deg) scale(0.9);
-    }
-
-    25% {
-      background-position: 50% 100%;
-      transform: rotate(5deg) scale(1.1);
-    }
-
-    50% {
-      background-position: 100% 50%;
-      transform: rotate(-3deg) scale(0.95);
-    }
-
-    75% {
-      background-position: 50% 0%;
-      transform: rotate(3deg) scale(1.05);
-    }
-
-    100% {
-      background-position: 0% 50%;
-      transform: rotate(-5deg) scale(0.9);
-    }
-  }
+table th,
+table td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem 1rem !important;
+  text-align: left;
 }
 
+table th {
+  background-color: hsl(var(--muted) / 0.5);
+  font-weight: 600;
+}
+
+table tr:nth-child(2n) {
+  background-color: hsl(var(--muted) / 0.2);
+}
 
 /* Hide rehype-pretty-code generated title if present */
 [data-rehype-pretty-code-title] {
