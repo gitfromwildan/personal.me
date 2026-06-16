@@ -5,6 +5,21 @@ import { AnimatePresence, motion, MotionProps } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
+// Pre-created motion components for common HTML element types
+// to avoid creating components during render (react-hooks/static-components)
+const motionElements = {
+  div: motion.create("div", { forwardMotionProps: true }),
+  span: motion.create("span", { forwardMotionProps: true }),
+  p: motion.create("p", { forwardMotionProps: true }),
+  section: motion.create("section", { forwardMotionProps: true }),
+  article: motion.create("article", { forwardMotionProps: true }),
+  h1: motion.create("h1", { forwardMotionProps: true }),
+  h2: motion.create("h2", { forwardMotionProps: true }),
+  h3: motion.create("h3", { forwardMotionProps: true }),
+  header: motion.create("header", { forwardMotionProps: true }),
+  main: motion.create("main", { forwardMotionProps: true }),
+} as const;
+
 type CharacterSet = string[] | readonly string[]
 
 interface HyperTextProps extends MotionProps {
@@ -17,7 +32,7 @@ interface HyperTextProps extends MotionProps {
   /** Delay before animation starts in milliseconds */
   delay?: number
   /** Component to render as - defaults to div */
-  as?: React.ElementType
+  as?: keyof typeof motionElements
   /** Whether to start animation when element comes into view */
   startOnView?: boolean
   /** Whether to trigger animation on hover */
@@ -37,22 +52,20 @@ export function HyperText({
   className,
   duration = 800,
   delay = 0,
-  as: Component = "div",
+  as: asProp = "div",
   startOnView = false,
   animateOnHover = true,
   characterSet = DEFAULT_CHARACTER_SET,
   ...props
 }: HyperTextProps) {
-  const MotionComponent = motion.create(Component, {
-    forwardMotionProps: true,
-  })
+  const MotionComponent = motionElements[asProp]
 
   const [displayText, setDisplayText] = useState<string[]>(() =>
     children.split("")
   )
   const [isAnimating, setIsAnimating] = useState(false)
   const iterationCount = useRef(0)
-  const elementRef = useRef<HTMLElement>(null)
+  const elementRef = useRef<HTMLDivElement>(null)
 
   const handleAnimationTrigger = () => {
     if (animateOnHover && !isAnimating) {
