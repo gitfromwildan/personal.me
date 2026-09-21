@@ -98,7 +98,7 @@ export const DATA = {
       title: "Maintenance",
       logoUrl: "/acl.png",
       start: "March 2018",
-      end: "Until Now",
+      end: "August 2026",
       description:
         "Tasked with building maintenance and repairs for Indomaret stores including CCTV, alarms and building facilities, both electrical and civil.",
     },
