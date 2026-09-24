@@ -8,40 +8,84 @@ export const DATA = {
   location: "West Java, Indonesia",
   locationLink: "https://www.google.com/maps/place/indonesia",
   description:
-    "Turning coffee into Frontend code and Open Source contributions. I build things that (mostly) work and love helping people. You can usually summon me on Telegram.",
-  summary:
-    `I've been diving into web design since 2019 (and yes, I spent a fortune on courses). I eventually built [DocuBook](https://docubook.pro/)—a React documentation framework—because the existing tools just didn't 'click' for me. So, I made my own! I love building tools that actually help people.`,
+    "IT Support 11 Years Exp. Preventive maintenance & troubleshooting for CCTV, alarm, network, and facility management — now full-time on open source project.",
+  summary: `Nothing takes a store offline faster than a dead L2TP tunnel between the branch server and the building — POS, CCTV, and alarm go dark at once. That's the infrastructure layer I've owned for 11 years: MikroTik routers, server-to-store links, and the preventive checkups that stop them failing in the first place. Now building [DocuBook](https://github.com/DocuBook) full-time.`,
   avatarUrl: "/me.png",
-  skills: [
-    {
-      name: "Tailwindcss",
-      icon: "/icon/tailwindcss.svg",
-    },
-    {
-      name: "React",
-      icon: "/icon/react.svg",
-    },
-    {
-      name: "NextJS",
-      icon: "/icon/nextjs.svg",
-    },
-    {
-      name: "Javascript",
-      icon: "/icon/javascript.svg",
-    },
-    {
-      name: "Typescript",
-      icon: "/icon/typescript.svg",
-    },
-    {
-      name: "NodeJS",
-      icon: "/icon/node.svg",
-    },
-    {
-      name: "Bun",
-      icon: "/icon/bun.svg",
-    },
-  ],
+  skills: {
+    Infrastructure: [
+      {
+        name: "Preventive Maintenance",
+        description:
+          "Scheduled checks across stores, catching CCTV, alarm, and network faults before they turn into downtime.",
+        percentage: 95,
+      },
+      {
+        name: "Network Troubleshooting",
+        description:
+          "Tracing link loss from the branch server down to the faulty hop, instead of guessing from the store side.",
+        percentage: 92,
+      },
+      {
+        name: "CCTV & Alarm Systems",
+        description:
+          "Install, wire, and repair — plus the first checks when a camera or sensor goes dark.",
+        percentage: 90,
+      },
+      {
+        name: "MikroTik",
+        description:
+          "RouterOS for branch links: routing, tunneling, and remote access.",
+        percentage: 90,
+      },
+      {
+        name: "L2TP & Tunneling",
+        description:
+          "Keeping the server-to-building tunnel up so POS, CCTV, and alarm stay online.",
+        percentage: 88,
+      },
+      {
+        name: "Facility Management",
+        description: "Electrical and civil upkeep across retail sites.",
+        percentage: 85,
+      },
+    ],
+    Software: [
+      {
+        name: "TypeScript",
+        description:
+          "Types-first React and Node code, strict mode by default. No `any` unless there is no way out.",
+        percentage: 90,
+      },
+      {
+        name: "React",
+        description:
+          "Component architecture, hooks, and state management for real projects, not demos.",
+        percentage: 88,
+      },
+      {
+        name: "Tailwind CSS",
+        description:
+          "Utility-first styling, from design tokens to dark mode, without orphan CSS files.",
+        percentage: 85,
+      },
+      {
+        name: "JavaScript",
+        description:
+          "The language under everything else, running on both browser and server.",
+        percentage: 80,
+      },
+      {
+        name: "Node.js",
+        description: "Tooling, scripting, and small backend services.",
+        percentage: 75,
+      },
+      {
+        name: "Bun",
+        description: "Package manager, runtime, and test runner for local dev.",
+        percentage: 65,
+      },
+    ],
+  },
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
     { href: "/blog", icon: PencilLineIcon, label: "Blog" },
@@ -79,6 +123,18 @@ export const DATA = {
 
   work: [
     {
+      company: "DocuBook",
+      href: "https://docu.wildan.dev/",
+      badges: [],
+      location: "Remote",
+      title: "Founder",
+      logoUrl: "/icon/docu.svg",
+      start: "November 2024",
+      end: "Until Now",
+      description:
+        "Open-source tools for creating, managing, and publishing modern developer documentation. — now my full-time work.",
+    },
+    {
       company: "Addons Sejoli Pro",
       href: "https://addonsejoli.pro/",
       badges: [],
@@ -86,7 +142,7 @@ export const DATA = {
       title: "Freelance User Guides",
       logoUrl: "/addonspro.png",
       start: "January 2022",
-      end: "Until Now",
+      end: "Sept 2026",
       description:
         "Addons Pro is an agency that operates in the field of creating WordPress plugins to complete the functions of the Sejoli plugin. My job is to create product usage documentation related to plugins.",
     },
@@ -115,55 +171,12 @@ export const DATA = {
         "Actually, until now I am still working under the Indomaret group company. However, my current job is managing and monitoring the network interface from the Indomaret store to the branch server.",
     },
   ],
+  // Just a list of repos — title, description, language, stars, and link
+  // are fetched from the GitHub API (see src/lib/github.ts).
   projects: [
-    {
-      title: "DocuBook",
-      href: "https://github.com/DocuBook/docubook",
-      active: true,
-      description:
-        "DocuBook is a modern documentation platform for building, deploying, and managing your docs with ease.",
-      technologies: [
-        "TypeScript",
-        "React",
-        "Next.js",
-        "TailwindCSS",
-        "MDX",
-      ],
-      links: [
-        {
-          type: "Website",
-          href: "https://docubook.pro",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/DocuBook/docubook",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "/DocuBook.webp",
-    },
-    {
-      title: "My Portfolio",
-      href: "https://github.com/gitfromwildan/personal.me",
-      active: true,
-      description:
-        "Developed a personal portfolio website using Next.js, TypeScript, and Tailwind CSS. This template is open source and available on GitHub.",
-      technologies: [
-        "Next.js",
-        "Typescript",
-        "TailwindCSS",
-        "Shadcn UI",
-        "Magic UI",
-      ],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/gitfromwildan/personal.me",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "/personal.jpeg",
-    },
+    "DocuBook/docubook",
+    "DocuBook/editor",
+    "rustasea/rustasea.github.io",
+    "rustasea/framework",
   ],
 } as const;

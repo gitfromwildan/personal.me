@@ -6,11 +6,20 @@ import { ResumeCard } from "@/components/resume-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
-import Image from 'next/image';
 import Markdown from "react-markdown";
-import { ProjectCard } from "@/components/project-card";
+import { ContributionsSummary } from "@/components/contributions-summary";
+import { ProjectsList } from "@/components/projects-list";
+import { SkillsList } from "@/components/skills-list";
+import { Quote } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
+
+// GitHub login is derived from the link in the data instead of being written twice.
+const GITHUB_USER = new URL(DATA.contact.social.GitHub.url).pathname.slice(1);
+const CONTRIBUTIONS_YEAR = new Date().getFullYear();
+
+// Keep in sync with REVALIDATE_SECONDS in src/lib/github.ts.
+export const revalidate = 43200;
 
 export default function PageHome() {
   return (
@@ -19,13 +28,11 @@ export default function PageHome() {
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <div className="gap-2 flex justify-between">
             <div className="flex-col flex flex-1 space-y-1.5">
-              <HyperText
-                className="text-3xl font-bold tracking-tighter sm:text-5xl"
-              >
+              <HyperText className="text-3xl font-bold tracking-tighter sm:text-5xl">
                 {`Hi, I'm ${DATA.name.split(" ")[0]}`}
               </HyperText>
               <BlurFadeText
-                className="max-w-[600px] md:text-xl"
+                className="max-w-[600px] text-sm leading-relaxed text-muted-foreground sm:text-base"
                 delay={BLUR_FADE_DELAY}
                 text={DATA.description}
               />
@@ -41,53 +48,42 @@ export default function PageHome() {
       </section>
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2> <AuroraText className="text-xl font-bold">About</AuroraText></h2>
+          <figure className="relative rounded-xl border border-border border-l-[3px] border-l-primary/60 bg-muted px-5 py-4 sm:px-6 dark:bg-muted/30">
+            <Quote
+              className="absolute right-4 top-4 size-5 text-primary/20"
+              aria-hidden="true"
+            />
+            <blockquote className="prose max-w-full text-pretty font-sans text-base leading-relaxed text-muted-foreground sm:text-lg dark:prose-invert">
+              <Markdown
+                components={{
+                  a: ({ ...props }) => (
+                    <Link
+                      href={props.href || "#"}
+                      target="_blank"
+                      className="underline decoration-muted-foreground underline-offset-4 hover:text-primary transition-colors"
+                      {...props}
+                    />
+                  ),
+                }}
+              >
+                {DATA.summary}
+              </Markdown>
+            </blockquote>
+            <figcaption className="mt-3 font-sans text-sm text-muted-foreground">
+              — {DATA.name} · {DATA.location}
+            </figcaption>
+          </figure>
         </BlurFade>
-        <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <div className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert">
-            <Markdown
-              components={{
-                a: ({ ...props }) => (
-                  <Link
-                    href={props.href || "#"}
-                    target="_blank"
-                    className="underline decoration-muted-foreground underline-offset-4 hover:text-primary transition-colors"
-                    {...props}
-                  />
-                ),
-              }}
-            >
-              {DATA.summary}
-            </Markdown>
-          </div>
-        </BlurFade>
-      </section>
-      <section id="skills">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2> <AuroraText className="text-xl font-bold">Skills</AuroraText></h2>
-          </BlurFade>
-          <div className="flex flex-wrap gap-2 items-center">
-            {DATA.skills.map((skill, id) => (
-              <BlurFade key={skill.icon} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <div className="flex items-center gap-1 p-1 border rounded-2xl bg-gray-100 dark:bg-slate-50">
-                  <Image
-                    src={skill.icon}
-                    alt={skill.name}
-                    width={48}
-                    height={48}
-                    className="w-[52px] h-[52px]"
-                  />
-                </div>
-              </BlurFade>
-            ))}
-          </div>
-        </div>
       </section>
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2> <AuroraText className="text-xl font-bold">Work Experience</AuroraText></h2>
+            <h2>
+              {" "}
+              <AuroraText className="text-xl font-bold">
+                Work Experience
+              </AuroraText>
+            </h2>
           </BlurFade>
           {DATA.work.map((work, id) => (
             <BlurFade
@@ -109,42 +105,44 @@ export default function PageHome() {
           ))}
         </div>
       </section>
+      <section id="skills">
+        <div className="flex min-h-0 flex-col gap-y-3">
+          <BlurFade delay={BLUR_FADE_DELAY * 9}>
+            <h2>
+              {" "}
+              <AuroraText className="text-xl font-bold">Skills</AuroraText>
+            </h2>
+          </BlurFade>
+          <SkillsList groups={DATA.skills} delay={BLUR_FADE_DELAY * 10} />
+        </div>
+      </section>
       <section id="projects">
         <div className="space-y-12 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 13}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-white/60 dark:bg-white/10 px-3 py-1 text-sm backdrop-blur-md border border-zinc-200 dark:border-white/10 text-foreground shadow-sm">
-                  My Projects
+                  Open Source
                 </div>
                 <h2>
                   <AuroraText className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                    Check out my latest work
+                    What I&apos;m building
                   </AuroraText>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  I&apos;ve worked on a variety of projects, from simple websites to complex web applications. Here are a few of my favorites.
+                  Built and maintained in public — the details come straight
+                  from GitHub.
                 </p>
               </div>
             </div>
           </BlurFade>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-            {DATA.projects.map((project, id) => (
-              <BlurFade
-                key={project.title}
-                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
-              >
-                <ProjectCard
-                  href={project.href}
-                  key={project.title}
-                  title={project.title}
-                  description={project.description}
-                  tags={project.technologies}
-                  image={project.image}
-                  links={project.links}
-                />
-              </BlurFade>
-            ))}
+          <div className="space-y-4">
+            <ContributionsSummary
+              user={GITHUB_USER}
+              year={CONTRIBUTIONS_YEAR}
+              delay={BLUR_FADE_DELAY * 11}
+            />
+            <ProjectsList repos={DATA.projects} delay={BLUR_FADE_DELAY * 12} />
           </div>
         </div>
       </section>
