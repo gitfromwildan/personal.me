@@ -15,7 +15,11 @@ import { Quote } from "lucide-react";
 const BLUR_FADE_DELAY = 0.04;
 
 // GitHub login is derived from the link in the data instead of being written twice.
-const GITHUB_USER = new URL(DATA.contact.social.GitHub.url).pathname.slice(1);
+// Splitting on `/` keeps a trailing slash or extra path out of the API query.
+const GITHUB_USER =
+  new URL(DATA.contact.social.GitHub.url).pathname
+    .split("/")
+    .filter(Boolean)[0] ?? "";
 const CONTRIBUTIONS_YEAR = new Date().getFullYear();
 
 // Keep in sync with REVALIDATE_SECONDS in src/lib/github.ts.
