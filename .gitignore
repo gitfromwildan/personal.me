@@ -5,3 +5,4 @@ node_modules
 .agent
 .next
 .bun.lock
+next-env.d.ts
