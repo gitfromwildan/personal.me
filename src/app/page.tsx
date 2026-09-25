@@ -169,7 +169,7 @@ export default function PageHome() {
                   className="text-blue-500 hover:underline"
                   target="_blank"
                 >
-                  with a direct question on telegram
+                  with a direct question on threads
                 </Link>{" "}
                 and I&apos;ll respond whenever I can. I will ignore all
                 soliciting.

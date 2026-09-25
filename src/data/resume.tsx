@@ -12,7 +12,7 @@ export const DATA = {
   summary: `Nothing takes a store offline faster than a dead L2TP tunnel between the branch server and the building — POS, CCTV, and alarm go dark at once. That's the infrastructure layer I've owned for 11 years: MikroTik routers, server-to-store links, and the preventive checkups that stop them failing in the first place. Now building [DocuBook](https://github.com/DocuBook) full-time.`,
   avatarUrl: "/me.png",
   skills: {
-    Infrastructure: [
+    "IT Support & Network": [
       {
         name: "Preventive Maintenance",
         description:
@@ -102,7 +102,7 @@ export const DATA = {
       },
       Telegram: {
         name: "Telegram",
-        url: "https://t.me/wildannrs",
+        url: "https://www.threads.com/@wildan.nrs",
         icon: Icons.x,
         navbar: false,
       },
