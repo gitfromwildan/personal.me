@@ -14,16 +14,22 @@ export const DATA = {
   skills: {
     "IT Support & Network": [
       {
-        name: "Preventive Maintenance",
-        description:
-          "Scheduled checks across stores, catching CCTV, alarm, and network faults before they turn into downtime.",
-        percentage: 95,
-      },
-      {
         name: "Network Troubleshooting",
         description:
           "Tracing link loss from the branch server down to the faulty hop, instead of guessing from the store side.",
         percentage: 92,
+      },
+      {
+        name: "VSAT (XPoll & Repointing)",
+        description:
+          "XPoll VSAT links for stores with no wired path to the branch: install, point, and keep online — plus repoint after drift or storms, signal check on azimuth and elevation until the link locks again.",
+        percentage: 90,
+      },
+      {
+        name: "Preventive Maintenance",
+        description:
+          "Scheduled checks across stores, catching CCTV, alarm, and network faults before they turn into downtime.",
+        percentage: 95,
       },
       {
         name: "CCTV & Alarm Systems",
