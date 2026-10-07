@@ -40,14 +40,8 @@ export const DATA = {
       {
         name: "MikroTik",
         description:
-          "RouterOS for branch links: routing, tunneling, and remote access.",
+          "RouterOS for branch links: routing, remote access, and L2TP tunneling — keeping the server-to-building tunnel up so POS, CCTV, and alarm stay online.",
         percentage: 90,
-      },
-      {
-        name: "L2TP & Tunneling",
-        description:
-          "Keeping the server-to-building tunnel up so POS, CCTV, and alarm stay online.",
-        percentage: 88,
       },
       {
         name: "Facility Management",
