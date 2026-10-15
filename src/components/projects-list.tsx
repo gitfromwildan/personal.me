@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GitFork, Star } from "lucide-react";
 import { Icons } from "@/components/icons";
 import BlurFade from "@/components/ui/blur-fade";
-import { getRepo, githubUrl } from "@/lib/github";
+import { getRepo, getReposBatch, githubUrl } from "@/lib/github";
 
 function timeAgo(iso: string) {
   const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000);
@@ -22,8 +22,14 @@ export async function ProjectsList({
   repos: readonly string[];
   delay?: number;
 }) {
+  // One GraphQL round-trip for every repo when a token is available; each
+  // repo the batch cannot resolve falls back to its own REST request.
+  const batch = await getReposBatch(repos);
   const projects = await Promise.all(
-    repos.map(async (repo) => ({ repo, meta: await getRepo(repo) })),
+    repos.map(async (repo, i) => ({
+      repo,
+      meta: batch[i] ?? (await getRepo(repo)),
+    })),
   );
 
   return (
@@ -35,12 +41,12 @@ export async function ProjectsList({
         return (
           <li key={repo}>
             <BlurFade delay={delay + id * 0.05}>
-              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                <span className="flex items-baseline gap-2">
+              <div className="flex flex-col gap-y-1.5 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-3">
+                <span className="flex min-w-0 items-baseline gap-2">
                   <Link
                     href={meta?.homepage ?? source}
                     target="_blank"
-                    className="text-sm font-medium hover:underline"
+                    className="truncate text-sm font-medium hover:underline"
                   >
                     {name}
                   </Link>
@@ -48,14 +54,22 @@ export async function ProjectsList({
                     href={source}
                     target="_blank"
                     aria-label={`${name} source on GitHub`}
-                    className="text-muted-foreground transition-colors hover:text-foreground"
+                    className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <Icons.github className="size-3.5" />
                   </Link>
                 </span>
                 {meta && (
-                  <span className="flex items-center gap-x-3 font-mono text-xs text-muted-foreground">
-                    {meta.language && <span>{meta.language}</span>}
+                  <span className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted-foreground">
+                    {meta.language && (
+                      <span className="inline-flex items-center gap-1.5">
+                        <span
+                          aria-hidden="true"
+                          className="size-2 shrink-0 rounded-full bg-muted-foreground/60"
+                        />
+                        {meta.language}
+                      </span>
+                    )}
                     <span className="inline-flex items-center gap-1">
                       <Star className="size-3" aria-hidden="true" />
                       {meta.stars}
@@ -64,7 +78,11 @@ export async function ProjectsList({
                       <GitFork className="size-3" aria-hidden="true" />
                       {meta.forks}
                     </span>
-                    {meta.pushedAt && <span>{timeAgo(meta.pushedAt)}</span>}
+                    {meta.lastCommitAt && (
+                      <span className="whitespace-nowrap">
+                        last commit · {timeAgo(meta.lastCommitAt)}
+                      </span>
+                    )}
                   </span>
                 )}
               </div>

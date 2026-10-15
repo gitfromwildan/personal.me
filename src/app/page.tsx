@@ -20,7 +20,6 @@ const GITHUB_USER =
   new URL(DATA.contact.social.GitHub.url).pathname
     .split("/")
     .filter(Boolean)[0] ?? "";
-const CONTRIBUTIONS_YEAR = new Date().getFullYear();
 
 // Keep in sync with REVALIDATE_SECONDS in src/lib/github.ts.
 export const revalidate = 43200;
@@ -143,7 +142,6 @@ export default function PageHome() {
           <div className="space-y-4">
             <ContributionsSummary
               user={GITHUB_USER}
-              year={CONTRIBUTIONS_YEAR}
               delay={BLUR_FADE_DELAY * 11}
             />
             <ProjectsList repos={DATA.projects} delay={BLUR_FADE_DELAY * 12} />
