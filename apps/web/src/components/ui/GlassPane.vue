@@ -56,13 +56,14 @@ const traces = computed(() => {
   animation: hover 10s ease-in-out calc(var(--phase) * -10s) infinite;
 }
 
-/* The scanning sheen: a band of light that crosses the panel, then waits. */
+/* The scanning sheen: a band of light that crosses the panel, then waits. The band is drawn
+   once, three panels wide, and slid across: sliding is work the browser does off the page's
+   main thread, where redrawing it at each step is not. */
 .pane::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 42%, var(--gloss) 50%, transparent 58%) no-repeat;
-  background-size: 300% 100%;
+  inset: 0 -100%;
+  background: linear-gradient(115deg, transparent 42%, var(--gloss) 50%, transparent 58%);
   opacity: 0.5;
   animation: scan 8s ease-in-out calc(var(--phase) * -8s) infinite;
 }
@@ -106,11 +107,11 @@ const traces = computed(() => {
 @keyframes scan {
   0%,
   45% {
-    background-position: 130% 0;
+    translate: -53.33% 0;
   }
   90%,
   100% {
-    background-position: -30% 0;
+    translate: 53.33% 0;
   }
 }
 

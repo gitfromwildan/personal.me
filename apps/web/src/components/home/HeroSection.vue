@@ -206,6 +206,7 @@ function pop(event: MouseEvent) {
         class="portrait"
         src="/hero-portrait.webp"
         alt=""
+        fetchpriority="high"
         :style="{ '--x': 308, '--y': 97, '--w': 1250, '--h': 703 }"
       />
       <GlassBubble
