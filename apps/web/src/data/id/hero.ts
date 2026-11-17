@@ -3,7 +3,10 @@ import { hero as en } from "../hero";
 export const hero = {
   ...en,
   status: "Terbuka untuk proyek",
-  headline: ["IT support yang menjaga bisnis Anda tetap online.", "Dan perangkat open source."],
+  headline: [
+    "IT support yang menjaga bisnis Anda tetap online.",
+    "Dan Pengembang perangkat sumber terbuka.",
+  ],
   subhead:
     "Perawatan preventif & troubleshooting CCTV, alarm, jaringan, dan pengelolaan fasilitas — kini penuh waktu di DocuBook, framework dokumentasi open source.",
   cta: "Lihat yang sedang saya bangun",
