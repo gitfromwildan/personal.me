@@ -9,3 +9,5 @@ dist-ssr
 !.env.example
 .agent
 .claude/worktrees/
+# Screenshots Vitest takes of a page when a browser test fails.
+__screenshots__
