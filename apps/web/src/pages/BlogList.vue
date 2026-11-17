@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { posts } from "virtual:posts";
 import PostCard from "../components/blog/PostCard.vue";
 import AppBreadcrumb from "../components/ui/AppBreadcrumb.vue";
@@ -12,6 +13,8 @@ import { shortDate } from "../format";
 const { title, tagline, endNote } = DATA.blog;
 const [home] = DATA.navbar;
 usePageTitle(() => title);
+// A post is likely the next page: its heavy script is fetched ahead, while this one is read.
+onMounted(() => import("../components/blog/postIsland"));
 
 // The page-wide colour blobs. The first sits behind the title, wherever the column starts.
 const blobs = [
