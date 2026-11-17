@@ -7,6 +7,7 @@ Personal portfolio and blog, being rebuilt as a **Vite + Vue** app inside a **Vi
 - [Vite+](https://viteplus.dev/) — toolchain: dev server, build, test, lint, format, task runner
 - [Vue 3](https://vuejs.org/) + [TypeScript](https://www.typescriptlang.org/)
 - [Bun](https://bun.sh/) — package manager (workspaces)
+- [DocuBook](https://docubook.pro/) (`@docubook/core`, `@docubook/markdown`) — compiles the blog posts
 
 ## Getting Started
 
@@ -27,20 +28,29 @@ apps/
 └── web/          # the site (Vite + Vue)
 packages/
 └── utils/        # shared TypeScript library starter
-content/          # MDX blog posts
+content/          # blog posts (Markdown + DocuBook directives)
 public/           # static assets, served by apps/web
 UI-personal.pen   # design file (pen.dev)
 ```
+
+## Blog
+
+Each file in `content/` is a post, served at `/blog/<file name>`; `/blog` lists them, newest first. Frontmatter needs `title` and `date` (`YYYY-MM-DD`), `summary` is optional.
+
+Posts use DocuBook v2 syntax: Markdown plus directives such as `:::card`, `::::tabs`, `::::steps`, `::::accordions`. JSX tags (`<Card>`) are not components and are dropped.
+
+`apps/web/posts.plugin.ts` compiles the posts with `@docubook/core` and renders them to static HTML with the `@docubook/markdown` components while Vite builds. Both packages are React based, so React is a build-time dependency only and is not in the browser bundle. `apps/web/src/pages/BlogPost.vue` handles the clicks for tabs, accordions and the copy button.
 
 ## Deploy
 
 Build command `vp run build`, output directory `apps/web/dist`.
 
+The app is a single-page app: the host must serve `index.html` for paths it has no file for, or a direct visit to `/blog/<slug>` returns 404.
+
 ## Not ported yet
 
 The Next.js version is at commit `3034082` (`git show 3034082:<path>`):
 
-- Blog rendering: `src/components/markdown/`, `src/lib/mdx.tsx`, `src/lib/plugin.ts`, `src/data/blog.ts`
 - GitHub stats: `src/lib/github.ts`
 - Site metadata (description, Open Graph, Twitter card): `src/app/layout.tsx`
 - Security response headers: `next.config.mjs` (a static build needs these set on the host)
