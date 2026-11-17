@@ -44,7 +44,7 @@ const groups = computed(() => [
 <template>
   <section id="projects" class="section container projects" aria-labelledby="projects-title">
     <header class="header">
-      <SectionEyebrow index="04" label="Open source" />
+      <SectionEyebrow label="Open source" />
       <h2 id="projects-title" class="title">{{ DATA.projects.title }}</h2>
       <p class="sub">{{ DATA.projects.sub }}</p>
     </header>

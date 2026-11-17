@@ -8,7 +8,7 @@ const groups = Object.entries(DATA.skills);
 
 <template>
   <section id="skills" class="section container skills" aria-labelledby="skills-title">
-    <SectionEyebrow id="skills-title" as="h2" index="03" label="Skills" />
+    <SectionEyebrow id="skills-title" as="h2" label="Skills" />
 
     <span class="blob blob-a" aria-hidden="true" />
     <span class="blob blob-b" aria-hidden="true" />
@@ -128,6 +128,22 @@ const groups = Object.entries(DATA.skills);
 
   .blob {
     display: none;
+  }
+
+  .bar h3 {
+    font-size: 1.125rem;
+  }
+
+  .name {
+    font-size: 1rem;
+  }
+
+  .percent {
+    font-size: 0.8125rem;
+  }
+
+  .skill .muted-text {
+    font-size: 0.875rem;
   }
 }
 </style>

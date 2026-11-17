@@ -26,7 +26,7 @@ const fill = (currentIndex + 1) / jobs.length;
 
 <template>
   <section id="work" class="work section container" aria-labelledby="work-title">
-    <SectionEyebrow id="work-title" as="h2" index="02" label="Work experience" />
+    <SectionEyebrow id="work-title" as="h2" label="Work experience" />
 
     <div class="timeline">
       <div class="rail" aria-hidden="true">
