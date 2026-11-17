@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ago } from "../../format";
 import { computed } from "vue";
 import { DATA } from "../../data/resume";
 import { githubUrl, loadGithub, repos } from "../../composables/useGithub";
@@ -14,13 +15,6 @@ const LANGUAGE_COLORS: Record<string, string> = {
   JavaScript: "#F1E05A",
   Vue: "#41B883",
 };
-
-function lastCommit(pushedAt: string) {
-  const days = Math.floor((Date.now() - Date.parse(pushedAt)) / 86_400_000);
-  if (days < 1) return "today";
-  if (days < 30) return `${days}d ago`;
-  return `${Math.floor(days / 30)}mo ago`;
-}
 
 const cards = computed(() =>
   DATA.projects.repos.map((name) => {
@@ -81,7 +75,7 @@ const groups = computed(() => [
                     <AppIcon name="git-fork" :size="13" />{{ card.repo.forks
                     }}<span class="visually-hidden"> forks</span>
                   </span>
-                  <span>last commit · {{ lastCommit(card.repo.pushedAt) }}</span>
+                  <span>last commit · {{ ago(card.repo.pushedAt) }}</span>
                 </p>
               </template>
             </div>

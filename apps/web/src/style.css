@@ -122,7 +122,7 @@ a {
   width: var(--bead-size, 18px);
   height: var(--bead-size, 18px);
   border-radius: 50%;
-  background: radial-gradient(ellipse 60% 60% at 35% 30%, #fff, var(--meniscus));
+  background: var(--bead-fill);
   outline: 1.5px solid var(--bead-ring, var(--rim-hi));
   outline-offset: -0.75px;
   box-shadow: 0 4px 10px var(--glass-shadow);
@@ -170,6 +170,23 @@ a {
 /* Rows separated by hairlines. */
 .divided > * + * {
   border-top: 1px solid var(--glass-line);
+}
+
+/* A round chip holding one icon, such as the arrow on a card. */
+.glass.chip.round {
+  --glass-elevation: 0 0;
+  flex: none;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+/* The owner's picture: round, with a glass rim. Size it with width and height. */
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  outline: 1.5px solid var(--rim-hi);
+  outline-offset: -0.75px;
 }
 
 /* Blurred colour blobs behind the glass. Position and size them where they are used. */

@@ -3,6 +3,11 @@
   color-scheme: light dark;
   --font-sans: "Geist Variable", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --code-bg: light-dark(#0e1116, #050608cc);
+  --code-ink: #e6edf3;
+  --code-dim: #8b949e;
+  --code-chip: light-dark(#0a0a0a0f, #ffffff1a);
+  --bead-fill: radial-gradient(ellipse 60% 60% at 35% 30%, #fff, var(--meniscus));
   --bg: light-dark(#ffffff, #08090a);
   --ink: light-dark(#0a0a0a, #fafafa);
   --ink-2: light-dark(#404040, #d4d4d4);

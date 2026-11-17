@@ -12,6 +12,8 @@ declare module "virtual:posts" {
     summary: string;
     /** YYYY-MM-DD */
     date: string;
+    /** Reading time. */
+    minutes: number;
     toc: { level: number; text: string; href: string }[];
     html: string;
   }[];

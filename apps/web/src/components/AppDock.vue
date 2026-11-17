@@ -1,29 +1,66 @@
 <script setup lang="ts">
 import { linkTarget } from "../links";
 import { DATA } from "../data/resume";
+import { onUnmounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { toggleTheme } from "../composables/useTheme";
 import AppIcon from "./ui/AppIcon.vue";
 
 const year = new Date().getFullYear();
 const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
+const [, blog] = DATA.navbar;
+const route = useRoute();
+
+// While the popover is open, a press outside the dock closes it.
+const dock = ref<HTMLElement | null>(null);
+function onPress(event: PointerEvent) {
+  if (!dock.value?.contains(event.target as Node)) tocOpen.value = false;
+}
+watch(tocOpen, (open) =>
+  open ? addEventListener("pointerdown", onPress) : removeEventListener("pointerdown", onPress),
+);
+onUnmounted(() => removeEventListener("pointerdown", onPress));
 </script>
 
 <template>
   <footer class="dock-area">
     <p class="copyright">© {{ year }} {{ DATA.name }} · {{ DATA.location }}</p>
 
-    <nav class="dock glass" aria-label="Main">
-      <RouterLink
-        v-for="item in DATA.navbar"
-        :key="item.href"
-        :to="item.href"
-        class="tile"
-        :active-class="item.href === '/' ? undefined : 'active'"
-        exact-active-class="active"
-        :aria-label="item.label"
-      >
-        <AppIcon :name="item.icon" :size="19" />
-      </RouterLink>
+    <nav ref="dock" class="dock glass" aria-label="Main" @keydown.esc="tocOpen = false">
+      <template v-for="item in DATA.navbar" :key="item.href">
+        <!-- On a post, on a narrow screen, the Blog tile opens the table of contents instead. -->
+        <button
+          v-if="item === blog && hasToc && narrow"
+          type="button"
+          class="tile"
+          :class="{ active: tocOpen }"
+          :aria-label="DATA.blog.tocLabel"
+          :aria-expanded="tocOpen"
+          aria-controls="dock-toc"
+          @click="tocOpen = !tocOpen"
+        >
+          <AppIcon :name="DATA.blog.tocIcon" :size="19" />
+        </button>
+        <RouterLink
+          v-else
+          :to="item.href"
+          class="tile"
+          :class="{ active: item === blog && route.path.startsWith(blog.href) }"
+          exact-active-class="active"
+          :aria-label="item.label"
+        >
+          <AppIcon :name="item.icon" :size="19" />
+        </RouterLink>
+      </template>
+
+      <!-- The post page teleports its table of contents in here. Following a link in it closes it. -->
+      <div
+        v-show="tocOpen"
+        id="dock-toc"
+        class="popover"
+        @click="($event.target as Element).closest('a') && (tocOpen = false)"
+      />
 
       <span class="sep" aria-hidden="true"></span>
 
@@ -120,6 +157,24 @@ const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
     opacity 0.15s,
     transform 0.15s;
   pointer-events: none;
+}
+
+/* The open popover sits where the tooltip would. */
+.tile[aria-expanded="true"]::after {
+  display: none;
+}
+
+.popover {
+  position: absolute;
+  bottom: calc(100% + 0.75rem);
+  left: 50%;
+  width: min(20rem, 100vw - 2rem);
+  max-height: 60vh;
+  overflow-y: auto;
+  border-radius: 26px;
+  /* Opaque under the glass card: inside the dock, the card cannot blur the page behind it. */
+  background: var(--stage);
+  transform: translateX(-50%);
 }
 
 .tile:focus-visible::after {
