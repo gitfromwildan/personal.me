@@ -21,13 +21,58 @@ watch(tocOpen, (open) =>
   open ? addEventListener("pointerdown", onPress) : removeEventListener("pointerdown", onPress),
 );
 onUnmounted(() => removeEventListener("pointerdown", onPress));
+
+// Magnification as on the macOS Dock: tiles grow the closer the pointer is to them.
+const GROWTH = 0.5; // the tile under the pointer is this much bigger
+const REACH = 120; // px from the pointer at which a tile is back to its own size
+// Centres of the tiles at rest, measured when the pointer comes in: growing tiles push their
+// neighbours aside, and following those moving centres would make the dock jitter.
+let centres: number[] = [];
+const tiles = () => [...dock.value!.querySelectorAll<HTMLElement>(".tile")];
+
+function onEnter(event: PointerEvent) {
+  // Mouse only, and not for people who asked for less motion.
+  if (event.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches)
+    return;
+  centres = tiles().map((tile) => {
+    const { left, width } = tile.getBoundingClientRect();
+    return left + width / 2;
+  });
+}
+
+function onMove(event: PointerEvent) {
+  if (!centres.length) return;
+  // The popover sits inside the dock, but pointing at it is not pointing at the tiles below it.
+  if ((event.target as Element).closest(".popover")) return rest();
+  tiles().forEach((tile, i) => {
+    const nearness = Math.max(0, 1 - Math.abs(event.clientX - centres[i]) / REACH);
+    tile.style.setProperty("--grow", String(1 + GROWTH * Math.sin((nearness * Math.PI) / 2)));
+  });
+}
+
+function rest() {
+  for (const tile of tiles()) tile.style.removeProperty("--grow");
+}
+
+function onLeave() {
+  centres = [];
+  rest();
+}
 </script>
 
 <template>
   <footer class="dock-area">
     <p class="copyright">© {{ year }} {{ DATA.name }} · {{ DATA.location }}</p>
 
-    <nav ref="dock" class="dock glass" aria-label="Main" @keydown.esc="tocOpen = false">
+    <nav
+      ref="dock"
+      class="dock glass"
+      aria-label="Main"
+      @keydown.esc="tocOpen = false"
+      @pointerenter="onEnter"
+      @pointermove="onMove"
+      @pointerleave="onLeave"
+    >
       <template v-for="item in DATA.navbar" :key="item.href">
         <!-- On a post, on a narrow screen, the Blog tile opens the table of contents instead. -->
         <button
@@ -55,12 +100,14 @@ onUnmounted(() => removeEventListener("pointerdown", onPress));
       </template>
 
       <!-- The post page teleports its table of contents in here. Following a link in it closes it. -->
-      <div
-        v-show="tocOpen"
-        id="dock-toc"
-        class="popover"
-        @click="($event.target as Element).closest('a') && (tocOpen = false)"
-      />
+      <Transition name="pop">
+        <div
+          v-show="tocOpen"
+          id="dock-toc"
+          class="popover"
+          @click="($event.target as Element).closest('a') && (tocOpen = false)"
+        />
+      </Transition>
 
       <span class="sep" aria-hidden="true"></span>
 
@@ -107,25 +154,44 @@ onUnmounted(() => removeEventListener("pointerdown", onPress));
   left: 50%;
   z-index: 50;
   transform: translateX(-50%);
+  /* The bar keeps its height: magnified tiles stand on its floor and rise out of it. */
+  --tile: 48px;
+  --icon: 19px;
+  --pad: 8px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 4px;
-  padding: 8px;
+  box-sizing: border-box;
+  height: calc(var(--tile) + 2 * var(--pad));
+  padding: var(--pad);
 }
 
 .tile {
   position: relative;
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  flex: none;
+  /* --grow is set on hover by onMove. */
+  width: calc(var(--tile) * var(--grow, 1));
+  height: calc(var(--tile) * var(--grow, 1));
   padding: 0;
   border: 0;
   border-radius: 999px;
   background: none;
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    background 0.15s,
+    width 0.12s ease-out,
+    height 0.12s ease-out;
+}
+
+.tile svg {
+  width: calc(var(--icon) * var(--grow, 1));
+  height: calc(var(--icon) * var(--grow, 1));
+  transition:
+    width 0.12s ease-out,
+    height 0.12s ease-out;
 }
 
 .tile:hover {
@@ -177,6 +243,31 @@ onUnmounted(() => removeEventListener("pointerdown", onPress));
   transform: translateX(-50%);
 }
 
+/* The popover rises into place and sinks away, so closing it on a link does not just cut. */
+.pop-enter-active,
+.pop-leave-active {
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.pop-leave-active {
+  pointer-events: none;
+}
+
+.pop-enter-from,
+.pop-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 0.75rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pop-enter-from,
+  .pop-leave-to {
+    transform: translateX(-50%);
+  }
+}
+
 .tile:focus-visible::after {
   opacity: 1;
   transform: translate(-50%, 0);
@@ -193,6 +284,7 @@ onUnmounted(() => removeEventListener("pointerdown", onPress));
   width: 1px;
   height: 28px;
   background: var(--glass-line);
+  align-self: center;
 }
 
 /* A smaller dock on narrow screens: six 40px tiles instead of 48px. */
@@ -202,19 +294,11 @@ onUnmounted(() => removeEventListener("pointerdown", onPress));
   }
 
   .dock {
+    --tile: 40px;
+    --icon: 17px;
+    --pad: 6px;
     bottom: 1rem;
     gap: 2px;
-    padding: 6px;
-  }
-
-  .tile {
-    width: 40px;
-    height: 40px;
-  }
-
-  .tile svg {
-    width: 17px;
-    height: 17px;
   }
 
   .sep {
