@@ -9,7 +9,7 @@
   ],
   "type": "module",
   "scripts": {
-    "ready": "vp check && vp run -r test && vp run -r build",
+    "ready": "vp check && vp run -r test && vp run -F '!personal.me' build",
     "dev": "vp run web#dev",
     "build": "vp run web#build"
   },
