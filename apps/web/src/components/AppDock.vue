@@ -140,7 +140,8 @@ function onLeave() {
       <span class="sep" aria-hidden="true"></span>
 
       <button type="button" class="tile" :aria-label="DATA.ui.dock.theme" @click="toggleTheme">
-        <AppIcon name="moon" :size="19" />
+        <AppIcon class="moon" name="moon" :size="19" />
+        <AppIcon class="sun" name="sun" :size="19" />
       </button>
     </nav>
   </footer>
@@ -211,6 +212,18 @@ function onLeave() {
 
 .tile:hover {
   background: var(--chip);
+}
+
+/* The theme switch shows where a press takes the page: the moon by day, the sun by night. The
+   theme is read from <html>, where index.html sets it before the first paint, so no script is
+   needed and a built page is right from the start. */
+.sun,
+:root[data-theme="dark"] .moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .sun {
+  display: block;
 }
 
 /* The code of the language the switch leads to, in the tile's top corner, above the icon. */
