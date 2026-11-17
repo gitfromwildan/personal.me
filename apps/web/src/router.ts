@@ -6,10 +6,13 @@ import HomePage from "./pages/HomePage.vue";
 const LANG = "/:lang(id)?";
 
 // A router each: the browser has one, and the build makes one for every page it renders ahead of
-// time (entry-server.ts), where there is no address bar to keep the history in.
-export function makeRouter() {
+// time (entry-server.ts), where there is no address bar to keep the history in. A test gives
+// its own history, one that leaves the address of the page it runs in alone.
+export function makeRouter(
+  history = import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
+) {
   const router = createRouter({
-    history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
+    history,
     routes: [
       { path: LANG, component: HomePage },
       // Lazy, so the compiled posts stay out of the home page bundle.
