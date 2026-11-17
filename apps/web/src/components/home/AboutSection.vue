@@ -15,19 +15,7 @@ import SectionEyebrow from "../ui/SectionEyebrow.vue";
       <div class="story">
         <p class="lead">{{ DATA.about.lead }}</p>
         <p class="body">{{ DATA.about.body }}</p>
-        <div class="footer">
-          <p class="signature">— {{ DATA.name }} · {{ DATA.location }}</p>
-          <a
-            class="glass chip now"
-            :href="DATA.work[0].href"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span class="dot" aria-hidden="true" />
-            {{ DATA.about.now }}
-            <AppIcon name="arrow-up-right" :size="14" />
-          </a>
-        </div>
+        <p class="signature">— {{ DATA.name }} · {{ DATA.location }}</p>
       </div>
 
       <div class="board">
@@ -97,27 +85,11 @@ import SectionEyebrow from "../ui/SectionEyebrow.vue";
   line-height: 1.6;
 }
 
-.footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-top: 0.5rem;
-}
-
 .signature {
   margin: 0;
+  padding-top: 0.5rem;
   color: var(--s-muted);
   font-size: 0.9375rem;
-}
-
-.now {
-  padding: 0.5625rem 0.875rem 0.5625rem 0.75rem;
-  color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
 }
 
 .board {
