@@ -207,7 +207,7 @@ const fill = (currentIndex + 1) / jobs.length;
 }
 
 .period {
-  margin-left: auto;
+  flex-basis: 100%;
   color: var(--s-muted);
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -221,6 +221,11 @@ const fill = (currentIndex + 1) / jobs.length;
 }
 
 @media (min-width: 860px) {
+  .period {
+    flex-basis: auto;
+    margin-left: auto;
+  }
+
   .work {
     --rail-w: 9.5rem;
   }

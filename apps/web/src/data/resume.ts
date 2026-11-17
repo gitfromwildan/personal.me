@@ -6,7 +6,7 @@ export const DATA = {
   locationLink: "https://www.google.com/maps/place/indonesia",
   description:
     "IT Support 11 Years Exp. Preventive maintenance & troubleshooting for CCTV, alarm, network, and facility management — now full-time on open source project.",
-  avatarUrl: "/me.png",
+  avatarUrl: "/favicon.ico",
   hero: {
     status: "Available for hire",
     headline: ["IT support that keeps your stores online.", "And open-source tools."],
