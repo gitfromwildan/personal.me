@@ -302,6 +302,7 @@ const BUBBLES = [
 .identity .avatar {
   width: 56px;
   height: 56px;
+  border-radius: 50%;
   object-fit: cover;
   outline: 2px solid var(--rim-hi);
   outline-offset: -1px;
@@ -363,7 +364,7 @@ const BUBBLES = [
   .strip,
   .facts {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 16px;
   }
 
@@ -371,7 +372,6 @@ const BUBBLES = [
     padding: 16px 0 0;
     border-left: 0;
     border-top: 1px solid var(--glass-line);
-    width: 100%;
   }
 }
 </style>
