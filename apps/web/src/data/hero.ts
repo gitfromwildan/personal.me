@@ -6,7 +6,7 @@ export const hero = {
   cta: "See what I'm building",
   // The profile strip adds a third fact, "Now", from the first entry in `work`.
   facts: [
-    { key: "Role", value: "IT Support → Open source" },
+    { key: "Role", value: "IT Support → Open source Dev" },
     { key: "In the field", value: "11 years, since 2015" },
   ],
 } as const;
