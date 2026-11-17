@@ -1,28 +1,24 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { shortMonth } from "../../format";
+import { postPath } from "../../links";
 import AppIcon from "../ui/AppIcon.vue";
 
-const props = defineProps<{
+defineProps<{
   post: { slug: string; title: string; summary: string; date: string };
 }>();
-
-// post.date is YYYY-MM-DD. Read it as UTC so the day never shifts with the visitor's time zone.
-const month = computed(() =>
-  new Date(props.post.date).toLocaleString("en-US", { month: "short", timeZone: "UTC" }),
-);
 </script>
 
 <template>
-  <RouterLink class="glass card" :to="`/blog/${post.slug}`">
+  <RouterLink class="glass card" :to="postPath(post.slug)">
     <time class="date" :datetime="post.date">
       <span class="day">{{ post.date.slice(8) }}</span>
-      <span class="mono-label month">{{ month }}</span>
+      <span class="mono-label month">{{ shortMonth(post.date) }}</span>
     </time>
     <div class="text">
       <h2 class="title">{{ post.title }}</h2>
       <p class="muted-text">{{ post.summary }}</p>
     </div>
-    <span class="glass chip open"><AppIcon name="arrow-right" :size="18" /></span>
+    <span class="glass chip round open"><AppIcon name="arrow-right" :size="18" /></span>
   </RouterLink>
 </template>
 
@@ -81,11 +77,6 @@ const month = computed(() =>
 }
 
 .open {
-  --glass-elevation: 0 0;
-  flex: none;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
   transition: transform 0.15s;
 }
 

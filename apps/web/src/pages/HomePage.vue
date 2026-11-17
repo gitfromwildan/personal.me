@@ -6,32 +6,21 @@ import HeroSection from "../components/home/HeroSection.vue";
 import ProjectsSection from "../components/home/ProjectsSection.vue";
 import SkillsSection from "../components/home/SkillsSection.vue";
 import WorkSection from "../components/home/WorkSection.vue";
+import PageBlobs from "../components/ui/PageBlobs.vue";
 
-// The page-wide colour blobs behind the sections: token, size, and position as a share of the page.
+// The page-wide colour blobs behind the sections, placed as a share of the page's height.
 const blobs = [
-  { color: "--blob-a", size: 620, top: "26%", side: "right", offset: -160 },
-  { color: "--blob-b", size: 640, top: "45%", side: "left", offset: -580 },
-  { color: "--blob-d", size: 600, top: "47%", side: "right", offset: -540 },
-  { color: "--blob-c", size: 620, top: "78%", side: "left", offset: -160 },
-  { color: "--blob-b", size: 680, top: "91%", side: "right", offset: -140 },
-] as const;
+  { color: "--blob-a", width: 620, top: "26%", right: -160 },
+  { color: "--blob-b", width: 640, top: "45%", left: -580 },
+  { color: "--blob-d", width: 600, top: "47%", right: -540 },
+  { color: "--blob-c", width: 620, top: "78%", left: -160 },
+  { color: "--blob-b", width: 680, top: "91%", right: -140 },
+];
 </script>
 
 <template>
   <main class="stage">
-    <span
-      v-for="(blob, i) in blobs"
-      :key="i"
-      class="blob"
-      aria-hidden="true"
-      :style="{
-        background: `var(${blob.color})`,
-        width: `${blob.size}px`,
-        height: `${blob.size}px`,
-        top: blob.top,
-        [blob.side]: `${blob.offset}px`,
-      }"
-    />
+    <PageBlobs :blobs="blobs" />
     <HeroSection />
     <AboutSection />
     <WorkSection />

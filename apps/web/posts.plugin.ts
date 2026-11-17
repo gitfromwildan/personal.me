@@ -47,11 +47,17 @@ export default function posts(): Plugin {
               rehypePlugins: core.createDefaultRehypePlugins(),
             },
           });
+          // Reading time: the words of the Markdown source, code included, minus directive and fence
+          // lines, at 200 a minute.
+          const words = strippedContent
+            .replace(/^\s*(:{2,}|```).*$/gm, "")
+            .match(/[\p{L}\p{N}]+/gu);
           return {
             slug: file.replace(/\.mdx?$/, ""),
             title: frontmatter.title,
             summary: frontmatter.summary ?? "",
             date: date.toISOString().slice(0, 10),
+            minutes: Math.max(1, Math.ceil((words?.length ?? 0) / 200)),
             toc: core.extractTocsFromRawMdx(raw),
             html: renderToStaticMarkup(
               createElement(core.MDXRemote, { compiledSource, frontmatter, components }),

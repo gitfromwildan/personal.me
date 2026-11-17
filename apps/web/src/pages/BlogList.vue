@@ -4,36 +4,39 @@ import PostCard from "../components/blog/PostCard.vue";
 import AppBreadcrumb from "../components/ui/AppBreadcrumb.vue";
 import GlassText from "../components/ui/GlassText.vue";
 import GlassTube from "../components/ui/GlassTube.vue";
+import PageBlobs from "../components/ui/PageBlobs.vue";
 import { DATA } from "../data/resume";
+import { shortDate } from "../format";
 
 const { title, tagline, endNote } = DATA.blog;
 const [home] = DATA.navbar;
 
-// posts arrive newest first.
-const latest = posts[0]
-  ? new Date(posts[0].date).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      timeZone: "UTC",
-    })
-  : undefined;
+// The page-wide colour blobs. The first sits behind the title, wherever the column starts.
+const blobs = [
+  {
+    color: "--blob-c",
+    width: "min(600px, 80%)",
+    height: 260,
+    top: 96,
+    left: "max(0px, 50% - 650px)",
+  },
+  { color: "--blob-a", width: 560, top: 520, right: -200 },
+  { color: "--blob-b", width: 560, top: 640, left: -260 },
+];
 </script>
 
 <template>
   <main class="stage">
-    <span class="blob blob-title" aria-hidden="true" />
-    <span class="blob blob-right" aria-hidden="true" />
-    <span class="blob blob-left" aria-hidden="true" />
+    <PageBlobs :blobs="blobs" />
 
     <header class="container header">
       <AppBreadcrumb :items="[{ label: home.label, to: home.href }, { label: title }]" />
       <h1 class="heading"><GlassText :text="title" :depth="9" gloss /></h1>
       <div class="meta">
         <p class="tagline">{{ tagline }}</p>
-        <p v-if="latest" class="glass mono-label stat">
+        <p v-if="posts[0]" class="glass mono-label stat">
           <span class="dot" />
-          Latest {{ latest }}
+          Latest {{ shortDate(posts[0].date) }}
         </p>
       </div>
     </header>
@@ -59,30 +62,6 @@ const latest = posts[0]
 </template>
 
 <style scoped>
-.blob-title {
-  top: 6rem;
-  left: max(0px, 50% - 650px);
-  width: min(600px, 80%);
-  height: 260px;
-  background: var(--blob-c);
-}
-
-.blob-right {
-  top: 32.5rem;
-  right: -12.5rem;
-  width: 560px;
-  height: 560px;
-  background: var(--blob-a);
-}
-
-.blob-left {
-  top: 40rem;
-  left: -16.25rem;
-  width: 560px;
-  height: 560px;
-  background: var(--blob-b);
-}
-
 .header {
   display: flex;
   flex-direction: column;

@@ -299,15 +299,6 @@ const BUBBLES = [
   gap: 14px;
 }
 
-.identity .avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  object-fit: cover;
-  outline: 2px solid var(--rim-hi);
-  outline-offset: -1px;
-}
-
 .name {
   margin: 0 0 3px;
   font-size: 1.0625rem;
