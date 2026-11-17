@@ -1,23 +1,28 @@
 <script setup lang="ts">
 import AppIcon from "../ui/AppIcon.vue";
+import GlassBubble from "../ui/GlassBubble.vue";
+import GlassPane from "../ui/GlassPane.vue";
 import { DATA } from "../../data";
 
 const [current] = DATA.work;
 const FACTS = [...DATA.hero.facts, { key: "Now", value: `${current.title}, ${current.company}` }];
 
-// Positions are artboard coordinates (1440px wide, hero top at 0).
+// Positions and sizes are artboard coordinates (1440px wide, hero top at 0), given to CSS as
+// plain numbers (--x, --y, --w, --h) so the whole stage can be drawn at another scale.
 const BLOBS = [
   { x: 790, y: 90, color: "var(--blob-c)" },
   { x: 1120, y: 250, color: "var(--blob-a)" },
 ];
 
+// `r` is the corner radii, clockwise from the top left: soft enough that the panels read as
+// glass around the person, not as boxes behind them.
 const PANES = [
   {
     x: 960,
     y: 96,
     w: 440,
     h: 540,
-    r: 44,
+    r: [220, 220, 72, 72], // an arch: it frames the head instead of boxing it in
     blur: 13,
     lift: "30px 60px",
     tint: "light-dark(#42ebd442, #22d3ee1f)",
@@ -28,7 +33,7 @@ const PANES = [
     y: 448,
     w: 170,
     h: 196,
-    r: 26,
+    r: [64, 64, 64, 64],
     blur: 7,
     lift: "18px 36px",
     tint: "light-dark(#34d39926, #10b98117)",
@@ -40,7 +45,7 @@ const PANES = [
     y: 330,
     w: 412,
     h: 330,
-    r: 34,
+    r: [120, 96, 96, 120],
     blur: 11,
     lift: "26px 56px",
     tint: "light-dark(#34d39931, #10b9811d)",
@@ -48,11 +53,12 @@ const PANES = [
   },
 ];
 
+// `pace` is the seconds one rise and fall takes: bigger bubbles move slower.
 const BUBBLES = [
-  { x: 925, y: 60, size: 72, lift: "0.17em 0.36em", z: 13 },
-  { x: 904, y: 266, size: 36, lift: "0.17em 0.36em", z: 14, faint: true },
-  { x: 762, y: 414, size: 84, lift: "0.16em 0.36em", z: 15 },
-  { x: 1352, y: 196, size: 200, lift: "0.16em 0.36em", z: 17 },
+  { x: 925, y: 60, size: 72, z: 13, pace: 6 },
+  { x: 904, y: 266, size: 36, z: 14, pace: 5, faint: true },
+  { x: 762, y: 414, size: 84, z: 15, pace: 7 },
+  { x: 1352, y: 196, size: 200, z: 17, pace: 9 },
 ];
 </script>
 
@@ -63,40 +69,48 @@ const BUBBLES = [
         v-for="b in BLOBS"
         :key="b.x"
         class="blob"
-        :style="{ left: `${b.x}px`, top: `${b.y}px`, background: b.color }"
+        :style="{ '--x': b.x, '--y': b.y, '--w': 420, background: b.color }"
       />
-      <span
-        v-for="p in PANES"
+      <GlassPane
+        v-for="(p, i) in PANES"
         :key="p.x"
-        class="glass pane"
+        :width="p.w"
+        :height="p.h"
         :class="{ dim: p.fade }"
         :style="{
-          left: `${p.x}px`,
-          top: `${p.y}px`,
-          width: `${p.w}px`,
-          height: `${p.h}px`,
+          '--x': p.x,
+          '--y': p.y,
+          '--w': p.w,
+          '--h': p.h,
           zIndex: p.z,
-          '--glass-radius': `${p.r}px`,
+          '--glass-radius': p.r.map((corner) => `calc(${corner} * var(--u))`).join(' '),
           '--glass-blur': `${p.blur}px`,
           '--glass-elevation': `0 ${p.lift}`,
           '--tint': p.tint,
+          '--phase': i / PANES.length,
         }"
       />
-      <img class="portrait" src="/hero-portrait.png" alt="" />
-      <span
-        v-for="b in BUBBLES"
+      <!-- The photo is 1672 by 941, in the box the design gives it. -->
+      <img
+        class="portrait"
+        src="/hero-portrait.webp"
+        alt=""
+        :style="{ '--x': 308, '--y': 97, '--w': 1250, '--h': 703 }"
+      />
+      <GlassBubble
+        v-for="(b, i) in BUBBLES"
         :key="b.x"
-        class="glass bubble"
+        class="bubble"
         :class="{ faint: b.faint }"
         :style="{
-          left: `${b.x}px`,
-          top: `${b.y}px`,
-          fontSize: `${b.size}px`,
+          '--x': b.x,
+          '--y': b.y,
+          '--w': b.size,
           zIndex: b.z,
-          '--glass-elevation': `0 ${b.lift}`,
+          '--pace': `${b.pace}s`,
+          '--phase': i / BUBBLES.length,
         }"
       />
-      <span class="fade" />
     </div>
 
     <div class="container content">
@@ -157,78 +171,37 @@ const BUBBLES = [
   margin-left: -720px;
 }
 
+/* --u is the length of one artboard pixel, and (--ox, --oy) the artboard point drawn at the
+   stage's top left corner. A layer without --h is square. */
 .art > * {
+  --u: 1px;
+  --ox: 0;
+  --oy: 0;
   position: absolute;
+  left: calc((var(--x) - var(--ox)) * var(--u));
+  top: calc((var(--y) - var(--oy)) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h, var(--w)) * var(--u));
 }
 
 .art .blob {
   z-index: 8;
-  width: 420px;
-  height: 420px;
   --blob-blur: 45px;
 }
 
-.pane {
-  background:
-    linear-gradient(125deg, light-dark(#ffffff5c, #ffffff22) 15%, var(--stage-0) 37%),
-    linear-gradient(140deg, var(--tint) 15%, var(--stage-0) 68%),
-    linear-gradient(180deg, var(--glass-hi), var(--glass-lo));
-}
-
-.pane.dim {
+.dim {
   opacity: 0.8;
 }
 
+/* The photo itself fades out at the bottom. A gradient box laid over it would show as a box
+   wherever it reaches past the person. */
 .portrait {
   z-index: 16;
-  left: 308px;
-  top: 97px;
-  width: 1250px;
-  height: 703px;
-  object-fit: cover;
-}
-
-.fade {
-  z-index: 18;
-  left: 780px;
-  top: 640px;
-  width: 660px;
-  height: 162px;
-  background: linear-gradient(180deg, var(--stage-0), var(--stage) 72%);
-}
-
-/* Bubble: sized by font-size, parts in em. The caustic is a second gradient on the sphere, the highlight its ::after. */
-.bubble {
-  --glass-radius: 50%;
-  --glass-blur: 1.5px;
-  width: 1em;
-  height: 1em;
-  background:
-    radial-gradient(ellipse 23% 7% at 50% 87%, var(--bubble-edge), transparent),
-    radial-gradient(
-      ellipse 67.5% 67.5% at 34% 28%,
-      var(--bubble-core) 0%,
-      var(--bubble-mid) 20%,
-      var(--bubble-mid) 58%,
-      var(--bubble-edge) 100%
-    );
+  mask-image: linear-gradient(180deg, #000 77%, transparent 94%);
 }
 
 .bubble.faint {
   opacity: 0.6;
-}
-
-.bubble::after {
-  content: "";
-  position: absolute;
-  left: 0.2em;
-  top: 0.13em;
-  width: 0.26em;
-  height: 0.14em;
-  border-radius: 50%;
-  background: var(--bubble-hi);
-  transform: rotate(-24deg);
-  transform-origin: top left;
 }
 
 .content {
@@ -376,12 +349,46 @@ const BUBBLES = [
     padding-block: 96px 56px;
   }
 
-  .art {
-    display: none;
+  /* One column: the copy, then the stage, then the profile strip. */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
   }
 
   .content {
-    gap: 3rem;
+    display: contents;
+  }
+
+  .copy,
+  .strip {
+    width: min(1120px, 100% - 2.5rem);
+    margin-inline: auto;
+  }
+
+  .art {
+    order: 1;
+  }
+
+  .strip {
+    order: 2;
+  }
+
+  /* The stage shows the part of the artboard that holds the portrait (680 by 742 artboard
+     pixels from 760, 60), scaled to the column. */
+  .art {
+    position: relative;
+    inset: auto;
+    width: min(26rem, 100% - 2.5rem);
+    aspect-ratio: 680 / 742;
+    margin: 0 auto;
+    container-type: inline-size;
+  }
+
+  .art > * {
+    --u: calc(100cqw / 680);
+    --ox: 760;
+    --oy: 60;
   }
 
   .strip,
