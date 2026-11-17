@@ -25,6 +25,14 @@ a {
   outline-offset: 3px;
 }
 
+/* Until the visitor's first move (see main.ts), every animation holds still: the page arrives
+   as a still picture, and its loops do not compete with loading for the browser's attention. */
+:root:not(.awake) *,
+:root:not(.awake) *::before,
+:root:not(.awake) *::after {
+  animation-play-state: paused !important;
+}
+
 /* For headings and labels that only assistive technology needs. */
 .visually-hidden {
   position: absolute;
