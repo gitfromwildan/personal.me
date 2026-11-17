@@ -32,7 +32,7 @@ const said = [
     start: "Juli 2015",
     end: "Maret 2018",
     description:
-      "Sebenarnya sampai sekarang saya masih bekerja di bawah grup perusahaan Indomaret. Pekerjaan saya saat ini adalah mengelola dan memantau antarmuka jaringan dari toko Indomaret ke server cabang.",
+      "Mengelola dan memantau jalur jaringan dari toko Indomaret ke server cabang: routing MikroTik, tunnel L2TP, dan VSAT untuk toko tanpa jalur kabel, agar POS, CCTV, dan alarm tetap terhubung.",
   },
 ];
 

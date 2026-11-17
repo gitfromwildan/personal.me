@@ -50,6 +50,6 @@ export const work = [
     end: "March 2018",
     current: false,
     description:
-      "Actually, until now I am still working under the Indomaret group company. However, my current job is managing and monitoring the network interface from the Indomaret store to the branch server.",
+      "Managed and monitored the network link from Indomaret stores to the branch server: MikroTik routing, L2TP tunnels, and VSAT for stores with no wired path, so POS, CCTV, and alarm stayed connected.",
   },
 ] as const;
