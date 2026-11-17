@@ -26,6 +26,14 @@ vp run ready      # check + test + build everything
 ```
 apps/
 └── web/          # the site (Vite + Vue)
+    └── src/
+        ├── data/resume.ts     # every piece of copy the pages show
+        ├── styles/tokens.css  # colour tokens from the design, light and dark
+        ├── style.css          # shared classes: .glass, .chip, .btn, .section, ...
+        ├── components/ui/     # shared pieces: glass text, tube, meter, icons
+        ├── components/home/   # one component per home page section
+        ├── composables/       # GitHub data, theme
+        └── pages/             # Home, Blog list, Blog post
 packages/
 └── utils/        # shared TypeScript library starter
 content/          # blog posts (Markdown + DocuBook directives)
@@ -41,6 +49,10 @@ Posts use DocuBook v2 syntax: Markdown plus directives such as `:::card`, `::::t
 
 `apps/web/posts.plugin.ts` compiles the posts with `@docubook/core` and renders them to static HTML with the `@docubook/markdown` components while Vite builds. Both packages are React based, so React is a build-time dependency only and is not in the browser bundle. `apps/web/src/pages/BlogPost.vue` handles the clicks for tabs, accordions and the copy button.
 
+## GitHub data
+
+The commit count and the repo cards are not written in the code. `apps/web/src/composables/useGithub.ts` reads them from the public GitHub API in the visitor's browser and keeps them for an hour in `localStorage`. No token is used, so the commit count covers public commits only. If GitHub does not answer, the page shows a dash for the count and plain repo names.
+
 ## Deploy
 
 Build command `vp run build`, output directory `apps/web/dist`.
@@ -51,7 +63,6 @@ The app is a single-page app: the host must serve `index.html` for paths it has 
 
 The Next.js version is at commit `3034082` (`git show 3034082:<path>`):
 
-- GitHub stats: `src/lib/github.ts`
 - Site metadata (description, Open Graph, Twitter card): `src/app/layout.tsx`
 - Security response headers: `next.config.mjs` (a static build needs these set on the host)
 

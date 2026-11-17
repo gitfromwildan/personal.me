@@ -6,8 +6,31 @@ export const DATA = {
   locationLink: "https://www.google.com/maps/place/indonesia",
   description:
     "IT Support 11 Years Exp. Preventive maintenance & troubleshooting for CCTV, alarm, network, and facility management — now full-time on open source project.",
-  summary: `Nothing takes a store offline faster than a dead L2TP tunnel between the branch server and the building — POS, CCTV, and alarm go dark at once. That's the infrastructure layer I've owned for 11 years: MikroTik routers, server-to-store links, and the preventive checkups that stop them failing in the first place. Now building [DocuBook](https://github.com/DocuBook) full-time.`,
   avatarUrl: "/me.png",
+  hero: {
+    status: "Available for hire",
+    headline: ["IT support that keeps your stores online.", "And open-source tools."],
+    subhead:
+      "Preventive maintenance & troubleshooting for CCTV, alarm, network, and facility management — now full-time on DocuBook, an open-source documentation framework.",
+    cta: "See what I'm building",
+    // The profile strip adds a third fact, "Now", from the first entry in `work`.
+    facts: [
+      { key: "Role", value: "IT Support → Open source" },
+      { key: "In the field", value: "11 years, since 2015" },
+    ],
+  },
+  about: {
+    lead: "Nothing takes a store offline faster than a dead L2TP tunnel between the branch server and the building — POS, CCTV, and alarm go dark at once.",
+    body: "That's the infrastructure layer I've owned for 11 years: MikroTik routers, server-to-store links, and the preventive checkups that stop them failing in the first place.",
+    // The chip links to the first entry in `work`.
+    now: "Now building DocuBook full-time",
+    owned: {
+      label: "Owned · 2015–2026",
+      systems: ["MikroTik routers", "Server-to-store links", "Preventive checkups"],
+      stayedUpLabel: "So these stayed up",
+      stayedUp: ["POS", "CCTV", "Alarm"],
+    },
+  },
   skills: {
     "IT Support & Network": [
       {
@@ -82,31 +105,43 @@ export const DATA = {
       },
     ],
   },
+  // `icon` values are names from components/ui/icons.ts.
   navbar: [
-    { href: "/", label: "Home" },
-    { href: "/blog", label: "Blog" },
+    { href: "/", label: "Home", icon: "house" },
+    { href: "/blog", label: "Blog", icon: "pencil-line" },
   ],
   contact: {
-    email: "email@wildan.dev",
     tel: "+6285186666941",
+    title: "Get in touch.",
+    body: "Want to chat? Send me a direct question on Threads and I'll respond whenever I can. I will ignore all soliciting.",
+    cta: "Message me on Threads",
+    // Listed in this order in the contact section; `navbar` entries also show in the dock.
     social: {
-      GitHub: {
-        name: "GitHub",
-        url: "https://github.com/gitfromwildan",
-        navbar: true,
-      },
-      Telegram: {
-        name: "Telegram",
+      Threads: {
+        name: "Threads",
+        icon: "at-sign",
+        handle: "@wildan.nrs",
         url: "https://www.threads.com/@wildan.nrs",
         navbar: false,
       },
-      Youtube: {
-        name: "Youtube",
+      GitHub: {
+        name: "GitHub",
+        icon: "github-logo",
+        handle: "gitfromwildan",
+        url: "https://github.com/gitfromwildan",
+        navbar: true,
+      },
+      YouTube: {
+        name: "YouTube",
+        icon: "youtube-logo",
+        handle: "@wildandotdev",
         url: "https://www.youtube.com/@wildandotdev",
         navbar: true,
       },
       Email: {
-        name: "Send Email",
+        name: "Email",
+        icon: "mail",
+        handle: "email@wildan.dev",
         url: "mailto:email@wildan.dev",
         navbar: true,
       },
@@ -163,12 +198,18 @@ export const DATA = {
         "Actually, until now I am still working under the Indomaret group company. However, my current job is managing and monitoring the network interface from the Indomaret store to the branch server.",
     },
   ],
-  // Just a list of repos — title, description, language, stars, and link
-  // are fetched from the GitHub API (not ported yet: git show 3034082:src/lib/github.ts).
-  projects: [
-    "DocuBook/docubook",
-    "DocuBook/editor",
-    "rustasea/rustasea.github.io",
-    "rustasea/framework",
-  ],
+  projects: {
+    title: "What I'm building",
+    sub: "Built and maintained in public — the details come straight from GitHub.",
+    // Shown on the first repo, the featured one.
+    preview: "/docubook-home.png",
+    // Only the names: description, language, stars, forks and last commit come from the GitHub API
+    // (composables/useGithub.ts).
+    repos: [
+      "DocuBook/docubook",
+      "DocuBook/editor",
+      "rustasea/rustasea.github.io",
+      "rustasea/framework",
+    ],
+  },
 } as const;

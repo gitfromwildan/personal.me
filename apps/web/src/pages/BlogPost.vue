@@ -55,7 +55,7 @@ function onKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <main v-if="post" class="post">
+  <main v-if="post" class="narrow post">
     <RouterLink to="/blog">← Blog</RouterLink>
     <h1>{{ post.title }}</h1>
     <time :datetime="post.date">{{ post.date }}</time>
@@ -73,7 +73,7 @@ function onKeydown(event: KeyboardEvent) {
     <!-- Safe as v-html: compiled at build time from this repo's own content/ folder. -->
     <article v-html="post.html" @click="onClick" @keydown="onKeydown" />
   </main>
-  <main v-else>
+  <main v-else class="narrow">
     <h1>Post not found</h1>
     <RouterLink to="/blog">Back to the blog</RouterLink>
   </main>
@@ -82,16 +82,14 @@ function onKeydown(event: KeyboardEvent) {
 <!-- Not scoped: these rules style the v-html body. -->
 <style>
 /* DocuBook's components read these HSL triplets and fall back to a light theme without them. */
-@media (prefers-color-scheme: dark) {
-  .post {
-    --background: 220 20% 10%;
-    --foreground: 210 30% 92%;
-    --card: 220 20% 13%;
-    --card-foreground: 210 30% 92%;
-    --muted: 220 15% 18%;
-    --muted-foreground: 215 15% 65%;
-    --border-color: 220 15% 25%;
-  }
+:root[data-theme="dark"] .post {
+  --background: 220 20% 10%;
+  --foreground: 210 30% 92%;
+  --card: 220 20% 13%;
+  --card-foreground: 210 30% 92%;
+  --muted: 220 15% 18%;
+  --muted-foreground: 215 15% 65%;
+  --border-color: 220 15% 25%;
 }
 
 /* @docubook/core highlights with Prism but ships no token colours. */
