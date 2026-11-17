@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import { useInView } from "../../composables/useInView";
 import { DATA } from "../../data";
 import AppIcon from "../ui/AppIcon.vue";
 import GlassTube from "../ui/GlassTube.vue";
@@ -22,6 +24,11 @@ const currentIndex = Math.max(
   jobs.findIndex((job) => job.current),
 );
 const fill = (currentIndex + 1) / jobs.length;
+
+// Each time the timeline is scrolled into view, the liquid climbs the rail from the oldest job
+// up to its place.
+const rail = ref<HTMLElement | null>(null);
+const inView = useInView(rail);
 </script>
 
 <template>
@@ -29,8 +36,8 @@ const fill = (currentIndex + 1) / jobs.length;
     <SectionEyebrow id="work-title" as="h2" label="Work experience" />
 
     <div class="timeline">
-      <div class="rail" aria-hidden="true">
-        <GlassTube :fill="fill" />
+      <div ref="rail" class="rail" aria-hidden="true">
+        <GlassTube :fill="fill" :travel="inView" />
       </div>
 
       <ol class="jobs">
