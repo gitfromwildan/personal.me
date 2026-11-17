@@ -129,7 +129,7 @@ function onLeave() {
 
       <!-- The same page in the other language, named after the language it leads to. -->
       <RouterLink
-        :to="{ path: inOtherLocale(route.path), hash: route.hash }"
+        :to="inOtherLocale(route.path)"
         class="tile language"
         :aria-label="DATA.ui.dock.language"
       >

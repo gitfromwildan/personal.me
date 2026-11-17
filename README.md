@@ -56,7 +56,7 @@ apps/
         └── pages/             # Home, Blog list, Blog post
 packages/
 └── utils/        # shared TypeScript library starter
-content/          # blog posts (Markdown + DocuBook directives)
+content/          # blog posts (Markdown + DocuBook directives); content/id/ holds their Indonesian
 public/           # static assets, served by apps/web
 ```
 
@@ -66,7 +66,7 @@ The site is in English and in Indonesian, with [vue-i18n](https://vue-i18n.intli
 
 English is written in `apps/web/src/data/`, one file per section. `apps/web/src/data/id/` holds the Indonesian of each section in a file of the same name; its type is checked against the English, so a section cannot go missing. Components read both through `DATA` (`DATA.hero.status`), which answers in the current language. Labels with a number in them, such as "6 skills", go through vue-i18n's `t()`.
 
-The posts themselves are in one language: an Indonesian page shows the same post with the site's labels around it in Indonesian. To add a language, add its folder next to `id/`, list it in `data/messages.ts`, and teach `localeOf` in `i18n.ts` and the route prefix in `router.ts` its address.
+The posts are in both languages too: `content/<slug>.mdx` is the English post and `content/id/<slug>.mdx` its Indonesian, under the same name and so at the same address after `/id`. A post with no Indonesian file is shown in English on the Indonesian pages until it has one. To add a language, add its folder next to `id/`, list it in `data/messages.ts`, and teach `localeOf` in `i18n.ts` and the route prefix in `router.ts` its address.
 
 ## Blog
 

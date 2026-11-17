@@ -1,5 +1,5 @@
 import { createMemoryHistory, createRouter, createWebHistory } from "vue-router";
-import { i18n, localeOf } from "./i18n";
+import { i18n, inOtherLocale, localeOf } from "./i18n";
 import HomePage from "./pages/HomePage.vue";
 
 // Every page exists once per language: as it is for English, and under /id for Indonesian.
@@ -21,7 +21,11 @@ export function makeRouter() {
       },
       { path: "/:pathMatch(.*)*", redirect: "/" },
     ],
-    scrollBehavior: (to, _from, saved) => saved ?? (to.hash ? { el: to.hash } : { top: 0 }),
+    scrollBehavior(to, from, saved) {
+      // Changing the language of the page being read keeps the reader where they are.
+      if (to.path === inOtherLocale(from.path)) return false;
+      return saved ?? (to.hash ? { el: to.hash } : { top: 0 });
+    },
   });
   // The address decides the language, before the page it leads to is drawn.
   router.beforeEach((to) => {

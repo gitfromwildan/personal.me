@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { posts } from "virtual:posts";
+import { postsIn } from "virtual:posts";
 import PostCard from "../components/blog/PostCard.vue";
 import AppBreadcrumb from "../components/ui/AppBreadcrumb.vue";
 import GlassText from "../components/ui/GlassText.vue";
@@ -8,10 +8,13 @@ import GlassTube from "../components/ui/GlassTube.vue";
 import PageBlobs from "../components/ui/PageBlobs.vue";
 import { usePageTitle } from "../composables/usePageTitle";
 import { DATA } from "../data";
+import { i18n } from "../i18n";
 import { shortDate } from "../format";
 
 const { title, tagline, endNote } = DATA.blog;
 const [home] = DATA.navbar;
+// The posts in the language being shown: the page is made anew when that changes.
+const posts = postsIn[i18n.global.locale.value];
 usePageTitle(() => title);
 // A post is likely the next page: its heavy script is fetched ahead, while this one is read.
 onMounted(() => import("../components/blog/postIsland"));

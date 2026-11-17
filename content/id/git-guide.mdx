@@ -1,0 +1,125 @@
+---
+title: "Panduan Git: Edisi Terminal"
+summary: "Tinggalkan GUI. Begini cara memakai Git seperti pro langsung dari terminal. Kekuatan serius, gaya santai."
+date: "2026-02-04"
+---
+
+Jujur saja. Antarmuka grafis (GUI) untuk Git memang enak, tapi **terminal** adalah tempat keajaiban yang sebenarnya terjadi. Lebih cepat, lebih bertenaga, dan jujur, kelihatannya lebih keren.
+
+Kalau Anda siap melepas roda bantu, panduan ini untuk Anda.
+
+## Instalasi
+
+Sebelum menjadi penyihir Git, Anda perlu memasangnya. Kalau `git --version` memberi error, Anda butuh ini.
+
+:::card{title="Unduh Git" icon="Download" href="https://git-scm.com/downloads"}
+Dapatkan versi terbaru untuk Mac, Windows, atau Linux dari situs resminya.
+:::
+
+## Pengaturan Pertama Kali
+
+Sebelum mulai meng-commit kode, Anda perlu memberi tahu Git siapa Anda. Ini yang menandai penulis sebuah pekerjaan.
+
+::::tabs
+:::tab{title="Konfigurasi"}
+Jalankan perintah ini sekali untuk mengatur identitas Anda:
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+:::
+
+:::tab{title="Verifikasi"}
+Periksa apakah berhasil:
+```bash
+git config --list
+```
+:::
+::::
+
+## Alur Kerja Harian
+
+Sebagian besar waktu Anda dengan Git adalah siklus yang berulang. Ini alur standar untuk menyimpan pekerjaan.
+
+::::steps
+:::step{title="Langkah 1: Cek Status"}
+Selalu ketahui posisi Anda. Lihat keadaan repository saat ini.
+```bash
+git status
+```
+:::
+
+:::step{title="Langkah 2: Stage Perubahan"}
+Pilih file yang ingin disimpan.
+```bash
+git add .
+```
+*Tips: `.` menambahkan semuanya. Pakai nama file tertentu agar lebih tepat.*
+:::
+
+:::step{title="Langkah 3: Commit"}
+Simpan snapshot dengan pesan yang bermakna.
+```bash
+git commit -m "fix: resolve infinite loop in login"
+```
+:::
+
+:::step{title="Langkah 4: Push"}
+Kirim ke cloud (GitHub/GitLab).
+```bash
+git push origin main
+```
+:::
+::::
+
+## Contekan Perintah Umum
+
+Buntu? Ini beberapa perintah yang akan sering Anda pakai.
+
+::::accordions
+:::accordion{title="Saya salah, bagaimana membatalkannya?" icon="Undo"}
+Kalau belum di-commit:
+```bash
+git restore <filename>
+```
+Kalau sudah di-stage tapi belum di-commit:
+```bash
+git restore --staged <filename>
+```
+:::
+
+:::accordion{title="Bagaimana membuat branch baru?" icon="GitBranch"}
+Branch itu murah. Buat yang baru untuk setiap fitur.
+```bash
+git checkout -b feature/new-cool-thing
+```
+:::
+
+:::accordion{title="Riwayat saya berantakan, bisa di-squash?" icon="GitMerge"}
+Bisa, tapi hati-hati. Interactive rebase adalah teman Anda.
+```bash
+git rebase -i HEAD~3
+```
+*Ini memungkinkan Anda mengedit 3 commit terakhir.*
+:::
+::::
+
+## Sumber Penting
+
+Jangan hafalkan semuanya. Bookmark saja referensi ini.
+
+::::cards{cols="2"}
+:::card{title="Dokumentasi GitHub" icon="Book" href="https://docs.github.com/en/get-started"}
+Dokumentasi resmi. Lengkap dan jelas.
+:::
+
+:::card{title="Oh Shit, Git!?" icon="AlertCircle" href="https://ohshitgit.com/"}
+Untuk saat Anda *benar-benar* kacau. Kita semua pernah mengalaminya.
+:::
+::::
+
+## Penutup
+
+Menguasai terminal butuh memori otot. Paksa diri memakainya selama seminggu, dan Anda tidak akan kembali mengeklik tombol.
+
+[Ikuti di GitHub](https://github.com/gitfromwildan)
