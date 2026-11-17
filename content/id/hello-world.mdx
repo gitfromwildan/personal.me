@@ -1,0 +1,56 @@
+---
+title: "Hello World"
+summary: "Dunia tidak akan mengubahmu, tetapi kamulah yang harus membawa perubahan bagi dunia."
+date: "2026-02-03"
+---
+
+Startup. Kata yang memunculkan bayangan malam tanpa tidur, sesi ngoding ditemani kafein, dan sensasi membangun sesuatu dari nol. Perjalanan saya bukan garis lurus; isinya serangkaian pivot, bug, dan pada akhirnya, terobosan.
+
+Semuanya berawal dari satu ide sederhana: **Bagaimana kalau kita bisa memprediksi masa depan?**
+
+Oke, mungkin bukan *memprediksi*, tapi setidaknya mencegah bencana. Saya terobsesi dengan stabilitas. Saya ingin menulis kode yang tahan banting.
+
+Saya ingat momen "aha!" pertama saya. Saya menatap layar, men-debug crash kritis di sistem pemandu roket kami (proyek sampingan, tentu saja). Logikanya keliru. Kira-kira seperti ini:
+
+```javascript:index.js
+function isRocketAboutToCrash() {
+  // Logikanya terbalik!
+  if (!isStable()) {
+    return true; 
+  }
+}
+```
+
+Saya sadar bahwa mendefinisikan `stability` ternyata lebih sulit daripada kelihatannya.
+
+## Pivot
+
+Kami memutuskan untuk berganti haluan. Bukan lagi roket, kami melirik **data**. Dunia tenggelam di dalamnya, tapi tidak ada yang tahu cara berbicara dalam bahasanya.
+
+Kami mulai membangun API untuk menerjemahkan kekacauan menjadi kejelasan. Saya beralih ke TypeScript karena, jujur saja, `undefined` is not a function bukan hal yang ingin Anda lihat jam 3 pagi.
+
+```typescript:api/server.ts showLineNumbers {6-8}
+import express from 'express';
+
+const app = express();
+const PORT = 3000;
+
+// Endpoint yang mengubah segalanya
+app.get('/clarity', (req, res) => {
+  res.send({ message: 'Chaos tamed.' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+Endpoint sederhana itu adalah benihnya. Dari sana, kami tumbuh. Kami belajar bahwa teknologi bukan hanya soal kode; ini soal orang-orang yang memakainya.
+
+## Pelajaran yang Dipetik
+
+Setiap baris kode punya cerita. Ada yang tragedi (codebase warisan), ada yang komedi (memperbaiki satu bug lalu menciptakan tiga lagi), tapi yang terbaik adalah epik—saat Anda menaklukkan rintangan untuk merilis sesuatu yang indah.
+
+Saya menulis blog ini untuk mendokumentasikan cerita-cerita itu. Untuk membagikan potongan kode, kegagalan, dan kemenangan kecil yang membuat engineering begitu bikin ketagihan.
+
+Jadi, **Hello World**. Mari bangun sesuatu yang luar biasa bersama.

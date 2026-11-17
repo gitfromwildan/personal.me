@@ -1,6 +1,6 @@
 import { createSSRApp } from "vue";
 import { renderToString } from "vue/server-renderer";
-import { posts } from "virtual:posts";
+import { postsIn } from "virtual:posts";
 import App from "./App.vue";
 import { messages } from "./data/messages";
 import { i18n } from "./i18n";
@@ -13,7 +13,7 @@ import { makeRouter } from "./router";
 export const routes = Object.values(messages).flatMap(({ navbar: [home, blog] }) => [
   home.href,
   blog.href,
-  ...posts.map((post) => `${blog.href}/${post.slug}`),
+  ...postsIn.en.map((post) => `${blog.href}/${post.slug}`),
 ]);
 
 /**

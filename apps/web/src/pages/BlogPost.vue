@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, watch, watchEffect } from "vue";
-import { posts } from "virtual:posts";
+import { postsIn } from "virtual:posts";
 import PostBody from "../components/blog/PostBody.vue";
 import PostHeader from "../components/blog/PostHeader.vue";
 import PostNav from "../components/blog/PostNav.vue";
@@ -10,8 +10,11 @@ import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { usePageTitle } from "../composables/usePageTitle";
 import { useReadingProgress } from "../composables/useReadingProgress";
 import { DATA } from "../data";
+import { i18n } from "../i18n";
 
 const props = defineProps<{ slug: string }>();
+// The posts in the language being shown: the page is made anew when that changes.
+const posts = postsIn[i18n.global.locale.value];
 
 const index = computed(() => posts.findIndex((p) => p.slug === props.slug));
 const post = computed(() => posts[index.value]);

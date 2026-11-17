@@ -28,6 +28,10 @@ test("a click on the hero pops the bubble into a ripple", async () => {
 
 test("the keyboard pops the bubble and gathers it again", async () => {
   const { section, bubble } = hero();
+  // The mouse is put on the hero first. A browser tells a page that the mouse is on something
+  // new a moment after that thing appears under it, and coming in gathers the bubble: left to
+  // chance, that could land between the two key presses.
+  await userEvent.hover(section);
   bubble.focus();
 
   await userEvent.keyboard("{Enter}");

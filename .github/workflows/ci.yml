@@ -38,13 +38,14 @@ jobs:
       - name: Test
         run: vp run -r test
 
-      # A failed browser test leaves a screenshot of the page next to the test file.
+      # A failed browser test leaves a screenshot of the page in apps/web/.vitest.
       - name: Keep the screenshots of failed tests
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: failed-test-screenshots
-          path: apps/web/src/**/__screenshots__/
+          path: apps/web/.vitest/attachments/
+          include-hidden-files: true
           if-no-files-found: ignore
 
       # Type-checks the .vue files, builds the site and writes every page as HTML.

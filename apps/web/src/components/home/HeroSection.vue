@@ -241,7 +241,9 @@ function pop(event: MouseEvent) {
     </div>
 
     <div class="container content">
-      <div class="copy">
+      <!-- --art-start is how far right of the hero's middle its picture starts: where the big
+           bubble rests, on the artboard, whose middle is at 720. -->
+      <div class="copy" :style="{ '--art-start': BIG.x - 720 }">
         <p class="glass chip status mono-label">
           <span class="dot" />
           {{ DATA.hero.status }}
@@ -520,7 +522,11 @@ function pop(event: MouseEvent) {
   flex-direction: column;
   align-items: flex-start;
   gap: 30px;
-  max-width: 680px;
+  /* The copy stops a gutter short of the picture. Both are placed from the hero's middle, which
+     is also the middle of this column's container: so the picture starts at 50% plus
+     --art-start, however wide the window is and however long the text of a language runs. */
+  --gutter: 1.5rem;
+  max-width: min(680px, 50% + var(--art-start) * 1px - var(--gutter));
 }
 
 .status {
@@ -669,6 +675,11 @@ function pop(event: MouseEvent) {
   .strip {
     width: min(1120px, 100% - 2.5rem);
     margin-inline: auto;
+  }
+
+  /* The picture is below the copy here, not beside it. */
+  .copy {
+    max-width: 680px;
   }
 
   .art {
