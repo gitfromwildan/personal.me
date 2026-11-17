@@ -23,7 +23,11 @@ const [home, blog] = DATA.navbar;
       <img class="avatar" :src="DATA.avatarUrl" alt="" width="36" height="36" />
       <span class="author">{{ DATA.name }}</span>
       <span class="sep" aria-hidden="true" />
-      <time :datetime="post.date">{{ longDate(post.date) }} ({{ ago(post.date) }})</time>
+      <!-- "9mo ago" is as of the day the page was built: Vue corrects it on arrival, and is
+           told here not to report the difference. -->
+      <time :datetime="post.date" data-allow-mismatch="text"
+        >{{ longDate(post.date) }} ({{ ago(post.date) }})</time
+      >
     </p>
   </header>
 </template>

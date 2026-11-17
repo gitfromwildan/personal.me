@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "node vue-tsc.cjs -b && vp build",
+    "build": "node vue-tsc.cjs -b && vp build --ssrManifest && vp build --ssr src/entry-server.ts --outDir dist/server && node prerender.ts",
     "preview": "vp preview"
   },
   "dependencies": {

@@ -5,11 +5,13 @@ import AppBreadcrumb from "../components/ui/AppBreadcrumb.vue";
 import GlassText from "../components/ui/GlassText.vue";
 import GlassTube from "../components/ui/GlassTube.vue";
 import PageBlobs from "../components/ui/PageBlobs.vue";
+import { usePageTitle } from "../composables/usePageTitle";
 import { DATA } from "../data";
 import { shortDate } from "../format";
 
 const { title, tagline, endNote } = DATA.blog;
 const [home] = DATA.navbar;
+usePageTitle(() => title);
 
 // The page-wide colour blobs. The first sits behind the title, wherever the column starts.
 const blobs = [

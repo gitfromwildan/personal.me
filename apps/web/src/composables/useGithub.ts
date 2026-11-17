@@ -47,9 +47,12 @@ async function load<T>(key: string, path: string, pick: (json: any) => T): Promi
 
 let started = false;
 
-/** Fetches once per page load, however many components call it. */
+/**
+ * Fetches once per page load, however many components call it. Never while the pages are being
+ * built: they are built with the fallbacks, and each visitor's browser fetches for itself.
+ */
 export function loadGithub() {
-  if (started) return;
+  if (started || import.meta.env.SSR) return;
   started = true;
 
   void load("github:commits", `/search/commits?q=author:${user}&per_page=1`, (json) =>

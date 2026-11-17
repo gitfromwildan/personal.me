@@ -7,6 +7,10 @@ import ProjectsSection from "../components/home/ProjectsSection.vue";
 import SkillsSection from "../components/home/SkillsSection.vue";
 import WorkSection from "../components/home/WorkSection.vue";
 import PageBlobs from "../components/ui/PageBlobs.vue";
+import { usePageTitle } from "../composables/usePageTitle";
+import { DATA } from "../data";
+
+usePageTitle(() => DATA.navbar[0].label);
 
 // The page-wide colour blobs behind the sections, placed as a share of the page's height.
 const blobs = [

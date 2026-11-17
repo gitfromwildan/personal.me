@@ -7,6 +7,7 @@ import PostNav from "../components/blog/PostNav.vue";
 import PostToc from "../components/blog/PostToc.vue";
 import PageBlobs from "../components/ui/PageBlobs.vue";
 import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
+import { usePageTitle } from "../composables/usePageTitle";
 import { useReadingProgress } from "../composables/useReadingProgress";
 import { DATA } from "../data";
 
@@ -14,6 +15,7 @@ const props = defineProps<{ slug: string }>();
 
 const index = computed(() => posts.findIndex((p) => p.slug === props.slug));
 const post = computed(() => posts[index.value]);
+usePageTitle(() => post.value?.title);
 
 const article = ref<HTMLElement | null>(null);
 const { progress, active, update } = useReadingProgress(
@@ -99,6 +101,11 @@ const blobs = [
   .toc {
     position: static;
     max-height: none;
+  }
+
+  /* Until Vue has moved them there, they are still here in the built page: out of sight. */
+  .body > .toc {
+    display: none;
   }
 }
 </style>
