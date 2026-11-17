@@ -1,45 +1,34 @@
 # Personal Portfolio
 
-Personal portfolio and blog built with **Next.js**, **TypeScript**, and **Tailwind CSS**.
+Personal portfolio and blog, being rebuilt as a **Vite + Vue** app inside a **Vite+** monorepo. The previous Next.js version is in the git history.
 
 ## Tech Stack
 
-- [Next.js](https://nextjs.org/) — React framework
-- [TypeScript](https://www.typescriptlang.org/) — Type safety
-- [Tailwind CSS](https://tailwindcss.com/) — Utility-first styling
-- [Shadcn UI](https://ui.shadcn.com/) — UI components
-- [Magic UI](https://magicui.design/) — Animated components
-- [Framer Motion](https://www.framer.com/motion/) — Animations
-- [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) — MDX blog posts
-- [next-themes](https://github.com/pacocoursey/next-themes) — Dark/light mode
-
-## Features
-
-- Hero, About, Skills, Work Experience, Projects, and Contact sections
-- Blog with MDX support
-- Dark/light mode toggle
-- Responsive dock navigation
-- Animated UI with blur-fade, aurora text, and hyper text effects
+- [Vite+](https://viteplus.dev/) — toolchain: dev server, build, test, lint, format, task runner
+- [Vue 3](https://vuejs.org/) + [TypeScript](https://www.typescriptlang.org/)
+- [Bun](https://bun.sh/) — package manager (workspaces)
 
 ## Getting Started
 
-```bash
-bun install
-bun dev
-```
+Requires the `vp` CLI ([install](https://viteplus.dev/guide/)). Node.js and Bun versions are pinned by the repo and downloaded by `vp` on first use.
 
-Open [http://localhost:3000](http://localhost:3000).
+```bash
+vp install        # install all workspace dependencies
+vp run dev        # start apps/web
+vp check          # format, lint and type checks
+vp run ready      # check + test + build everything
+```
 
 ## Project Structure
 
 ```
-src/
-├── app/          # Next.js app router pages
-├── components/   # React components (ui, navbar, cards, markdown)
-├── data/         # Resume data and content
-└── lib/          # Utilities, MDX config, plugins
+apps/
+└── web/          # the site (Vite + Vue)
+packages/
+└── utils/        # shared TypeScript library starter
 content/          # MDX blog posts
-public/           # Static assets (images, icons)
+public/           # static assets, served by apps/web
+UI-personal.pen   # design file (pen.dev)
 ```
 
 ## Links
