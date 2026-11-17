@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { DATA } from "../../data";
 import GlassMeter from "../ui/GlassMeter.vue";
 import SectionEyebrow from "../ui/SectionEyebrow.vue";
 
+const { t } = useI18n();
 const groups = Object.entries(DATA.skills);
 </script>
 
 <template>
   <section id="skills" class="section container skills" aria-labelledby="skills-title">
-    <SectionEyebrow id="skills-title" as="h2" label="Skills" />
+    <SectionEyebrow id="skills-title" as="h2" :label="DATA.ui.eyebrows.skills" />
 
     <span class="blob blob-a" aria-hidden="true" />
     <span class="blob blob-b" aria-hidden="true" />
@@ -17,7 +19,9 @@ const groups = Object.entries(DATA.skills);
       <section v-for="[title, skills] in groups" :key="title" class="group" :aria-label="title">
         <div class="glass bar">
           <h3>{{ title }}</h3>
-          <span class="glass chip mono-label plain count">{{ skills.length }} skills</span>
+          <span class="glass chip mono-label plain count">{{
+            t("ui.skillsCount", { count: skills.length })
+          }}</span>
         </div>
         <ul class="list">
           <li v-for="skill in skills" :key="skill.name" class="skill">

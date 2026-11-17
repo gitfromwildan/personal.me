@@ -24,7 +24,7 @@ export const contact = {
       icon: "youtube-logo",
       handle: "@wildandotdev",
       url: "https://www.youtube.com/@wildandotdev",
-      navbar: true,
+      navbar: false,
     },
     Email: {
       name: "Email",

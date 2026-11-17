@@ -60,6 +60,14 @@ content/          # blog posts (Markdown + DocuBook directives)
 public/           # static assets, served by apps/web
 ```
 
+## Languages
+
+The site is in English and in Indonesian, with [vue-i18n](https://vue-i18n.intlify.dev/) holding the language being shown and the copy in each. The address decides the language: `/id/...` is Indonesian, everything else English. Both are built ahead of time, so `/id/blog` is its own HTML file, and the dock's language switch is a link to the same page in the other language.
+
+English is written in `apps/web/src/data/`, one file per section. `apps/web/src/data/id/` holds the Indonesian of each section in a file of the same name; its type is checked against the English, so a section cannot go missing. Components read both through `DATA` (`DATA.hero.status`), which answers in the current language. Labels with a number in them, such as "6 skills", go through vue-i18n's `t()`.
+
+The posts themselves are in one language: an Indonesian page shows the same post with the site's labels around it in Indonesian. To add a language, add its folder next to `id/`, list it in `data/messages.ts`, and teach `localeOf` in `i18n.ts` and the route prefix in `router.ts` its address.
+
 ## Blog
 
 Each file in `content/` is a post, served at `/blog/<file name>`; `/blog` lists them, newest first. Frontmatter needs `title` and `date` (`YYYY-MM-DD`), `summary` is optional.

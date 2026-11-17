@@ -1,3 +1,4 @@
+// `current` marks the job held now: its end date is shown as "Now".
 export const work = [
   {
     company: "DocuBook",
@@ -8,6 +9,7 @@ export const work = [
     logoUrl: "/icon/docu.svg",
     start: "November 2024",
     end: "Until Now",
+    current: true,
     description:
       "Open-source tools for creating, managing, and publishing modern developer documentation. — now my full-time work.",
   },
@@ -20,6 +22,7 @@ export const work = [
     logoUrl: "/addonspro.png",
     start: "January 2022",
     end: "Sept 2026",
+    current: false,
     description:
       "Addons Pro is an agency that operates in the field of creating WordPress plugins to complete the functions of the Sejoli plugin. My job is to create product usage documentation related to plugins.",
   },
@@ -32,6 +35,7 @@ export const work = [
     logoUrl: "/acl.png",
     start: "March 2018",
     end: "August 2026",
+    current: false,
     description:
       "Tasked with building maintenance and repairs for Indomaret stores including CCTV, alarms and building facilities, both electrical and civil.",
   },
@@ -44,6 +48,7 @@ export const work = [
     logoUrl: "/indomaret.png",
     start: "July 2015",
     end: "March 2018",
+    current: false,
     description:
       "Actually, until now I am still working under the Indomaret group company. However, my current job is managing and monitoring the network interface from the Indomaret store to the branch server.",
   },

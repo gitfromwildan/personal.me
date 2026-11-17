@@ -6,15 +6,14 @@ import AppIcon from "../ui/AppIcon.vue";
 import GlassTube from "../ui/GlassTube.vue";
 import SectionEyebrow from "../ui/SectionEyebrow.vue";
 
-// "November 2024" -> "Nov 2024", "Until Now" -> "Now"
-const short = (date: string) =>
-  date === "Until Now" ? "Now" : `${date.slice(0, 3)} ${date.split(" ").at(-1)}`;
+// "November 2024" -> "Nov 2024"
+const short = (date: string) => `${date.slice(0, 3)} ${date.split(" ").at(-1)}`;
 
 const jobs = DATA.work.map((job) => ({
   ...job,
   year: job.start.split(" ").at(-1),
-  current: job.end === "Until Now",
-  period: `${short(job.start)} — ${short(job.end)}`,
+  // The job held now has no end to show.
+  period: `${short(job.start)} — ${job.current ? DATA.ui.now : short(job.end)}`,
   external: job.href.startsWith("http"),
 }));
 
@@ -33,7 +32,7 @@ const inView = useInView(rail);
 
 <template>
   <section id="work" class="work section container" aria-labelledby="work-title">
-    <SectionEyebrow id="work-title" as="h2" label="Work experience" />
+    <SectionEyebrow id="work-title" as="h2" :label="DATA.ui.eyebrows.work" />
 
     <div class="timeline">
       <div ref="rail" class="rail" aria-hidden="true">
@@ -63,7 +62,7 @@ const inView = useInView(rail);
                 </a>
                 <template v-else>{{ job.company }}</template>
               </h3>
-              <span v-if="job.current" class="now"><span class="dot" />Now</span>
+              <span v-if="job.current" class="now"><span class="dot" />{{ DATA.ui.now }}</span>
               <span class="period">{{ job.period }}</span>
             </header>
             <p class="title">{{ job.title }}</p>

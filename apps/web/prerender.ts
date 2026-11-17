@@ -8,7 +8,9 @@ const server = new URL("./dist/server/entry-server.js", import.meta.url).href;
 // What src/entry-server.ts exports.
 const { render, routes } = (await import(server)) as {
   routes: string[];
-  render: (url: string) => Promise<{ html: string; title?: string; modules: string[] }>;
+  render: (
+    url: string,
+  ) => Promise<{ html: string; title?: string; lang: string; modules: string[] }>;
 };
 
 /** Text made safe to put inside an HTML element. */
@@ -24,7 +26,7 @@ const manifest: Record<string, string[]> = JSON.parse(
 );
 
 for (const url of routes) {
-  const { html, title, modules } = await render(url);
+  const { html, title, lang, modules } = await render(url);
   // The files of the page's own components that the shell does not already load: without the
   // styles the page would show unstyled until the script fetched them.
   const files = new Set(modules.flatMap((id) => manifest[id] ?? []));
@@ -49,6 +51,7 @@ for (const url of routes) {
     // Replacements are given as functions: in a plain string, a "$" from the page (there are
     // some in the posts' shell examples) could be read as an instruction to replace().
     shell
+      .replace(/(?<=<html lang=")[^"]*/, () => lang)
       .replace(/(?<=<title>).*(?=<\/title>)/, (shellTitle) => (title ? escape(title) : shellTitle))
       .replace("<!--app-head-->", () => head)
       // The page says which address it was built for, so the script only takes over HTML that

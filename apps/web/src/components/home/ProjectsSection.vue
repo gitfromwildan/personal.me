@@ -38,7 +38,7 @@ const groups = computed(() => [
 <template>
   <section id="projects" class="section container projects" aria-labelledby="projects-title">
     <header class="header">
-      <SectionEyebrow label="Open source" />
+      <SectionEyebrow :label="DATA.ui.eyebrows.projects" />
       <h2 id="projects-title" class="title">{{ DATA.projects.title }}</h2>
       <p class="sub">{{ DATA.projects.sub }}</p>
     </header>
@@ -67,15 +67,15 @@ const groups = computed(() => [
                     <span class="lang-dot" :style="{ background: card.color }" aria-hidden="true" />
                     {{ card.repo.language }}
                   </span>
-                  <span class="stat" :title="`${card.repo.stars} stars`">
+                  <span class="stat" :title="`${card.repo.stars} ${DATA.ui.projects.stars}`">
                     <AppIcon name="star" :size="13" />{{ card.repo.stars
-                    }}<span class="visually-hidden"> stars</span>
+                    }}<span class="visually-hidden"> {{ DATA.ui.projects.stars }}</span>
                   </span>
-                  <span class="stat" :title="`${card.repo.forks} forks`">
+                  <span class="stat" :title="`${card.repo.forks} ${DATA.ui.projects.forks}`">
                     <AppIcon name="git-fork" :size="13" />{{ card.repo.forks
-                    }}<span class="visually-hidden"> forks</span>
+                    }}<span class="visually-hidden"> {{ DATA.ui.projects.forks }}</span>
                   </span>
-                  <span>last commit · {{ ago(card.repo.pushedAt) }}</span>
+                  <span>{{ DATA.ui.projects.lastCommit }} · {{ ago(card.repo.pushedAt) }}</span>
                 </p>
               </template>
             </div>
