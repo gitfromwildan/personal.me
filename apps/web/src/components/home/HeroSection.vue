@@ -57,7 +57,7 @@ const BUBBLES = [
 // across the hero, bending what it passes like a wave on water. They gather back into one
 // when the mouse next comes into the hero. `BIG` is where it rests when no mouse is in the hero. CSS and the SVG filter draw and
 // move all of it: the script only says where the mouse is, and where and whether it burst.
-const BIG = { x: 846, y: 150, size: 170 };
+const BIG = { x: 821, y: 125, size: 220 };
 const burst = ref(false);
 const art = ref<HTMLElement | null>(null);
 const big = ref<HTMLElement | null>(null);
