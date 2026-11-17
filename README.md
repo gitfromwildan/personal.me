@@ -86,7 +86,7 @@ The commit count and the repo cards are not written in the code. `apps/web/src/c
 
 The site is deployed on Vercel, set up by `vercel.json` at the root of the repo:
 
-- it installs with the Bun version the repo pins and builds with `bun run build` (which is `vp run build`), into `apps/web/dist`;
+- Vercel installs with Bun, which it picks from `bun.lock`, and builds with `bun run build` (which is `vp run build`), into `apps/web/dist`;
 - `cleanUrls` answers `/blog/hello-world` with `blog/hello-world.html`, and sends an address ending in `.html` on to the one without;
 - `trailingSlash: false` sends `/blog/` on to `/blog`;
 - everything under `/assets/` is cached for a year and never asked for again: those files carry a hash of their content in their name, so a changed file is a new address. The pages and the images in `public/` keep Vercel's default, which is to check for a newer copy every time.
