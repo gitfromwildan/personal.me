@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, ref, watch, watchEffect } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, watch, watchEffect } from "vue";
 import { postsIn } from "virtual:posts";
 import PostBody from "../components/blog/PostBody.vue";
 import PostHeader from "../components/blog/PostHeader.vue";
@@ -31,9 +31,11 @@ watch(post, () => {
   void nextTick(update);
 });
 
-// Tells the dock there is a table of contents to offer on narrow screens.
+// Tells the dock there is a table of contents to offer on narrow screens. Withdrawn before
+// this page goes, not after: a change of language makes the page anew (see App.vue), and the
+// new one has already claimed the dock by the time the old one's unmounted hooks run.
 watchEffect(() => (hasToc.value = Boolean(post.value)));
-onUnmounted(() => {
+onBeforeUnmount(() => {
   hasToc.value = false;
   tocOpen.value = false;
 });
