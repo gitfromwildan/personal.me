@@ -1,6 +1,6 @@
 export const hero = {
   status: "Available for hire",
-  headline: ["IT support that keeps your stores online.", "And open-source tools."],
+  headline: ["IT support that keeps your business online.", "And open-source tools."],
   subhead:
     "Preventive maintenance & troubleshooting for CCTV, alarm, network, and facility management — now full-time on DocuBook, an open-source documentation framework.",
   cta: "See what I'm building",

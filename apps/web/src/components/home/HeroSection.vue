@@ -8,7 +8,10 @@ import { linkTarget } from "../../links";
 import ripple from "./ripple.webp?inline";
 
 const [current] = DATA.work;
-const FACTS = [...DATA.hero.facts, { key: "Now", value: `${current.title}, ${current.company}` }];
+const FACTS = [
+  ...DATA.hero.facts,
+  { key: DATA.ui.now, value: `${current.title}, ${current.company}` },
+];
 
 // Positions and sizes are artboard coordinates (1440px wide, hero top at 0), given to CSS as
 // plain numbers (--x, --y, --w, --h) so the whole stage can be drawn at another scale.
@@ -229,7 +232,7 @@ function pop(event: MouseEvent) {
         type="button"
         ref="big"
         class="big"
-        :aria-label="burst ? 'Gather the bubbles' : 'Pop the bubble'"
+        :aria-label="burst ? DATA.ui.bubble.gather : DATA.ui.bubble.pop"
         :aria-pressed="burst"
         :style="{ '--x': BIG.x, '--y': BIG.y, '--w': BIG.size }"
       >

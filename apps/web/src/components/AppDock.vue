@@ -5,6 +5,7 @@ import { onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { toggleTheme } from "../composables/useTheme";
+import { inOtherLocale } from "../i18n";
 import AppIcon from "./ui/AppIcon.vue";
 
 const year = new Date().getFullYear();
@@ -71,7 +72,7 @@ function onLeave() {
     <nav
       ref="dock"
       class="dock glass"
-      aria-label="Main"
+      :aria-label="DATA.ui.dock.main"
       @keydown.esc="tocOpen = false"
       @pointerenter="onEnter"
       @pointermove="onMove"
@@ -126,9 +127,19 @@ function onLeave() {
         <AppIcon :name="s.icon" :size="19" />
       </a>
 
+      <!-- The same page in the other language, named after the language it leads to. -->
+      <RouterLink
+        :to="{ path: inOtherLocale(route.path), hash: route.hash }"
+        class="tile language"
+        :aria-label="DATA.ui.dock.language"
+      >
+        <AppIcon name="globe" :size="19" />
+        <span class="code" aria-hidden="true">{{ DATA.ui.dock.languageCode }}</span>
+      </RouterLink>
+
       <span class="sep" aria-hidden="true"></span>
 
-      <button type="button" class="tile" aria-label="Toggle theme" @click="toggleTheme">
+      <button type="button" class="tile" :aria-label="DATA.ui.dock.theme" @click="toggleTheme">
         <AppIcon name="moon" :size="19" />
       </button>
     </nav>
@@ -200,6 +211,21 @@ function onLeave() {
 
 .tile:hover {
   background: var(--chip);
+}
+
+/* The code of the language the switch leads to, in the tile's top corner, above the icon. */
+.code {
+  position: absolute;
+  top: 8%;
+  right: 10%;
+  padding: 0 2px;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: calc(0.5rem * var(--grow, 1));
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .tile.active,

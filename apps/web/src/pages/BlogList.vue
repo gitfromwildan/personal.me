@@ -41,7 +41,7 @@ const blobs = [
         <p class="tagline">{{ tagline }}</p>
         <p v-if="posts[0]" class="glass mono-label stat">
           <span class="dot" />
-          Latest {{ shortDate(posts[0].date) }}
+          {{ DATA.ui.latest }} {{ shortDate(posts[0].date) }}
         </p>
       </div>
     </header>

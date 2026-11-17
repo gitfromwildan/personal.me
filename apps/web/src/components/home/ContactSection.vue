@@ -11,7 +11,7 @@ const { title, body, cta, social } = DATA.contact;
   <section id="contact" class="section container" aria-labelledby="contact-title">
     <div class="glass panel">
       <div class="copy">
-        <SectionEyebrow label="Contact" />
+        <SectionEyebrow :label="DATA.ui.eyebrows.contact" />
         <h2 id="contact-title" class="title">{{ title }}</h2>
         <p class="body">{{ body }}</p>
         <a class="btn solid" :href="social.Threads.url" target="_blank" rel="noopener noreferrer">

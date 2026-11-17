@@ -1,6 +1,7 @@
 import { createApp, createSSRApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
+import { i18n } from "./i18n";
 import { makeRouter } from "./router";
 
 // A built page arrives with its HTML already in place (see prerender.ts), which Vue takes over
@@ -10,7 +11,7 @@ const root = document.querySelector<HTMLElement>("#app")!;
 const built = root.dataset.page === (location.pathname.replace(/\/$/, "") || "/");
 if (!built) root.textContent = "";
 const router = makeRouter();
-const app = (built ? createSSRApp : createApp)(App).use(router);
+const app = (built ? createSSRApp : createApp)(App).use(router).use(i18n);
 // A page that is loaded on demand must be there before Vue starts: taking over HTML only works
 // if Vue draws the same thing.
 void router.isReady().then(() => app.mount(root));

@@ -4,21 +4,22 @@ import AppIcon from "../ui/AppIcon.vue";
 import GlassText from "../ui/GlassText.vue";
 import GlassTube from "../ui/GlassTube.vue";
 import { DATA } from "../../data";
+import { count } from "../../format";
 import { commitCount, loadGithub } from "../../composables/useGithub";
 import { useInView } from "../../composables/useInView";
 
 loadGithub();
 
 const githubUrl = DATA.contact.social.GitHub.url;
-const number = computed(() => commitCount.value?.toLocaleString("en-US"));
+const number = computed(() => (commitCount.value == null ? undefined : count(commitCount.value)));
 
 // Each time the count is scrolled into view its last two digits count up from 00 to the real
 // ones, as on a counter: 1,835 goes 1,800, 1,801 ... 1,835, and never shows more than it is.
 // A count that ends in 00 would have nothing to count, so its two digits go once round, 01 to
 // 99 and back to 00. `behind` is how many steps they still have to go.
 const TURN = 100;
-const count = ref<HTMLElement | null>(null);
-const inView = useInView(count);
+const figure = ref<HTMLElement | null>(null);
+const inView = useInView(figure);
 const behind = ref(0);
 let frame = 0;
 
@@ -67,11 +68,11 @@ const parts = computed(() => {
 </script>
 
 <template>
-  <section class="bridge" aria-label="GitHub commits">
+  <section class="bridge" :aria-label="DATA.ui.commits.label">
     <span class="blob glow" aria-hidden="true" />
     <span class="link"><GlassTube from="bottom" /></span>
-    <p ref="count" class="count">
-      <span class="visually-hidden">{{ number ?? "An unknown number of" }}</span>
+    <p ref="figure" class="count">
+      <span class="visually-hidden">{{ number ?? DATA.ui.commits.unknown }}</span>
       <GlassText :text="parts.head" :depth="10" gloss aria-hidden="true" />
       <GlassText
         v-if="parts.tail"
@@ -83,9 +84,9 @@ const parts = computed(() => {
         aria-hidden="true"
       />
     </p>
-    <p class="unit">commits, all-time</p>
+    <p class="unit">{{ DATA.ui.commits.unit }}</p>
     <a class="more" :href="githubUrl" target="_blank" rel="noopener noreferrer">
-      View on GitHub <AppIcon name="arrow-up-right" :size="13" />
+      {{ DATA.ui.commits.more }} <AppIcon name="arrow-up-right" :size="13" />
     </a>
     <span class="link"><GlassTube from="top" /></span>
   </section>

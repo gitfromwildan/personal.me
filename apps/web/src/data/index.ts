@@ -1,22 +1,12 @@
-import { about } from "./about";
-import { blog } from "./blog";
-import { contact } from "./contact";
-import { hero } from "./hero";
-import { navbar } from "./navbar";
-import { profile } from "./profile";
-import { projects } from "./projects";
-import { skills } from "./skills";
-import { work } from "./work";
+import { i18n } from "../i18n";
+import type { Messages } from "./messages";
 
-// Every piece of copy the pages show. Each section has its own file, named after it.
-export const DATA = {
-  ...profile,
-  hero,
-  about,
-  skills,
-  navbar,
-  contact,
-  work,
-  blog,
-  projects,
-} as const;
+/**
+ * The site's copy in the language being shown: `DATA.hero.status` reads from the English or
+ * the Indonesian messages (see messages.ts), whichever vue-i18n is set to. Read in a template,
+ * it follows a change of language by itself.
+ */
+export const DATA = new Proxy({} as Messages, {
+  get: (_, section: string) =>
+    (i18n.global.messages.value[i18n.global.locale.value] as Record<string, unknown>)[section],
+});
