@@ -13,7 +13,7 @@ const [, blog] = DATA.navbar;
 
 <template>
   <nav class="container" :aria-label="navLabel">
-    <div class="glass tray">
+    <div class="glass tray" :class="{ alone: !next }">
       <RouterLink class="back" :to="blog.href">
         <AppIcon name="arrow-left" :size="14" />
         {{ backLabel }}
@@ -46,6 +46,12 @@ nav {
   padding: 4px;
 }
 
+/* On the last post the link back is all there is: a tray across the page for it alone would
+   be mostly empty. */
+.tray.alone {
+  width: 50%;
+}
+
 .back,
 .next {
   display: flex;
@@ -61,7 +67,7 @@ nav {
     box-shadow 0.15s;
 }
 
-/* A third of the tray, or all of it on the last post. */
+/* A third of the tray, or all of the half-width one on the last post. */
 .back {
   flex: 3;
   gap: 0.375rem;
