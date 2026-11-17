@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { linkTarget } from "../links";
-import { DATA } from "../data/resume";
+import { DATA } from "../data";
 import { onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { hasToc, narrow, tocOpen } from "../composables/useDockToc";

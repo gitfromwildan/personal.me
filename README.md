@@ -33,7 +33,7 @@ Vite and Vitest come from Vite+: their catalog entries must match the versions t
 apps/
 └── web/          # the site (Vite + Vue)
     └── src/
-        ├── data/resume.ts     # every piece of copy the pages show
+        ├── data/              # every piece of copy the pages show, one file per section
         ├── styles/tokens.css  # colour tokens from the design, light and dark
         ├── style.css          # shared classes: .glass, .chip, .btn, .section, ...
         ├── components/ui/     # shared pieces: glass text, tube, meter, icons

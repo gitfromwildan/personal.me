@@ -5,7 +5,7 @@ import AppBreadcrumb from "../components/ui/AppBreadcrumb.vue";
 import GlassText from "../components/ui/GlassText.vue";
 import GlassTube from "../components/ui/GlassTube.vue";
 import PageBlobs from "../components/ui/PageBlobs.vue";
-import { DATA } from "../data/resume";
+import { DATA } from "../data";
 import { shortDate } from "../format";
 
 const { title, tagline, endNote } = DATA.blog;

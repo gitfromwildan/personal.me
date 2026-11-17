@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import GlassMeter from "../ui/GlassMeter.vue";
 import SectionEyebrow from "../ui/SectionEyebrow.vue";
 

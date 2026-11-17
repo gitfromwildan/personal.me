@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import AppIcon from "../ui/AppIcon.vue";
 
 const props = defineProps<{

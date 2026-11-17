@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import { postPath } from "../../links";
 import AppIcon from "../ui/AppIcon.vue";
 

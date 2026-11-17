@@ -3,7 +3,7 @@ import { computed } from "vue";
 import AppIcon from "../ui/AppIcon.vue";
 import GlassText from "../ui/GlassText.vue";
 import GlassTube from "../ui/GlassTube.vue";
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import { commitCount, loadGithub } from "../../composables/useGithub";
 
 loadGithub();

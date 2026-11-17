@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import AppIcon from "../ui/AppIcon.vue";
 import GlassText from "../ui/GlassText.vue";
 import SectionEyebrow from "../ui/SectionEyebrow.vue";
