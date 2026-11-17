@@ -39,7 +39,10 @@ for (const url of routes) {
     )
     .join("");
 
-  const file = `dist${url === "/" ? "" : url}/index.html`;
+  // A file named after the address: /blog/hello-world is dist/blog/hello-world.html. A host that
+  // serves "clean URLs" answers the address with it directly, where a folder with an index.html
+  // in it costs a redirect to the address with a slash on the end.
+  const file = `dist${url === "/" ? "/index" : url}.html`;
   await mkdir(dirname(file), { recursive: true });
   await writeFile(
     file,
