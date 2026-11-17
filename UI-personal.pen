@@ -848,7 +848,7 @@
           "fill": {
             "type": "image",
             "enabled": true,
-            "url": "public/hero-portrait-cutout.png",
+            "url": "public/hero-portrait.png",
             "mode": "cover"
           }
         },
@@ -3125,7 +3125,7 @@
                         {
                           "type": "image",
                           "enabled": true,
-                          "url": "public/icon/docu.png",
+                          "url": "public/icon/docubook.png",
                           "mode": "contain"
                         }
                       ],
@@ -7202,7 +7202,7 @@
                       "fill": {
                         "type": "image",
                         "enabled": true,
-                        "url": "public/docubook-preview.png",
+                        "url": "public/docubook-home.png",
                         "mode": "cover",
                         "transform": [
                           1,
@@ -9473,7 +9473,7 @@
           "fill": {
             "type": "image",
             "enabled": true,
-            "url": "public/hero-portrait-cutout.png",
+            "url": "public/hero-portrait.png",
             "mode": "cover"
           }
         },
@@ -11749,7 +11749,7 @@
                         {
                           "type": "image",
                           "enabled": true,
-                          "url": "public/icon/docu.png",
+                          "url": "public/icon/docubook.png",
                           "mode": "contain"
                         }
                       ],
@@ -15826,7 +15826,7 @@
                       "fill": {
                         "type": "image",
                         "enabled": true,
-                        "url": "public/docubook-preview.png",
+                        "url": "public/docubook-home.png",
                         "mode": "cover",
                         "transform": [
                           1,
@@ -21027,277 +21027,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "type": "frame",
-              "id": "R5thiF",
-              "name": "Reading Time",
-              "context": "Reading time = visible words (prose, component titles and code; no front matter or JSX markup) / 200 wpm, rounded up. git-guide: 377 visible words = 2 min.",
-              "gap": 14,
-              "alignItems": "end",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "cSDi0",
-                  "name": "Glass Minutes",
-                  "padding": [
-                    0,
-                    12,
-                    8,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "yp1c5",
-                      "layoutPosition": "absolute",
-                      "x": 6,
-                      "y": 20,
-                      "name": "Cast Shadow",
-                      "fill": "$gnum-shadow",
-                      "effect": {
-                        "type": "blur",
-                        "radius": 14
-                      },
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "JsoCt",
-                      "layoutPosition": "absolute",
-                      "x": 8.8,
-                      "y": 10.4,
-                      "name": "Depth 8",
-                      "opacity": 0.38,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "sS1nl",
-                      "layoutPosition": "absolute",
-                      "x": 7.700000000000001,
-                      "y": 9.1,
-                      "name": "Depth 7",
-                      "opacity": 0.44,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "tY2sY",
-                      "layoutPosition": "absolute",
-                      "x": 6.6000000000000005,
-                      "y": 7.800000000000001,
-                      "name": "Depth 6",
-                      "opacity": 0.5,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "MS59R",
-                      "layoutPosition": "absolute",
-                      "x": 5.5,
-                      "y": 6.5,
-                      "name": "Depth 5",
-                      "opacity": 0.56,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "dhhMU",
-                      "layoutPosition": "absolute",
-                      "x": 4.4,
-                      "y": 5.2,
-                      "name": "Depth 4",
-                      "opacity": 0.62,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "IyVP8",
-                      "layoutPosition": "absolute",
-                      "x": 3.3000000000000003,
-                      "y": 3.9000000000000004,
-                      "name": "Depth 3",
-                      "opacity": 0.6799999999999999,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "h187mf",
-                      "layoutPosition": "absolute",
-                      "x": 2.2,
-                      "y": 2.6,
-                      "name": "Depth 2",
-                      "opacity": 0.74,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "V6wlI",
-                      "layoutPosition": "absolute",
-                      "x": 1.1,
-                      "y": 1.3,
-                      "name": "Depth 1",
-                      "opacity": 0.8,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "K0rvwq",
-                      "name": "Glass Face",
-                      "fill": {
-                        "type": "gradient",
-                        "gradientType": "linear",
-                        "enabled": true,
-                        "rotation": 180,
-                        "size": {
-                          "height": 1
-                        },
-                        "colors": [
-                          {
-                            "color": "$gnum-top",
-                            "position": 0
-                          },
-                          {
-                            "color": "$gnum-mid",
-                            "position": 0.5
-                          },
-                          {
-                            "color": "$gnum-bot",
-                            "position": 1
-                          }
-                        ]
-                      },
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "R4KefQ",
-                      "layoutPosition": "absolute",
-                      "x": 0,
-                      "y": 0,
-                      "name": "Gloss Band",
-                      "fill": {
-                        "type": "gradient",
-                        "gradientType": "linear",
-                        "enabled": true,
-                        "rotation": 180,
-                        "size": {
-                          "height": 1
-                        },
-                        "colors": [
-                          {
-                            "color": "$gloss",
-                            "position": 0
-                          },
-                          {
-                            "color": "$gloss",
-                            "position": 0.4
-                          },
-                          {
-                            "color": "$stage-0",
-                            "position": 0.41
-                          },
-                          {
-                            "color": "$stage-0",
-                            "position": 1
-                          }
-                        ]
-                      },
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "NcRxx",
-                  "name": "Reading Caption",
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": [
-                    0,
-                    0,
-                    20,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "KdbY6",
-                      "name": "Unit",
-                      "fill": "$ink",
-                      "content": "min read",
-                      "fontFamily": "$font-sans",
-                      "fontSize": 22,
-                      "fontWeight": "600",
-                      "letterSpacing": -0.4
-                    }
-                  ]
-                }
-              ]
             }
           ]
         },
@@ -25315,277 +25044,6 @@
                       "fontFamily": "$font-sans",
                       "fontSize": 15,
                       "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "Ld5Xf",
-              "name": "Reading Time",
-              "context": "Reading time = visible words (prose, component titles and code; no front matter or JSX markup) / 200 wpm, rounded up. git-guide: 377 visible words = 2 min.",
-              "gap": 14,
-              "alignItems": "end",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "R4NObm",
-                  "name": "Glass Minutes",
-                  "padding": [
-                    0,
-                    12,
-                    8,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "smMo2",
-                      "layoutPosition": "absolute",
-                      "x": 6,
-                      "y": 20,
-                      "name": "Cast Shadow",
-                      "fill": "$gnum-shadow",
-                      "effect": {
-                        "type": "blur",
-                        "radius": 14
-                      },
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "nL8UZ",
-                      "layoutPosition": "absolute",
-                      "x": 8.8,
-                      "y": 10.4,
-                      "name": "Depth 8",
-                      "opacity": 0.38,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "B9uQg",
-                      "layoutPosition": "absolute",
-                      "x": 7.700000000000001,
-                      "y": 9.1,
-                      "name": "Depth 7",
-                      "opacity": 0.44,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "qsrkw",
-                      "layoutPosition": "absolute",
-                      "x": 6.6000000000000005,
-                      "y": 7.800000000000001,
-                      "name": "Depth 6",
-                      "opacity": 0.5,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "qAUSh",
-                      "layoutPosition": "absolute",
-                      "x": 5.5,
-                      "y": 6.5,
-                      "name": "Depth 5",
-                      "opacity": 0.56,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "I3gQ1N",
-                      "layoutPosition": "absolute",
-                      "x": 4.4,
-                      "y": 5.2,
-                      "name": "Depth 4",
-                      "opacity": 0.62,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "C8NQFX",
-                      "layoutPosition": "absolute",
-                      "x": 3.3000000000000003,
-                      "y": 3.9000000000000004,
-                      "name": "Depth 3",
-                      "opacity": 0.6799999999999999,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "eyQUY",
-                      "layoutPosition": "absolute",
-                      "x": 2.2,
-                      "y": 2.6,
-                      "name": "Depth 2",
-                      "opacity": 0.74,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "tHPXc",
-                      "layoutPosition": "absolute",
-                      "x": 1.1,
-                      "y": 1.3,
-                      "name": "Depth 1",
-                      "opacity": 0.8,
-                      "fill": "$gnum-side",
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "EDwj2",
-                      "name": "Glass Face",
-                      "fill": {
-                        "type": "gradient",
-                        "gradientType": "linear",
-                        "enabled": true,
-                        "rotation": 180,
-                        "size": {
-                          "height": 1
-                        },
-                        "colors": [
-                          {
-                            "color": "$gnum-top",
-                            "position": 0
-                          },
-                          {
-                            "color": "$gnum-mid",
-                            "position": 0.5
-                          },
-                          {
-                            "color": "$gnum-bot",
-                            "position": 1
-                          }
-                        ]
-                      },
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    },
-                    {
-                      "type": "text",
-                      "id": "R4fq0",
-                      "layoutPosition": "absolute",
-                      "x": 0,
-                      "y": 0,
-                      "name": "Gloss Band",
-                      "fill": {
-                        "type": "gradient",
-                        "gradientType": "linear",
-                        "enabled": true,
-                        "rotation": 180,
-                        "size": {
-                          "height": 1
-                        },
-                        "colors": [
-                          {
-                            "color": "$gloss",
-                            "position": 0
-                          },
-                          {
-                            "color": "$gloss",
-                            "position": 0.4
-                          },
-                          {
-                            "color": "$stage-0",
-                            "position": 0.41
-                          },
-                          {
-                            "color": "$stage-0",
-                            "position": 1
-                          }
-                        ]
-                      },
-                      "content": "2",
-                      "lineHeight": 1,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 104,
-                      "fontWeight": "800",
-                      "letterSpacing": -3
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "gNPr0",
-                  "name": "Reading Caption",
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": [
-                    0,
-                    0,
-                    20,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "gaToq",
-                      "name": "Unit",
-                      "fill": "$ink",
-                      "content": "min read",
-                      "fontFamily": "$font-sans",
-                      "fontSize": 22,
-                      "fontWeight": "600",
-                      "letterSpacing": -0.4
                     }
                   ]
                 }
