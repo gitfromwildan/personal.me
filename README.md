@@ -21,6 +21,12 @@ vp run build      # build apps/web (vue-tsc type-checks .vue files here)
 vp run ready      # check + test + build everything
 ```
 
+## Versions
+
+The versions every package shares are declared once, in the `catalog` of the root `package.json`: Vite+ (which brings Vite, Vitest, the linter and the formatter), Vue, TypeScript, Tailwind CSS and the Node types. A package asks for one with `"<name>": "catalog:"` in its own `package.json`, so an upgrade is one edit in the root followed by `vp install`.
+
+Vite and Vitest come from Vite+: their catalog entries must match the versions that `vite-plus` release depends on (`npm view vite-plus dependencies`). Tailwind CSS is in the catalog but no package uses it yet.
+
 ## Project Structure
 
 ```

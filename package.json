@@ -19,7 +19,7 @@
   },
   "overrides": {
     "vite": "catalog:",
-    "vitest": "5.1.0"
+    "vitest": "catalog:"
   },
   "devEngines": {
     "packageManager": {
@@ -32,7 +32,13 @@
     "node": ">=22.18.0"
   },
   "catalog": {
-    "vite": "npm:@voidzero-dev/vite-plus-core@1.6.0",
-    "vite-plus": "1.6.0"
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^22",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
+    "vite-plus": "1.7.0",
+    "vitest": "5.1.0",
+    "vue": "^3.5.45"
   }
 }

@@ -14,8 +14,8 @@
     "check": "vp check"
   },
   "devDependencies": {
-    "@types/node": "^22",
-    "typescript": "^7.0.2",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
     "vite-plus": "catalog:"
   }
 }
