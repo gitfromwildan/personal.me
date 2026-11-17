@@ -17,7 +17,7 @@ Requires the `vp` CLI ([install](https://viteplus.dev/guide/)). Node.js and Bun 
 vp install        # install all workspace dependencies
 vp run dev        # start apps/web
 vp check          # format, lint, type-check .ts (not .vue)
-vp run build      # build apps/web (vue-tsc type-checks .vue files here)
+vp run build      # build apps/web: type-check .vue files, build, write every page as HTML
 vp run ready      # check + test + build everything
 ```
 
@@ -63,7 +63,11 @@ The commit count and the repo cards are not written in the code. `apps/web/src/c
 
 Build command `vp run build`, output directory `apps/web/dist`.
 
-The app is a single-page app: the host must serve `index.html` for paths it has no file for, or a direct visit to `/blog/<slug>` returns 404.
+Every page is written as its own HTML file at build time (`apps/web/prerender.ts`, the last step of the build): `index.html`, `blog/index.html` and `blog/<slug>/index.html`. A page is readable before any script has run, and Vue then takes it over in the browser. Any static host can serve the folder as it is.
+
+A new page needs a route in `apps/web/src/router.ts` and an entry in `routes` in `apps/web/src/entry-server.ts`, which lists what gets built. Posts are added to that list by themselves.
+
+A path with no file of its own is the host's to answer. If it answers with `index.html`, the script sees that the HTML is the home page's, not that address's, and draws the right page itself.
 
 ## Not ported yet
 

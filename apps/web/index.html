@@ -5,6 +5,15 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wildan Nursahidan</title>
+    <!-- The theme, set before the first paint so that a page never shows in the other one:
+         the saved choice (see composables/useTheme.ts) or else the system's. -->
+    <script>
+      try {
+        var theme = localStorage.getItem("theme");
+      } catch {}
+      document.documentElement.dataset.theme =
+        theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    </script>
     <!-- The two fonts the first screen is set in, fetched with the page: its text is then laid
          out once, not again when they arrive, which would shift what is below it. -->
     <link
@@ -21,9 +30,11 @@
       crossorigin
       href="/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2"
     />
+    <!--app-head-->
   </head>
   <body>
-    <div id="app"></div>
+    <!-- The build puts each page's own HTML here, and its files above (see prerender.ts). -->
+    <div id="app"><!--app-html--></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

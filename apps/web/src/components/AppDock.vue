@@ -62,7 +62,11 @@ function onLeave() {
 
 <template>
   <footer class="dock-area">
-    <p class="copyright">© {{ year }} {{ DATA.name }} · {{ DATA.location }}</p>
+    <!-- The year is as of the day the page was built: Vue corrects it on arrival, and is told
+         here not to report the difference. -->
+    <p class="copyright" data-allow-mismatch="text">
+      © {{ year }} {{ DATA.name }} · {{ DATA.location }}
+    </p>
 
     <nav
       ref="dock"
