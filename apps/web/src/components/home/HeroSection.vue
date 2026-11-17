@@ -253,6 +253,38 @@ const BUBBLES = [
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.05em;
+  transform-origin: center;
+  animation: balloon 3.6s ease-in-out infinite;
+}
+
+/* A water balloon: it swells, wobbles between wide and tall as the water settles, then rests. */
+@keyframes balloon {
+  0%,
+  62%,
+  100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.09, 1.04);
+  }
+  22% {
+    transform: scale(0.95, 1.08);
+  }
+  34% {
+    transform: scale(1.05, 0.96);
+  }
+  45% {
+    transform: scale(0.98, 1.03);
+  }
+  54% {
+    transform: scale(1.01, 0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status {
+    animation: none;
+  }
 }
 
 .headline {
