@@ -54,7 +54,13 @@ let started = false;
 export function loadGithub() {
   if (started || import.meta.env.SSR) return;
   started = true;
+  // After the page has settled: the numbers are far down the page, and parsing GitHub's answers
+  // while the page is still being drawn would hold up the first interaction.
+  const idle = window.requestIdleCallback ?? ((fn: () => void) => setTimeout(fn, 200));
+  idle(fetchAll);
+}
 
+function fetchAll() {
   void load("github:commits", `/search/commits?q=author:${user}&per_page=1`, (json) =>
     typeof json.total_count === "number" ? json.total_count : null,
   ).then((count) => (commitCount.value = count));
