@@ -8,7 +8,7 @@ import PostToc from "../components/blog/PostToc.vue";
 import PageBlobs from "../components/ui/PageBlobs.vue";
 import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { useReadingProgress } from "../composables/useReadingProgress";
-import { DATA } from "../data/resume";
+import { DATA } from "../data";
 
 const props = defineProps<{ slug: string }>();
 

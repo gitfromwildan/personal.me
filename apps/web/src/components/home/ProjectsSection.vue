@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ago } from "../../format";
 import { computed } from "vue";
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import { githubUrl, loadGithub, repos } from "../../composables/useGithub";
 import AppIcon from "../ui/AppIcon.vue";
 import SectionEyebrow from "../ui/SectionEyebrow.vue";

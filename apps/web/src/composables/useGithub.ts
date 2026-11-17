@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { DATA } from "../data/resume";
+import { DATA } from "../data";
 
 const API = "https://api.github.com";
 // Both calls use the search API (10 requests a minute per visitor without a token), so cache them.

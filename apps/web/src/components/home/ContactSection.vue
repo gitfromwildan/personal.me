@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { linkTarget } from "../../links";
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import AppIcon from "../ui/AppIcon.vue";
 import SectionEyebrow from "../ui/SectionEyebrow.vue";
 

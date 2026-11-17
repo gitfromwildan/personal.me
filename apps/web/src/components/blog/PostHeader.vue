@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 import { ago, longDate } from "../../format";
 import AppBreadcrumb from "../ui/AppBreadcrumb.vue";
 

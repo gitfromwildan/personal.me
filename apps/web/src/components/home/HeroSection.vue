@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppIcon from "../ui/AppIcon.vue";
-import { DATA } from "../../data/resume";
+import { DATA } from "../../data";
 
 const [current] = DATA.work;
 const FACTS = [...DATA.hero.facts, { key: "Now", value: `${current.title}, ${current.company}` }];
