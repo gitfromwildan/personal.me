@@ -89,7 +89,7 @@ The site is deployed on Vercel, set up by `vercel.json` at the root of the repo:
 - Vercel installs with Bun, which it picks from `bun.lock`, and builds with `bun run build` (which is `vp run build`), into `apps/web/dist`. It runs Node 22, the major that `engines.node` in the root `package.json` allows and that `.node-version` pins for everyone else;
 - `cleanUrls` answers `/blog/hello-world` with `blog/hello-world.html`, and sends an address ending in `.html` on to the one without;
 - `trailingSlash: false` sends `/blog/` on to `/blog`;
-- everything under `/assets/` is cached for a year and never asked for again: those files carry a hash of their content in their name, so a changed file is a new address. The pages and the images in `public/` keep Vercel's default, which is to check for a newer copy every time.
+- everything under `/assets/` is cached for a year and never asked for again: those files carry a hash of their content in their name, so a changed file is a new address. The pages keep Vercel's default, which is to check for a newer copy every time, and the images in `public/` are kept for four hours before being checked again.
 
 Every page is written as its own HTML file at build time (`apps/web/prerender.ts`, the last step of the build): `index.html`, `blog.html` and `blog/<slug>.html`. A page is readable before any script has run, and Vue then takes it over in the browser.
 
