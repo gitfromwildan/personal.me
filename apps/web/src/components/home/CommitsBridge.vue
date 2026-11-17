@@ -12,11 +12,11 @@ loadGithub();
 const githubUrl = DATA.contact.social.GitHub.url;
 const number = computed(() => commitCount.value?.toLocaleString("en-US"));
 
-// Each time the count is scrolled into view its last two digits run once round, as on a
-// counter, and land on the real ones: 1,835 goes 36, 37 ... 99, 00 ... 34, 35. `behind` is how
-// many steps they still have to go.
+// Each time the count is scrolled into view its last two digits count up from 00 to the real
+// ones, as on a counter: 1,835 goes 1,800, 1,801 ... 1,835, and never shows more than it is.
+// A count that ends in 00 would have nothing to count, so its two digits go once round, 01 to
+// 99 and back to 00. `behind` is how many steps they still have to go.
 const TURN = 100;
-const DURATION = 1800;
 const count = ref<HTMLElement | null>(null);
 const inView = useInView(count);
 const behind = ref(0);
@@ -40,11 +40,14 @@ watch(inView, (seen) => {
   )
     return;
   if (tail.value) hold(`${tail.value.$el.getBoundingClientRect().width}px`);
+  const steps = (commitCount.value ?? 0) % TURN || TURN;
+  // Longer the further there is to count, from 0.6s to 1.8s.
+  const duration = 600 + steps * 12;
   const start = performance.now();
   const step = (now: number) => {
-    const done = Math.min(1, (now - start) / DURATION);
+    const done = Math.min(1, (now - start) / duration);
     // Fast at first, slowing to a stop on the last digits.
-    behind.value = Math.round(TURN * (1 - done) ** 3);
+    behind.value = Math.round(steps * (1 - done) ** 3);
     if (done < 1) frame = requestAnimationFrame(step);
     else hold();
   };
