@@ -45,7 +45,6 @@ packages/
 └── utils/        # shared TypeScript library starter
 content/          # blog posts (Markdown + DocuBook directives)
 public/           # static assets, served by apps/web
-UI-personal.pen   # design file (pen.dev)
 ```
 
 ## Blog

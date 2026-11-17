@@ -5,7 +5,7 @@ import posts from "./posts.plugin.ts";
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Static assets stay in the repo-root public/ so UI-personal.pen keeps resolving them.
+  // Static assets live in the repo-root public/.
   publicDir: "../../public",
   plugins: lazyPlugins(() => [vue(), posts()]),
 });
