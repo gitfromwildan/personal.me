@@ -42,7 +42,16 @@ const inView = useInView(rail);
       <ol class="jobs">
         <li v-for="(job, i) in jobs" :key="job.company" class="job" :class="{ left: i % 2 === 0 }">
           <div class="mid" aria-hidden="true">
-            <img class="node" :class="{ current: job.current }" :src="job.logoUrl" alt="" />
+            <img
+              class="node"
+              :class="{ current: job.current }"
+              :src="job.logoUrl"
+              alt=""
+              width="48"
+              height="48"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="chip glass year" :class="{ current: job.current }">{{ job.year }}</span>
             <span class="link" :class="{ current: job.current }" />
           </div>
