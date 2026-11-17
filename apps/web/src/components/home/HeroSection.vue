@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import AppIcon from "../ui/AppIcon.vue";
 import GlassBubble from "../ui/GlassBubble.vue";
-import GlassPane from "../ui/GlassPane.vue";
+import GlassTile from "../ui/GlassTile.vue";
 import { DATA } from "../../data";
 import { linkTarget } from "../../links";
 import ripple from "./ripple.webp?inline";
@@ -20,44 +20,29 @@ const BLOBS = [
   { x: 1120, y: 250, color: "var(--blob-a)" },
 ];
 
-// `r` is the corner radii, clockwise from the top left: soft enough that the panels read as
-// glass around the person, not as boxes behind them.
-const PANES = [
-  {
-    x: 960,
-    y: 96,
-    w: 440,
-    h: 540,
-    r: [220, 220, 72, 72], // an arch: it frames the head instead of boxing it in
-    blur: 13,
-    lift: "30px 60px",
-    tint: "light-dark(#42ebd442, #22d3ee1f)",
-    z: 10,
-  },
-  {
-    x: 800,
-    y: 448,
-    w: 170,
-    h: 196,
-    r: [64, 64, 64, 64],
-    blur: 7,
-    lift: "18px 36px",
-    tint: "light-dark(#34d39926, #10b98117)",
-    z: 11,
-    fade: true,
-  },
-  {
-    x: 888,
-    y: 330,
-    w: 412,
-    h: 330,
-    r: [120, 96, 96, 120],
-    blur: 11,
-    lift: "26px 56px",
-    tint: "light-dark(#34d39931, #10b9811d)",
-    z: 12,
-  },
-];
+// Glass tiles around the portrait, each with the mark of a technology this page is about: the
+// CCTV, network and satellite links of the IT support side, and the languages and tools of the
+// open source side. They are the nodes of a graph: listed in the order they are wired, each to
+// the next and the last back to the first, in a ring that passes behind the person.
+const TINTS = ["light-dark(#42ebd442, #22d3ee1f)", "light-dark(#34d39931, #10b9811d)"];
+const TILES = [
+  { icon: "cctv", x: 858, y: 448, size: 108 },
+  { icon: "react", x: 872, y: 330, size: 104 },
+  { icon: "typescript", x: 884, y: 62, size: 88 },
+  { icon: "mikrotik", x: 1266, y: 80, size: 116 },
+  { icon: "tailwindcss", x: 1346, y: 236, size: 84 },
+  { icon: "satellite-dish", x: 1318, y: 404, size: 100 },
+] as const;
+
+// The wires of the graph, each from the middle of one tile to the middle of the next: where it
+// starts, how long it is and which way it points. A pulse runs each wire in turn, so that a
+// signal is seen to travel the stack from node to node.
+const WIRES = TILES.map((from, i) => {
+  const to = TILES[(i + 1) % TILES.length];
+  const [x, y] = [from.x + from.size / 2, from.y + from.size / 2];
+  const [dx, dy] = [to.x + to.size / 2 - x, to.y + to.size / 2 - y];
+  return { x, y, length: Math.hypot(dx, dy), angle: Math.atan2(dy, dx) };
+});
 
 // `pace` is the seconds one rise and fall takes: bigger bubbles move slower.
 const BUBBLES = [
@@ -186,23 +171,29 @@ function pop(event: MouseEvent) {
         aria-hidden="true"
         :style="{ '--x': b.x, '--y': b.y, '--w': 420, background: b.color }"
       />
-      <GlassPane
-        v-for="(p, i) in PANES"
-        :key="p.x"
-        :width="p.w"
-        :height="p.h"
-        :class="{ dim: p.fade }"
+      <span
+        v-for="(w, i) in WIRES"
+        :key="i"
+        class="wire"
+        aria-hidden="true"
+        :style="{ '--x': w.x, '--y': w.y, '--w': w.length, '--i': i, rotate: `${w.angle}rad` }"
+      >
+        <span class="pulse" />
+      </span>
+      <GlassTile
+        v-for="(t, i) in TILES"
+        :key="t.icon"
+        class="tile"
+        :icon="t.icon"
         :style="{
-          '--x': p.x,
-          '--y': p.y,
-          '--w': p.w,
-          '--h': p.h,
-          zIndex: p.z,
-          '--glass-radius': p.r.map((corner) => `calc(${corner} * var(--u))`).join(' '),
-          '--glass-blur': `${p.blur}px`,
-          '--glass-elevation': `0 ${p.lift}`,
-          '--tint': p.tint,
-          '--phase': i / PANES.length,
+          '--x': t.x,
+          '--y': t.y,
+          '--w': t.size,
+          '--glass-radius': `calc(${t.size * 0.26} * var(--u))`,
+          '--glass-blur': '9px',
+          '--glass-elevation': '0 18px 36px',
+          '--tint': TINTS[i % TINTS.length],
+          '--phase': i / TILES.length,
         }"
       />
       <!-- The photo is 1672 by 941, in the box the design gives it. -->
@@ -328,8 +319,60 @@ function pop(event: MouseEvent) {
   --blob-blur: 45px;
 }
 
-.dim {
-  opacity: 0.8;
+.art .tile {
+  z-index: 10;
+}
+
+/* A wire is a hairline laid from its start along the x axis, then turned about that start to
+   point at the tile it leads to. Under the tiles, so each end is seen through the glass. */
+.art .wire {
+  z-index: 9;
+  height: 1.5px;
+  background: color-mix(in srgb, var(--accent) 32%, transparent);
+  transform-origin: 0 50%;
+}
+
+/* The pulse is as long as its wire and drawn only at its tail end, so sliding it by its own
+   length takes it from one tile to the next. Sliding costs the page nothing. The six take
+   turns, a sixth of the round each: the signal goes once round the ring every 7.2 seconds. */
+.pulse {
+  --dash: 2.25rem;
+  position: absolute;
+  inset: -1.5px 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--accent)) left / var(--dash) 100% no-repeat;
+  opacity: 0;
+  animation: signal 7.2s linear calc(var(--i) * 1.2s) infinite;
+}
+
+/* The head of the pulse: a bright point with a glow, at the leading end of the dash. */
+.pulse::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(var(--dash) - 4px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px var(--accent);
+  translate: 0 -50%;
+}
+
+@keyframes signal {
+  0% {
+    translate: 0;
+    opacity: 0;
+  }
+  1.5%,
+  15% {
+    opacity: 1;
+  }
+  16.66%,
+  100% {
+    translate: calc(100% - var(--dash));
+    opacity: 0;
+  }
 }
 
 /* The photo itself fades out at the bottom. A gradient box laid over it would show as a box
@@ -496,6 +539,10 @@ function pop(event: MouseEvent) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .pulse {
+    display: none;
+  }
+
   .art > .bubble,
   .art > .big,
   .big > * {
