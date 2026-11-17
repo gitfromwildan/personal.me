@@ -18,7 +18,18 @@ vp install        # install all workspace dependencies
 vp run dev        # start apps/web
 vp check          # format, lint, type-check .ts (not .vue)
 vp run build      # build apps/web: type-check .vue files, build, write every page as HTML
+vp run -r test    # run every package's tests
 vp run ready      # check + test + build everything
+```
+
+## Tests
+
+The web app's tests (`apps/web/src/**/*.test.ts`) run in real browsers through Vitest's browser mode, once in Chromium and once in WebKit. They are set up in the `test` block of `apps/web/vite.config.ts`, and `.github/workflows/ci.yml` runs them, with the checks and the build, on every pull request and on pushes to `main`.
+
+To run them on your machine, install the two browsers once with `vpx playwright install chromium webkit` in `apps/web`. Playwright has no browsers for macOS 12 and older: there the tests are skipped, unless a variable names a browser to use, `CHROMIUM_PATH` (any Chromium-based browser) or `WEBKIT_PATH`.
+
+```bash
+CHROMIUM_PATH="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" vp run -r test
 ```
 
 ## Versions

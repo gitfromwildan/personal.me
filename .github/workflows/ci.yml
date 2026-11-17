@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch makes the run for the older one pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      # Installs Vite+, the Node.js and Bun versions the repo pins, and the dependencies
+      # (`vp install`). An exact version, as the Vite+ docs ask: the v1 tag is no longer moved.
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          cache: true
+
+      # Format, lint and type-check the .ts files.
+      - run: vp check
+
+      # The web app's tests run in real browsers (apps/web/vite.config.ts): Chromium and WebKit,
+      # with the system libraries WebKit needs on Linux.
+      - name: Install Chromium and WebKit
+        working-directory: apps/web
+        run: vpx playwright install --with-deps chromium webkit
+
+      - name: Test
+        run: vp run -r test
+
+      # A failed browser test leaves a screenshot of the page next to the test file.
+      - name: Keep the screenshots of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: failed-test-screenshots
+          path: apps/web/src/**/__screenshots__/
+          if-no-files-found: ignore
+
+      # Type-checks the .vue files, builds the site and writes every page as HTML.
+      - name: Build
+        run: vp run build
