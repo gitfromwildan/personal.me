@@ -648,8 +648,10 @@ function pop(event: MouseEvent) {
     padding-block: 96px 56px;
   }
 
-  /* One column: the copy, then the stage, then the profile strip. */
+  /* One column: the copy, then the stage, then the profile strip. --stage is the stage's
+     width: a percentage in it is of the hero's width wherever it is used below. */
   .hero {
+    --stage: min(26rem, 100% - 2.5rem);
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
@@ -669,8 +671,12 @@ function pop(event: MouseEvent) {
     order: 1;
   }
 
+  /* The strip is pulled up over the foot of the stage, where the portrait fades out, so the
+     photo runs behind its glass as it does on a wide screen. */
   .strip {
     order: 2;
+    z-index: 19;
+    margin-top: calc(-2.5rem - 0.28 * var(--stage));
   }
 
   /* The stage shows the part of the artboard that holds the portrait (680 by 742 artboard
@@ -678,7 +684,7 @@ function pop(event: MouseEvent) {
   .art {
     position: relative;
     inset: auto;
-    width: min(26rem, 100% - 2.5rem);
+    width: var(--stage);
     aspect-ratio: 680 / 742;
     margin: 0 auto;
     container-type: inline-size;
