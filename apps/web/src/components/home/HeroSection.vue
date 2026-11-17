@@ -112,7 +112,7 @@ const BUBBLES = [
         </h1>
         <p class="subhead">{{ DATA.hero.subhead }}</p>
         <div class="actions">
-          <a class="btn solid" href="#contact">
+          <a class="btn solid" href="#projects">
             {{ DATA.hero.cta }}
             <AppIcon name="arrow-down" />
           </a>
