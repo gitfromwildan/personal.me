@@ -1,5 +1,7 @@
-// Icon outlines exported from UI-personal.pen: name -> [viewBox size, path data].
-// "list" is not in the design: it was drawn here for the table-of-contents button.
+// Icon outlines exported from UI-personal.pen: name -> [viewBox size, path data]. An outline is
+// filled, unless a third item says "stroke": then the path is a line to draw.
+// Two are not in the design: "list" was drawn here for the table-of-contents button, and
+// "heart-handshake", for the hero's "Hire me" button, is Lucide's (a line icon).
 export const ICONS = {
   clock: [
     14,
@@ -28,6 +30,11 @@ export const ICONS = {
   check: [
     15,
     "M12.301 3.164q-.077 .015-.139 .062-.059 .044-3.296 3.285l-3.241 3.223-1.381-1.381q-1.38-1.377-1.479-1.421-.095-.047-.238-.047-.143 0-.249 .04-.103 .037-.202 .121-.095 .08-.142 .183-.03 .077-.037 .121-.007 .044-.007 .15v.044q-.015 .121 .044 .212 .077 .118 .391 .432 .209 .228 1.037 1.052l1.604 1.589q.3 .286 .417 .362 .077 .059 .198 .044l.103 .015q.077 0 .15-.029 .091-.077 .344-.308 .256-.234 .857-.817l2.446-2.446q2.234-2.248 2.893-2.908 .66-.662 .692-.736 .044-.091 .044-.256 0-.106-.007-.15-.007-.044-.037-.121-.047-.088-.146-.176-.095-.091-.194-.128-.095-.04-.224-.04-.128 0-.201 .029z",
+  ],
+  "heart-handshake": [
+    24,
+    "M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762",
+    "stroke",
   ],
   "git-fork": [
     13,

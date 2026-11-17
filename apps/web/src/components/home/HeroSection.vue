@@ -4,6 +4,7 @@ import AppIcon from "../ui/AppIcon.vue";
 import GlassBubble from "../ui/GlassBubble.vue";
 import GlassPane from "../ui/GlassPane.vue";
 import { DATA } from "../../data";
+import { linkTarget } from "../../links";
 import ripple from "./ripple.webp?inline";
 
 const [current] = DATA.work;
@@ -253,9 +254,9 @@ function pop(event: MouseEvent) {
             {{ DATA.hero.cta }}
             <AppIcon name="arrow-down" />
           </a>
-          <a class="glass btn" :href="DATA.contact.social.Email.url">
-            <AppIcon name="mail" />
-            {{ DATA.contact.social.Email.handle }}
+          <a class="glass btn" :href="DATA.hero.hire.url" v-bind="linkTarget(DATA.hero.hire.url)">
+            <AppIcon :name="DATA.hero.hire.icon" />
+            {{ DATA.hero.hire.label }}
           </a>
         </div>
       </div>
