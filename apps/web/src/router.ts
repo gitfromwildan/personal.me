@@ -10,5 +10,5 @@ export const router = createRouter({
     { path: "/blog/:slug", component: () => import("./pages/BlogPost.vue"), props: true },
     { path: "/:pathMatch(.*)*", redirect: "/" },
   ],
-  scrollBehavior: (to) => (to.hash ? { el: to.hash } : { top: 0 }),
+  scrollBehavior: (to, _from, saved) => saved ?? (to.hash ? { el: to.hash } : { top: 0 }),
 });

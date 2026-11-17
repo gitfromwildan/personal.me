@@ -3,7 +3,7 @@ import { posts } from "virtual:posts";
 </script>
 
 <template>
-  <main>
+  <main class="narrow">
     <h1>Blog</h1>
     <article v-for="post in posts" :key="post.slug">
       <h2>
