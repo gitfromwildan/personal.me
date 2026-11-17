@@ -84,11 +84,16 @@ The commit count and the repo cards are not written in the code. `apps/web/src/c
 
 ## Deploy
 
-Build command `vp run build`, output directory `apps/web/dist`.
+The site is deployed on Vercel, set up by `vercel.json` at the root of the repo:
+
+- it installs with the Bun version the repo pins and builds with `bun run build` (which is `vp run build`), into `apps/web/dist`;
+- `cleanUrls` answers `/blog/hello-world` with `blog/hello-world.html`, and sends an address ending in `.html` on to the one without;
+- `trailingSlash: false` sends `/blog/` on to `/blog`;
+- everything under `/assets/` is cached for a year and never asked for again: those files carry a hash of their content in their name, so a changed file is a new address. The pages and the images in `public/` keep Vercel's default, which is to check for a newer copy every time.
 
 Every page is written as its own HTML file at build time (`apps/web/prerender.ts`, the last step of the build): `index.html`, `blog.html` and `blog/<slug>.html`. A page is readable before any script has run, and Vue then takes it over in the browser.
 
-The host must serve "clean URLs": answer `/blog/hello-world` with `blog/hello-world.html`. Netlify and Cloudflare Pages do so as they are, Vercel with `cleanUrls` turned on.
+On another host, the same is needed of it: it must serve "clean URLs", as Netlify and Cloudflare Pages do without being told.
 
 A new page needs a route in `apps/web/src/router.ts` and an entry in `routes` in `apps/web/src/entry-server.ts`, which lists what gets built. Posts are added to that list by themselves.
 
