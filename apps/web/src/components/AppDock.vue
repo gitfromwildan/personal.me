@@ -21,7 +21,6 @@ const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
         :active-class="item.href === '/' ? undefined : 'active'"
         exact-active-class="active"
         :aria-label="item.label"
-        :title="item.label"
       >
         <AppIcon :name="item.icon" :size="19" />
       </RouterLink>
@@ -34,7 +33,6 @@ const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
         :href="s.url"
         class="tile"
         :aria-label="s.name"
-        :title="s.name"
         v-bind="linkTarget(s.url)"
       >
         <AppIcon :name="s.icon" :size="19" />
@@ -42,13 +40,7 @@ const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
 
       <span class="sep" aria-hidden="true"></span>
 
-      <button
-        type="button"
-        class="tile"
-        aria-label="Toggle theme"
-        title="Toggle theme"
-        @click="toggleTheme"
-      >
+      <button type="button" class="tile" aria-label="Toggle theme" @click="toggleTheme">
         <AppIcon name="moon" :size="19" />
       </button>
     </nav>
@@ -85,6 +77,7 @@ const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
 }
 
 .tile {
+  position: relative;
   display: grid;
   place-items: center;
   width: 48px;
@@ -108,9 +101,69 @@ const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
   color: var(--bg);
 }
 
+/* Tooltip with the tile's name, on hover and keyboard focus. Not on touch, where hover sticks after a tap. */
+.tile::after {
+  content: attr(aria-label) / "";
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+  pointer-events: none;
+}
+
+.tile:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (hover: hover) {
+  .tile:hover::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 .sep {
   width: 1px;
   height: 28px;
   background: var(--glass-line);
+}
+
+/* A smaller dock on narrow screens: six 40px tiles instead of 48px. */
+@media (max-width: 860px) {
+  .dock-area {
+    padding-bottom: 6.5rem;
+  }
+
+  .dock {
+    bottom: 1rem;
+    gap: 2px;
+    padding: 6px;
+  }
+
+  .tile {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tile svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .sep {
+    height: 22px;
+  }
 }
 </style>
