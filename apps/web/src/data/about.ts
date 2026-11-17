@@ -1,9 +1,13 @@
 export const about = {
-  lead: "Nothing takes a store offline faster than a dead L2TP tunnel between the branch server and the building — POS, CCTV, and alarm go dark at once.",
-  body: "That's the infrastructure layer I've owned for 11 years: MikroTik routers, server-to-store links, and the preventive checkups that stop them failing in the first place.",
+  lead: "A store runs on one link: the L2TP tunnel from its MikroTik router to the branch server. When it drops, POS, CCTV, and alarm drop with it.",
+  body: "I have kept that layer up across Indomaret stores for 11 years: routing and remote access on RouterOS, VSAT links where no cable reaches, and scheduled checks on CCTV, alarm, and network before a fault turns into downtime.",
   owned: {
     label: "Owned · 2015–2026",
-    systems: ["MikroTik routers", "Server-to-store links", "Preventive checkups"],
+    systems: [
+      "RouterOS routing & L2TP tunnels",
+      "VSAT links where cable can't reach",
+      "Scheduled CCTV, alarm & network checks",
+    ],
     stayedUpLabel: "So these stayed up",
     stayedUp: ["POS", "CCTV", "Alarm"],
   },
