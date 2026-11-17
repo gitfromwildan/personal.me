@@ -65,7 +65,9 @@ The commit count and the repo cards are not written in the code. `apps/web/src/c
 
 Build command `vp run build`, output directory `apps/web/dist`.
 
-Every page is written as its own HTML file at build time (`apps/web/prerender.ts`, the last step of the build): `index.html`, `blog/index.html` and `blog/<slug>/index.html`. A page is readable before any script has run, and Vue then takes it over in the browser. Any static host can serve the folder as it is.
+Every page is written as its own HTML file at build time (`apps/web/prerender.ts`, the last step of the build): `index.html`, `blog.html` and `blog/<slug>.html`. A page is readable before any script has run, and Vue then takes it over in the browser.
+
+The host must serve "clean URLs": answer `/blog/hello-world` with `blog/hello-world.html`. Netlify and Cloudflare Pages do so as they are, Vercel with `cleanUrls` turned on.
 
 A new page needs a route in `apps/web/src/router.ts` and an entry in `routes` in `apps/web/src/entry-server.ts`, which lists what gets built. Posts are added to that list by themselves.
 
