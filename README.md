@@ -38,6 +38,8 @@ The versions every package shares are declared once, in the `catalog` of the roo
 
 Vite and Vitest come from Vite+: their catalog entries must match the versions that `vite-plus` release depends on (`npm view vite-plus dependencies`). Tailwind CSS is in the catalog but no package uses it yet.
 
+Dependabot (`.github/dependabot.yml`) opens pull requests for newer versions once a week, for the packages and for the actions the CI workflow uses. It leaves `vite`, `vitest` and `@vitest/browser-playwright` alone, since those follow `vite-plus`, and does not move `@types/node` or `@typescript/typescript6` to a new major. Pull requests that fix a known vulnerability are turned on in the repository's settings; GitHub does not make them for Bun packages, which get the weekly update only.
+
 ## Project Structure
 
 ```

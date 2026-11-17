@@ -1,0 +1,36 @@
+# Dependabot looks for newer versions once a week (on Monday, at a time it picks) and opens a
+# pull request for each. It only reads this file from the default branch.
+#
+# Pull requests that fix a known vulnerability are a repository setting, not something written
+# here: Settings > Advanced Security > Dependabot security updates. GitHub makes them for the
+# Actions below, but does not make them for Bun, whose packages get the weekly update only.
+version: 2
+updates:
+  # The packages of the whole workspace: the root package.json with its catalog, apps/* and
+  # packages/*, as resolved in bun.lock.
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    # How many of its update pull requests may be open at once.
+    open-pull-requests-limit: 5
+    ignore:
+      # These come with Vite+ and must be the versions its release depends on (README,
+      # "Versions"): they are moved by hand, together with vite-plus.
+      - dependency-name: vite
+      - dependency-name: "@voidzero-dev/vite-plus-core"
+      - dependency-name: vitest
+      - dependency-name: "@vitest/browser-playwright"
+      # Node is pinned to 22 in this repo, so its types stay on 22.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # The TypeScript 6 compiler vue-tsc runs on: it cannot run on a later major.
+      - dependency-name: "@typescript/typescript6"
+        update-types: ["version-update:semver-major"]
+
+  # The actions used by .github/workflows.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
