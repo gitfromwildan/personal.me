@@ -18,7 +18,7 @@ const blobs = [
 </script>
 
 <template>
-  <main class="home">
+  <main class="stage">
     <span
       v-for="(blob, i) in blobs"
       :key="i"
@@ -41,12 +41,3 @@ const blobs = [
     <ContactSection />
   </main>
 </template>
-
-<style scoped>
-/* isolate: keeps the z-index -1 blobs above the page background and below every section. */
-.home {
-  position: relative;
-  isolation: isolate;
-  overflow-x: clip;
-}
-</style>

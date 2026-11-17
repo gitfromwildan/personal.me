@@ -198,6 +198,11 @@ export const DATA = {
         "Actually, until now I am still working under the Indomaret group company. However, my current job is managing and monitoring the network interface from the Indomaret store to the branch server.",
     },
   ],
+  blog: {
+    title: "Blog",
+    tagline: "My thoughts on software development, life, and more.",
+    endNote: "That's everything so far.",
+  },
   projects: {
     title: "What I'm building",
     sub: "Built and maintained in public — the details come straight from GitHub.",
