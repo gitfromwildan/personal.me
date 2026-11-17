@@ -10,14 +10,16 @@
   "type": "module",
   "scripts": {
     "ready": "vp check && vp run -r test && vp run -r build",
-    "dev": "vp run web#dev"
+    "dev": "vp run web#dev",
+    "build": "vp run web#build"
   },
   "devDependencies": {
     "vite": "catalog:",
     "vite-plus": "catalog:"
   },
   "overrides": {
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "vitest": "5.1.0"
   },
   "devEngines": {
     "packageManager": {

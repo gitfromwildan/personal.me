@@ -15,7 +15,8 @@ Requires the `vp` CLI ([install](https://viteplus.dev/guide/)). Node.js and Bun 
 ```bash
 vp install        # install all workspace dependencies
 vp run dev        # start apps/web
-vp check          # format, lint and type checks
+vp check          # format, lint, type-check .ts (not .vue)
+vp run build      # build apps/web (vue-tsc type-checks .vue files here)
 vp run ready      # check + test + build everything
 ```
 
@@ -30,6 +31,19 @@ content/          # MDX blog posts
 public/           # static assets, served by apps/web
 UI-personal.pen   # design file (pen.dev)
 ```
+
+## Deploy
+
+Build command `vp run build`, output directory `apps/web/dist`.
+
+## Not ported yet
+
+The Next.js version is at commit `3034082` (`git show 3034082:<path>`):
+
+- Blog rendering: `src/components/markdown/`, `src/lib/mdx.tsx`, `src/lib/plugin.ts`, `src/data/blog.ts`
+- GitHub stats: `src/lib/github.ts`
+- Site metadata (description, Open Graph, Twitter card): `src/app/layout.tsx`
+- Security response headers: `next.config.mjs` (a static build needs these set on the host)
 
 ## Links
 

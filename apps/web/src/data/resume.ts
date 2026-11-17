@@ -164,7 +164,7 @@ export const DATA = {
     },
   ],
   // Just a list of repos — title, description, language, stars, and link
-  // are fetched from the GitHub API (see src/lib/github.ts).
+  // are fetched from the GitHub API (not ported yet: git show 3034082:src/lib/github.ts).
   projects: [
     "DocuBook/docubook",
     "DocuBook/editor",
