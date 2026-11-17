@@ -7,5 +7,5 @@ export const profile = {
   locationLink: "https://www.google.com/maps/place/indonesia",
   description:
     "IT Support 11 Years Exp. Preventive maintenance & troubleshooting for CCTV, alarm, network, and facility management — now full-time on open source project.",
-  avatarUrl: "/favicon.ico",
+  avatarUrl: "/avatar.webp",
 } as const;

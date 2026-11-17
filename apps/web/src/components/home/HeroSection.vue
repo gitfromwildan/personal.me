@@ -199,7 +199,15 @@ function pop(event: MouseEvent) {
       <!-- The photo is 1672 by 941, in the box the design gives it. -->
       <img
         class="portrait"
-        src="/hero-portrait.webp"
+        src="/hero-portrait-1250.webp"
+        srcset="
+          /hero-portrait-900.webp   900w,
+          /hero-portrait-1250.webp 1250w,
+          /hero-portrait-1670.webp 1670w
+        "
+        sizes="(max-width: 860px) min(26rem, 100vw - 2.5rem), 1250px"
+        width="1250"
+        height="703"
         alt=""
         fetchpriority="high"
         :style="{ '--x': 308, '--y': 97, '--w': 1250, '--h': 703 }"

@@ -52,7 +52,16 @@ const groups = computed(() => [
       >
         <li v-for="card in group.cards" :key="card.name">
           <a class="card" :href="card.url" target="_blank" rel="noopener noreferrer">
-            <img v-if="group.featured" class="preview" :src="DATA.projects.preview" alt="" />
+            <img
+              v-if="group.featured"
+              class="preview"
+              :src="DATA.projects.preview"
+              alt=""
+              width="1070"
+              height="646"
+              loading="lazy"
+              decoding="async"
+            />
             <div class="body">
               <h3 class="name">
                 {{ card.name }}
@@ -153,6 +162,8 @@ const groups = computed(() => [
   aspect-ratio: 535 / 323;
   margin: 0.75rem 0.75rem 0;
   width: calc(100% - 1.5rem);
+  /* The height attribute holds the place before the picture arrives; the ratio sizes it. */
+  height: auto;
   border-radius: 22px;
   object-fit: cover;
   object-position: top;
