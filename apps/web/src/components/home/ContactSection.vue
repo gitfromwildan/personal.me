@@ -11,7 +11,7 @@ const { title, body, cta, social } = DATA.contact;
   <section id="contact" class="section container" aria-labelledby="contact-title">
     <div class="glass panel">
       <div class="copy">
-        <SectionEyebrow index="05" label="Contact" />
+        <SectionEyebrow label="Contact" />
         <h2 id="contact-title" class="title">{{ title }}</h2>
         <p class="body">{{ body }}</p>
         <a class="btn solid" :href="social.Threads.url" target="_blank" rel="noopener noreferrer">
@@ -50,6 +50,11 @@ const { title, body, cta, social } = DATA.contact;
   align-items: flex-start;
   gap: 1.625rem;
   min-width: 0;
+}
+
+/* Inside the panel the eyebrow lines up with the title. */
+.copy .eyebrow {
+  padding-inline: 0;
 }
 
 .title {
@@ -107,12 +112,30 @@ const { title, body, cta, social } = DATA.contact;
   .panel {
     flex-direction: column;
     align-items: stretch;
-    gap: 2.5rem;
+    gap: 2rem;
     padding: 2rem 1.5rem;
   }
 
   .channels {
     width: 100%;
+  }
+
+  .channel {
+    gap: 0.75rem;
+    padding-block: 0.875rem;
+  }
+
+  /* The panel's own gap and padding already space the list's two ends. */
+  li:first-child .channel {
+    padding-top: 0;
+  }
+
+  li:last-child .channel {
+    padding-bottom: 0;
+  }
+
+  .name {
+    width: 4.75rem;
   }
 }
 </style>

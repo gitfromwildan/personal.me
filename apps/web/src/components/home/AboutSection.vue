@@ -7,7 +7,7 @@ import SectionEyebrow from "../ui/SectionEyebrow.vue";
 
 <template>
   <section id="about" class="section container" aria-labelledby="about-title">
-    <SectionEyebrow id="about-title" as="h2" index="01" label="About" />
+    <SectionEyebrow id="about-title" as="h2" label="About" />
 
     <div class="glass panel">
       <span class="bar" aria-hidden="true" />

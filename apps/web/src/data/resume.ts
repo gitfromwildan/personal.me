@@ -151,7 +151,7 @@ export const DATA = {
   work: [
     {
       company: "DocuBook",
-      href: "https://docu.wildan.dev/",
+      href: "https://docubook.pro/",
       badges: [],
       location: "Remote",
       title: "Founder",
