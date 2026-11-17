@@ -53,7 +53,9 @@ Each file in `content/` is a post, served at `/blog/<file name>`; `/blog` lists 
 
 Posts use DocuBook v2 syntax: Markdown plus directives such as `:::card`, `::::tabs`, `::::steps`, `::::accordions`. JSX tags (`<Card>`) are not components and are dropped.
 
-`apps/web/posts.plugin.ts` compiles the posts with `@docubook/core` and renders them to static HTML with the `@docubook/markdown` components while Vite builds. Both packages are React based, so React is a build-time dependency only and is not in the browser bundle. `apps/web/src/components/blog/PostBody.vue` handles the clicks for tabs, accordions and the copy button, and restyles the DocuBook components to match the site. Each post also gets a reading time (its words at 200 a minute), shown in the table of contents.
+`apps/web/posts.plugin.ts` has `@docubook/core` compile each post into a module whose default export is a React component. The `@docubook/markdown` components draw it, and they run as they are: at build time to make each post's HTML, and in the browser, where React takes that HTML over inside the one element of the Vue page that holds the post (`apps/web/src/components/blog/postIsland.ts`). Tabs, accordions, the copy button, diagrams and whatever else DocuBook adds work because they are DocuBook's own code. The site only restyles them, in the CSS of `apps/web/src/components/blog/PostBody.vue`.
+
+That React script is the heaviest of the site (about 320 kB gzipped, most of it the icon set DocuBook looks icons up in by name), so it is fetched after a post is on screen, and ahead of time from the blog list. Each post also gets a reading time (its words at 200 a minute), shown in the table of contents.
 
 ## GitHub data
 

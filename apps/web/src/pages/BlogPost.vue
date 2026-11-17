@@ -51,7 +51,10 @@ const blobs = [
     <PostHeader :post="post" />
 
     <div class="container body">
-      <div ref="article" class="article"><PostBody :html="post.html" /></div>
+      <div ref="article" class="article">
+        <!-- Keyed: each post gets its own React root. -->
+        <PostBody :key="post.slug" :slug="post.slug" :html="post.html" @drawn="update" />
+      </div>
       <!-- Beside the article when there is room, otherwise in the dock's popover. -->
       <Teleport to="#dock-toc" defer :disabled="!narrow">
         <PostToc

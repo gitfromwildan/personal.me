@@ -1,68 +1,37 @@
 <script setup lang="ts">
 import "@docubook/markdown/styles.css";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 
-// The post as static HTML, rendered at build time by DocuBook's React components
-// (posts.plugin.ts) from this repo's own content/ folder, which is why v-html is safe here.
-defineProps<{ html: string }>();
+// A post's body is DocuBook's: its Markdown compiled by @docubook/core (posts.plugin.ts) and
+// drawn by the @docubook/markdown components. Those are React components, so React runs them
+// (postIsland.ts) inside this one element of the Vue page. Everything they do (tabs,
+// accordions, copying code, diagrams) is theirs; this file only restyles them, below.
+//
+// `html` is there only while the pages are built ahead of time: it is what the page is built
+// with. In the browser Vue leaves this element's content alone.
+const props = defineProps<{ slug: string; html?: string }>();
+const emit = defineEmits<{ drawn: [] }>();
 
-// Nothing hydrates that HTML, so the components' controls (tabs, accordion, copy button) are
-// driven from these two handlers.
-function onClick(event: MouseEvent) {
-  const button = (event.target as Element).closest("button");
-  if (!button) return;
-  if (button.role === "tab") {
-    const current = button.parentElement!.querySelector<HTMLElement>('[aria-selected="true"]')!;
-    for (const tab of [current, button]) {
-      const selected = tab === button;
-      tab.ariaSelected = String(selected);
-      tab.tabIndex = selected ? 0 : -1;
-      document.getElementById(tab.getAttribute("aria-controls")!)!.hidden = !selected;
-    }
-  } else if (button.classList.contains("mdx-accordion-header")) {
-    const open = button.ariaExpanded !== "true";
-    button.ariaExpanded = String(open);
-    document.getElementById(button.getAttribute("aria-controls")!)!.hidden = !open;
-  } else if (button.ariaLabel === "Copy code") {
-    const code = button.closest(".code-block-container")?.querySelector("pre")?.textContent ?? "";
-    // The button's text is for the eye, its live region is what a screen reader announces.
-    const say = (text: string) => {
-      button.firstChild!.textContent = text;
-      button.querySelector("[aria-live]")!.textContent = text;
-    };
-    // Without clipboard access (plain http, permission denied) the button just stays as it is.
-    void navigator.clipboard?.writeText(code).then(
-      () => {
-        say("Copied");
-        setTimeout(() => say("Copy"), 1600);
-      },
-      () => {},
-    );
-  }
-}
+const article = ref<HTMLElement | null>(null);
+let root: { unmount(): void } | undefined;
 
-// Unselected tabs are out of the tab order, so the arrow keys must reach them.
-function onKeydown(event: KeyboardEvent) {
-  const tab = event.target as HTMLElement;
-  if (tab.role !== "tab") return;
-  const next =
-    event.key === "ArrowRight"
-      ? tab.nextElementSibling
-      : event.key === "ArrowLeft"
-        ? tab.previousElementSibling
-        : null;
-  if (next instanceof HTMLElement) {
-    next.focus();
-    next.click();
-  }
-}
+onMounted(async () => {
+  // Fetched once the page is up: the post is already readable without it.
+  const { mountPost } = await import("./postIsland");
+  // The visitor may have left the post while it was on its way.
+  if (!article.value) return;
+  root = mountPost(article.value, props.slug);
+  emit("drawn");
+});
+onBeforeUnmount(() => root?.unmount());
 </script>
 
 <template>
-  <article class="post-body" v-html="html" @click="onClick" @keydown="onKeydown" />
+  <article ref="article" class="post-body" v-html="html" />
 </template>
 
 <!--
-  Not scoped: these rules style the v-html body. DocuBook's components carry their look as inline
+  Not scoped: these rules style what React draws, which Vue's scoping does not reach. DocuBook's components carry their look as inline
   styles, so matching them to this site's design takes !important throughout.
 -->
 <style>
