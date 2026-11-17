@@ -17,7 +17,7 @@ const groups = Object.entries(DATA.skills);
       <section v-for="[title, skills] in groups" :key="title" class="group" :aria-label="title">
         <div class="glass bar">
           <h3>{{ title }}</h3>
-          <span class="glass chip mono-label count">{{ skills.length }} skills</span>
+          <span class="glass chip mono-label plain count">{{ skills.length }} skills</span>
         </div>
         <ul class="list">
           <li v-for="skill in skills" :key="skill.name" class="skill">
@@ -89,8 +89,6 @@ const groups = Object.entries(DATA.skills);
 .count {
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
-  letter-spacing: 0;
-  text-transform: none;
   white-space: nowrap;
 }
 

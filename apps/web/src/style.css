@@ -35,6 +35,14 @@ a {
   white-space: nowrap;
 }
 
+/* A page with colour blobs behind it. isolate keeps the z-index -1 blobs above the page
+   background and below the content. */
+.stage {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
 /* Page column: 1120px in the design, with a gutter on narrow screens. */
 .container {
   width: min(1120px, 100% - 2.5rem);
@@ -59,6 +67,12 @@ a {
   font-weight: 400;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+/* A mono label in sentence case, for counts and notes. */
+.mono-label.plain {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 /* The glass surface. Tune per use with --glass-radius, --glass-blur and --glass-elevation. */
@@ -101,6 +115,17 @@ a {
   height: 7px;
   border-radius: 50%;
   background: var(--accent);
+}
+
+/* A glass bead on a rail or meter. Size it with --bead-size and ring it with --bead-ring. */
+.bead {
+  width: var(--bead-size, 18px);
+  height: var(--bead-size, 18px);
+  border-radius: 50%;
+  background: radial-gradient(ellipse 60% 60% at 35% 30%, #fff, var(--meniscus));
+  outline: 1.5px solid var(--bead-ring, var(--rim-hi));
+  outline-offset: -0.75px;
+  box-shadow: 0 4px 10px var(--glass-shadow);
 }
 
 /* Pill button: add .glass for the glass one or .solid for the filled one. */

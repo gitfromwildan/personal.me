@@ -37,15 +37,9 @@ defineProps<{ value: number; label: string }>();
 }
 
 .bead {
+  --bead-ring: var(--accent);
   position: absolute;
   top: 0;
   left: calc(var(--value) - 9px);
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse 60% 60% at 35% 30%, #fff, var(--meniscus));
-  outline: 1.5px solid var(--accent);
-  outline-offset: -0.75px;
-  box-shadow: 0 4px 10px var(--glass-shadow);
 }
 </style>
