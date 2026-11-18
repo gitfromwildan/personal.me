@@ -10,14 +10,16 @@ import { usePageTitle } from "../composables/usePageTitle";
 import { DATA } from "../data";
 import { i18n } from "../i18n";
 import { shortDate } from "../format";
+import { onFirstMove } from "../wake";
 
 const { title, tagline, endNote } = DATA.blog;
 const [home] = DATA.navbar;
 // The posts in the language being shown: the page is made anew when that changes.
 const posts = postsIn[i18n.global.locale.value];
 usePageTitle(() => title);
-// A post is likely the next page: its heavy script is fetched ahead, while this one is read.
-onMounted(() => import("../components/blog/postIsland"));
+// A post is likely the next page: its heavy script is fetched ahead while this one is read, from
+// the visitor's first move on, so that it is no part of loading this page.
+onMounted(() => onFirstMove(() => import("../components/blog/postIsland")));
 
 // The page-wide colour blobs. The first sits behind the title, wherever the column starts.
 const blobs = [
