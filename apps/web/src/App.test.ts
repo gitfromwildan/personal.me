@@ -7,9 +7,6 @@ import { tocOpen } from "./composables/useDockToc";
 import { i18n } from "./i18n";
 import { makeRouter } from "./router";
 
-// The blog page fetches what draws the posts, which is a lot and not what is tested here.
-vi.mock("./components/blog/postIsland", () => ({}));
-
 /** The page at `path` as the build draws it, taken over by Vue as in main.ts. */
 async function arrive(path: string) {
   const make = async () => {
@@ -33,23 +30,30 @@ async function arrive(path: string) {
   return { router, dock: host.querySelector<HTMLElement>(".dock")! };
 }
 
-/** Escape closes the dock's popover, once the dock's script runs. */
-function escape(dock: HTMLElement) {
+/**
+ * Whether the dock's script runs: only then does its popover show when it is told to open. Asked
+ * without a key or a pointer, which would be the visitor's first move: on it the pages fetch
+ * what they put off, GitHub's numbers and the script that draws the posts.
+ */
+async function live(dock: HTMLElement) {
   tocOpen.value = true;
-  dock.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
-  return !tocOpen.value;
+  await nextTick();
+  const shown = dock.querySelector<HTMLElement>("#dock-toc")!.style.display !== "none";
+  tocOpen.value = false;
+  await nextTick();
+  return shown;
 }
 
 test("the dock is left as built until the page changes, and then follows it", async () => {
   const { router, dock } = await arrive("/");
   const blog = dock.querySelector('a[href="/blog"]')!;
-  expect(escape(dock)).toBe(false);
+  expect(await live(dock)).toBe(false);
   expect(blog.classList.contains("active")).toBe(false);
 
   await router.push("/blog");
   await vi.waitFor(() => expect(blog.classList.contains("active")).toBe(true));
   expect(dock.querySelector(".language")!.getAttribute("href")).toBe("/id/blog");
-  expect(escape(dock)).toBe(true);
+  expect(await live(dock)).toBe(true);
 });
 
 test("the dock comes to life under a pointer, and shows tooltips only to a mouse", async () => {
@@ -60,8 +64,7 @@ test("the dock comes to life under a pointer, and shows tooltips only to a mouse
       .dispatchEvent(new PointerEvent("pointerover", { bubbles: true, pointerType }));
 
   over("touch");
-  await nextTick();
-  expect(escape(dock)).toBe(true);
+  expect(await live(dock)).toBe(true);
   expect(dock.classList.contains("mouse")).toBe(false);
 
   over("mouse");
