@@ -9,12 +9,19 @@ import { makeRouter } from "./router";
 // The build's side of the app: prerender.ts calls this once per page to get the HTML that page
 // is served with.
 
-/** Every page the site has: each one in every language, at the address its navbar gives. */
-export const routes = Object.values(messages).flatMap(({ navbar: [home, blog] }) => [
-  home.href,
-  blog.href,
-  ...postsIn.en.map((post) => `${blog.href}/${post.slug}`),
-]);
+/**
+ * Every page the site has: each one in every language, at the address its navbar gives. Then
+ * the page for an address that has none: the host answers those with 404.html (and the status
+ * 404), which is what the address /404 is written to.
+ */
+export const routes = [
+  ...Object.values(messages).flatMap(({ navbar: [home, blog] }) => [
+    home.href,
+    blog.href,
+    ...postsIn.en.map((post) => `${blog.href}/${post.slug}`),
+  ]),
+  "/404",
+];
 
 /**
  * A page as HTML, with its title, its language and the ids of the modules (components) that

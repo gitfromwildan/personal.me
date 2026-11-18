@@ -8,5 +8,4 @@ export const blog = {
   navLabel: "Posts",
   backLabel: "All posts",
   nextLabel: "Next",
-  notFound: "Post not found",
 } as const;

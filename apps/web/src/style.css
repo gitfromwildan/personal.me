@@ -205,10 +205,3 @@ a {
   filter: blur(var(--blob-blur, 60px));
   pointer-events: none;
 }
-
-/* Reading column for the blog pages. */
-.narrow {
-  max-width: 40rem;
-  margin: 4rem auto;
-  padding: 0 1rem;
-}

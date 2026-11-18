@@ -9,5 +9,4 @@ export const blog = {
   navLabel: "Tulisan",
   backLabel: "Semua tulisan",
   nextLabel: "Berikutnya",
-  notFound: "Tulisan tidak ditemukan",
 };

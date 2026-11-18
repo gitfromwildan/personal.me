@@ -4,6 +4,7 @@ import { contact } from "./contact";
 import { hero } from "./hero";
 import { id } from "./id";
 import { navbar } from "./navbar";
+import { notFound } from "./notFound";
 import { profile } from "./profile";
 import { projects } from "./projects";
 import { skills } from "./skills";
@@ -22,6 +23,7 @@ export const en = {
   contact,
   work,
   blog,
+  notFound,
   projects,
   ui,
 } as const;

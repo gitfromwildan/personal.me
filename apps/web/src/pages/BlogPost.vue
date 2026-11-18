@@ -9,8 +9,8 @@ import PageBlobs from "../components/ui/PageBlobs.vue";
 import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { usePageTitle } from "../composables/usePageTitle";
 import { useReadingProgress } from "../composables/useReadingProgress";
-import { DATA } from "../data";
 import { i18n } from "../i18n";
+import NotFound from "./NotFound.vue";
 
 const props = defineProps<{ slug: string }>();
 // The posts in the language being shown: the page is made anew when that changes.
@@ -75,10 +75,7 @@ const blobs = [
     <PostNav :next="posts[index + 1]" />
   </main>
 
-  <main v-else class="narrow">
-    <h1>{{ DATA.blog.notFound }}</h1>
-    <RouterLink :to="DATA.navbar[1].href">{{ DATA.blog.backLabel }}</RouterLink>
-  </main>
+  <NotFound v-else />
 </template>
 
 <style scoped>

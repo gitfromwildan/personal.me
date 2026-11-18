@@ -22,7 +22,9 @@ export function makeRouter(
         component: () => import("./pages/BlogPost.vue"),
         props: (route) => ({ slug: route.params.slug }),
       },
-      { path: "/:pathMatch(.*)*", redirect: "/" },
+      // An address with no page keeps its address, and its language: under /id, the page that
+      // says so is in Indonesian.
+      { path: "/:pathMatch(.*)*", component: () => import("./pages/NotFound.vue") },
     ],
     scrollBehavior(to, from, saved) {
       // Changing the language of the page being read keeps the reader where they are.

@@ -4,6 +4,7 @@ import { blog } from "./blog";
 import { contact } from "./contact";
 import { hero } from "./hero";
 import { navbar } from "./navbar";
+import { notFound } from "./notFound";
 import { profile } from "./profile";
 import { projects } from "./projects";
 import { skills } from "./skills";
@@ -32,6 +33,7 @@ export const id = {
   contact,
   work,
   blog,
+  notFound,
   projects,
   ui,
 } satisfies Omit<Translated<Messages>, "skills"> & {
