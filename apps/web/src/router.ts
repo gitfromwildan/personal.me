@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter, createWebHistory } from "vue-router";
+import { createMemoryHistory, createRouter, createWebHistory, START_LOCATION } from "vue-router";
 import { i18n, inOtherLocale, localeOf } from "./i18n";
 import HomePage from "./pages/HomePage.vue";
 
@@ -27,6 +27,9 @@ export function makeRouter(
     scrollBehavior(to, from, saved) {
       // Changing the language of the page being read keeps the reader where they are.
       if (to.path === inOtherLocale(from.path)) return false;
+      // A page that has only just loaded is at its top already: scrolling it there would make
+      // the browser lay the whole page out again, in the middle of starting up.
+      if (from === START_LOCATION && !saved && !to.hash) return false;
       return saved ?? (to.hash ? { el: to.hash } : { top: 0 });
     },
   });
