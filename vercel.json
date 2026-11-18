@@ -16,6 +16,24 @@
       ]
     },
     {
+      "source": "/(.*).webp",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=10368000"
+        }
+      ]
+    },
+    {
+      "source": "/favicon.ico",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=10368000"
+        }
+      ]
+    },
+    {
       "source": "/blog",
       "headers": [
         {
