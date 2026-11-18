@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { DATA } from "../data";
+import { onFirstMove } from "../wake";
 
 const API = "https://api.github.com";
 // Both calls use the search API (10 requests a minute per visitor without a token), so cache them.
@@ -54,10 +55,9 @@ let started = false;
 export function loadGithub() {
   if (started || import.meta.env.SSR) return;
   started = true;
-  // After the page has settled: the numbers are far down the page, and parsing GitHub's answers
-  // while the page is still being drawn would hold up the first interaction.
-  const idle = window.requestIdleCallback ?? ((fn: () => void) => setTimeout(fn, 200));
-  idle(fetchAll);
+  // On the visitor's first move: the numbers are far down the page, so nobody sees them before
+  // then, and asked for any earlier they count as part of loading the page.
+  onFirstMove(fetchAll);
 }
 
 function fetchAll() {
