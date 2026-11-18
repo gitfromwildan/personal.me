@@ -29,8 +29,8 @@ watch(tocOpen, (open) =>
 onUnmounted(() => removeEventListener("pointerdown", onPress));
 
 // Magnification as on the macOS Dock: tiles grow the closer the pointer is to them.
-const GROWTH = 0.5; // the tile under the pointer is this much bigger
-const REACH = 120; // px from the pointer at which a tile is back to its own size
+const GROWTH = 0.25; // the tile under the pointer is this much bigger
+const REACH = 90; // px from the pointer at which a tile is back to its own size
 // Centres of the tiles at rest, measured when the pointer comes in: growing tiles push their
 // neighbours aside, and following those moving centres would make the dock jitter.
 let centres: number[] = [];
