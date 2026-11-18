@@ -23,6 +23,9 @@ export default defineConfig({
   // Static assets live in the repo-root public/.
   publicDir: "../../public",
   plugins: lazyPlugins(() => [vue(), posts()]),
+  // Only a test draws a page as the build does, in the browser (App.test.ts). Named here, it is
+  // made ready before the tests start: found in the middle of a run, it makes Vite reload them.
+  optimizeDeps: { include: ["vue/server-renderer"] },
   run: {
     tasks: {
       // A task, not a package.json script, to say that the two variables decide what it does:

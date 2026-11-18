@@ -9,13 +9,20 @@ export const hasToc = ref(false);
 export const tocOpen = ref(false);
 
 /**
- * True when the post page is one column wide. Always false until the app is mounted: pages are
+ * True when the post page is one column wide. Always false until the dock is mounted: pages are
  * built ahead of time, for no screen in particular, and Vue must first draw what was built.
  */
 export const narrow = ref(false);
 
-/** Starts following the screen's width. For the app to call once it is mounted. */
+let following = false;
+
+/**
+ * Starts following the screen's width. For the dock to call once it is mounted: it is made anew
+ * with each change of language, and only the first has anything to start.
+ */
 export function followWidth() {
+  if (following) return;
+  following = true;
   const query = matchMedia("(max-width: 1000px)");
   const sync = () => {
     narrow.value = query.matches;
