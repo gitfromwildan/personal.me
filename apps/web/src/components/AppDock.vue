@@ -13,6 +13,9 @@ const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
 const [, blog] = DATA.navbar;
 const route = useRoute();
 
+// Whether the pointer last over the dock was a mouse: only a mouse hovers (see .mouse).
+const mouse = ref(false);
+
 // While the popover is open, a press outside the dock closes it.
 const dock = ref<HTMLElement | null>(null);
 function onPress(event: PointerEvent) {
@@ -72,8 +75,10 @@ function onLeave() {
     <nav
       ref="dock"
       class="dock glass"
+      :class="{ mouse }"
       :aria-label="DATA.ui.dock.main"
       @keydown.esc="tocOpen = false"
+      @pointerover="mouse = $event.pointerType === 'mouse'"
       @pointerenter="onEnter"
       @pointermove="onMove"
       @pointerleave="onLeave"
@@ -316,11 +321,11 @@ function onLeave() {
   transform: translate(-50%, 0);
 }
 
-@media (hover: hover) {
-  .tile:hover::after {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
+/* Only under a mouse, as the dock itself sees it: some phones say they can hover, and there the
+   tooltip of a tapped tile came up and stayed. */
+.mouse .tile:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .sep {
