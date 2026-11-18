@@ -1,6 +1,7 @@
 // The last step of the build: writes every page of the site as its own HTML file, so a page is
 // there to read before any script has run. Runs after `vp build --ssrManifest` (the site, into
 // dist/) and `vp build --ssr` (the app as a module Node can run, into dist/server/).
+import { readFileSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
@@ -20,6 +21,29 @@ const escape = (text: string) =>
 // dist/index.html is both the shell every page is written into and where the home page goes,
 // so it is read before anything is written.
 const shell = await readFile("dist/index.html", "utf8");
+
+// A page's styles go into the page itself: as files of their own, the page could not be shown
+// before each had been asked for and had arrived. `data-href` says which file they are.
+const styles = (file: string) =>
+  `<style data-href="${file}">${readFileSync(`dist${file}`, "utf8")}</style>`;
+// The script that fetches a page on demand also fetches the styles that page needs, unless it
+// finds a link to them. So each gets one, switched off and added by script: a browser fetches
+// neither such a link nor, as it would one written in the page, ahead of reading it.
+const links = `<script>
+      for (const { dataset } of document.querySelectorAll("style[data-href]")) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.setAttribute("disabled", "");
+        link.href = dataset.href;
+        document.head.append(link);
+      }
+    </script>`;
+// The shell's own stylesheet comes last in the head, so the script after it sees them all.
+const page = shell.replace(
+  /<link rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/,
+  (_, file: string) => styles(file) + links,
+);
+if (page === shell) throw new Error("No stylesheet in dist/index.html to put into the pages.");
 // Which files (script, styles, fonts) each module ended up in.
 const manifest: Record<string, string[]> = JSON.parse(
   await readFile("dist/.vite/ssr-manifest.json", "utf8"),
@@ -34,7 +58,7 @@ for (const url of routes) {
     .filter((file) => !shell.includes(file))
     .map((file) =>
       file.endsWith(".css")
-        ? `<link rel="stylesheet" crossorigin href="${file}">`
+        ? styles(file)
         : file.endsWith(".js")
           ? `<link rel="modulepreload" crossorigin href="${file}">`
           : "",
@@ -50,7 +74,7 @@ for (const url of routes) {
     file,
     // Replacements are given as functions: in a plain string, a "$" from the page (there are
     // some in the posts' shell examples) could be read as an instruction to replace().
-    shell
+    page
       .replace(/(?<=<html lang=")[^"]*/, () => lang)
       .replace(/(?<=<title>).*(?=<\/title>)/, (shellTitle) => (title ? escape(title) : shellTitle))
       .replace("<!--app-head-->", () => head)
