@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch, watchEffect } from "vue";
+import {
+  computed,
+  defineAsyncComponent,
+  nextTick,
+  onBeforeUnmount,
+  ref,
+  watch,
+  watchEffect,
+} from "vue";
 import { postsIn } from "virtual:posts";
 import PostBody from "../components/blog/PostBody.vue";
 import PostHeader from "../components/blog/PostHeader.vue";
@@ -10,7 +18,10 @@ import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { usePageTitle } from "../composables/usePageTitle";
 import { useReadingProgress } from "../composables/useReadingProgress";
 import { i18n } from "../i18n";
-import NotFound from "./NotFound.vue";
+
+// What an address with no post behind it shows. Fetched only then: a post that exists does
+// not bring the not-found page's script and styles along.
+const NotFound = defineAsyncComponent(() => import("./NotFound.vue"));
 
 const props = defineProps<{ slug: string }>();
 // The posts in the language being shown: the page is made anew when that changes.
