@@ -1,6 +1,5 @@
 import { createMemoryHistory, createRouter, createWebHistory, START_LOCATION } from "vue-router";
 import { i18n, inOtherLocale, localeOf } from "./i18n";
-import HomePage from "./pages/HomePage.vue";
 
 // Every page exists once per language: as it is for English, and under /id for Indonesian.
 const LANG = "/:lang(id)?";
@@ -14,8 +13,9 @@ export function makeRouter(
   const router = createRouter({
     history,
     routes: [
-      { path: LANG, component: HomePage },
-      // Lazy, so the compiled posts stay out of the home page bundle.
+      // Each page is fetched when it is gone to: a page then brings only its own script and
+      // styles, and the compiled posts stay out of the home page's.
+      { path: LANG, component: () => import("./pages/HomePage.vue") },
       { path: `${LANG}/blog`, component: () => import("./pages/BlogList.vue") },
       {
         path: `${LANG}/blog/:slug`,
