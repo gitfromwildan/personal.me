@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { linkTarget } from "../links";
 import { DATA } from "../data";
-import { onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
+import { followWidth, hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { toggleTheme } from "../composables/useTheme";
 import { inOtherLocale } from "../i18n";
 import AppIcon from "./ui/AppIcon.vue";
@@ -12,6 +12,8 @@ const year = new Date().getFullYear();
 const social = Object.values(DATA.contact.social).filter((s) => s.navbar);
 const [, blog] = DATA.navbar;
 const route = useRoute();
+
+onMounted(followWidth);
 
 // Whether the pointer last over the dock was a mouse: only a mouse hovers (see .mouse).
 const mouse = ref(false);
