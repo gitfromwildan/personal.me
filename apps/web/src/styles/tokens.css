@@ -48,7 +48,9 @@
   --color-bg: light-dark(#ffffff, #08090a);
   --color-ink: light-dark(#0a0a0a, #fafafa);
   --color-ink-2: light-dark(#404040, #d4d4d4);
-  --color-s-muted: light-dark(#565b66, #bec3cd);
+  /* Muted text sits over the colour blobs too: by day it is dark enough (#4a4e58, the design's
+     #565b66 darkened) for 4.5:1 over the strongest of them. */
+  --color-s-muted: light-dark(#4a4e58, #bec3cd);
   --color-accent: light-dark(#047857, #34d399);
   --color-accent-soft: light-dark(#e8f7f0, #0c2a20);
   --color-logo-tile: light-dark(#ffffff, #e5e5e5);
