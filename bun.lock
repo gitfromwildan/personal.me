@@ -21,7 +21,7 @@
       },
       "devDependencies": {
         "@docubook/core": "^2.8.2",
-        "@docubook/markdown": "^2.8.2",
+        "@docubook/markdown": "^2.8.3",
         "@tailwindcss/vite": "catalog:",
         "@types/node": "catalog:",
         "@types/react": "^19.3.0",
@@ -106,7 +106,7 @@
 
     "@docubook/core": ["@docubook/core@2.8.2", "", { "dependencies": { "@11ty/gray-matter": "^3.0.0", "@mdx-js/mdx": "^3.1.1", "@mdx-js/react": "^3.1.1", "clsx": "^2.1.1", "rehype-autolink-headings": "^7.1.0", "rehype-code-titles": "^1.2.1", "rehype-prism-plus": "^2.0.2", "rehype-slug": "^6.0.0", "remark-directive": "^4.0.0", "remark-gfm": "^4.0.1", "tailwind-merge": "^3.7.0", "unist-util-remove": "^4.0.0", "unist-util-visit": "^5.1.0", "vfile": "^6.0.3", "vfile-matter": "^5.0.1", "zod": "^4.6.7" }, "peerDependencies": { "react": ">=18" } }, "sha512-qsrFsaZkp6XivnXSAu3fScH+IGXpH4C6DDR+2ILII+YsBi7b7zo4Ptf3LnYqqUkKirUuStfhs8SnYpUvvWt2Ig=="],
 
-    "@docubook/markdown": ["@docubook/markdown@2.8.2", "", { "dependencies": { "mermaid": "^12.0.0" }, "peerDependencies": { "lucide-react": "^1.7.0", "react": ">=18", "react-dom": ">=18", "react-icons": "^5.0.0" } }, "sha512-DzamUGbKwnYKfmbxSYBPB+2MKSOsEzsqtZRyZ44Vf8lLR7Zws5miAQjpAeQ1TpmWlBetNH9Bk+6KVHaSRPuj1A=="],
+    "@docubook/markdown": ["@docubook/markdown@2.8.3", "", { "dependencies": { "mermaid": "^12.0.0" }, "peerDependencies": { "lucide-react": "^1.7.0", "react": ">=18", "react-dom": ">=18", "react-icons": "^5.0.0" } }, "sha512-y8GNbR/9EQ5sUnqbTbGc7xmyM7j8sOu4dYEhlYJxt+xsHMIpNGzOe2Gt7Bkn8fWwGrKqTtMriRmUHV8PmgCI5w=="],
 
     "@fontsource-variable/geist": ["@fontsource-variable/geist@5.3.0", "", {}, "sha512-j0m+vLQuG5XAYoHtGCVu0spvlGreR3EzpECUVzkFmI1mTVnAO38l/NEPDCFgZ177JxzYJCLSmTQibIiYPilGrA=="],
 

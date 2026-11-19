@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@docubook/core": "^2.8.2",
-    "@docubook/markdown": "^2.8.2",
+    "@docubook/markdown": "^2.8.3",
     "@tailwindcss/vite": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "^19.3.0",
