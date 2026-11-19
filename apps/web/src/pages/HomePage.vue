@@ -14,11 +14,11 @@ usePageTitle(() => DATA.navbar[0].label);
 
 // The page-wide colour blobs behind the sections, placed as a share of the page's height.
 const blobs = [
-  { color: "--blob-a", width: 620, top: "26%", right: -160 },
-  { color: "--blob-b", width: 640, top: "45%", left: -580 },
-  { color: "--blob-d", width: 600, top: "47%", right: -540 },
-  { color: "--blob-c", width: 620, top: "78%", left: -160 },
-  { color: "--blob-b", width: 680, top: "91%", right: -140 },
+  { color: "--color-blob-a", width: 620, top: "26%", right: -160 },
+  { color: "--color-blob-b", width: 640, top: "45%", left: -580 },
+  { color: "--color-blob-d", width: 600, top: "47%", right: -540 },
+  { color: "--color-blob-c", width: 620, top: "78%", left: -160 },
+  { color: "--color-blob-b", width: 680, top: "91%", right: -140 },
 ];
 </script>
 

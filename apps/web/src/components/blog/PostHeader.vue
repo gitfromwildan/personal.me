@@ -9,98 +9,33 @@ const [home, blog] = DATA.navbar;
 </script>
 
 <template>
-  <header class="container header">
+  <header class="container flex flex-col gap-6 pt-22 max-md:pt-14">
     <AppBreadcrumb
+      flush
       :items="[
         { label: home.label, to: home.href },
         { label: blog.label, to: blog.href },
         { label: post.title },
       ]"
     />
-    <h1 class="title">{{ post.title }}</h1>
-    <p class="summary">{{ post.summary }}</p>
-    <p class="meta">
+    <h1 class="text-[clamp(2.5rem,7vw,4rem)] leading-[1.05] font-semibold tracking-[-0.0375em]">
+      {{ post.title }}
+    </h1>
+    <p
+      class="max-w-160 text-[1.3125rem] leading-[1.52] tracking-[-0.01em] text-ink-2 max-md:text-lg"
+    >
+      {{ post.summary }}
+    </p>
+    <!-- On one column the date wraps under the author, so the dot between them would dangle. -->
+    <p class="flex flex-wrap items-center gap-3.5 pt-1 text-[0.9375rem] text-s-muted">
       <img class="avatar" :src="DATA.avatarUrl" alt="" width="36" height="36" />
-      <span class="author">{{ DATA.name }}</span>
-      <span class="sep" aria-hidden="true" />
+      <span class="font-semibold text-ink">{{ DATA.name }}</span>
+      <span class="size-[3px] rounded-full bg-s-muted max-md:hidden" aria-hidden="true" />
       <!-- "9mo ago" is as of the day the page was built: Vue corrects it on arrival, and is
            told here not to report the difference. -->
-      <time :datetime="post.date" data-allow-mismatch="text"
+      <time class="max-md:basis-full" :datetime="post.date" data-allow-mismatch="text"
         >{{ longDate(post.date) }} ({{ ago(post.date) }})</time
       >
     </p>
   </header>
 </template>
-
-<style scoped>
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-top: 5.5rem;
-}
-
-/* The breadcrumb lines up with the title here: no eyebrow inset. */
-.header :deep(.trail) {
-  padding-inline: 0;
-}
-
-.title {
-  margin: 0;
-  font-size: clamp(2.5rem, 7vw, 4rem);
-  font-weight: 600;
-  letter-spacing: -0.0375em;
-  line-height: 1.05;
-}
-
-.summary {
-  max-width: 40rem;
-  margin: 0;
-  color: var(--ink-2);
-  font-size: 1.3125rem;
-  letter-spacing: -0.01em;
-  line-height: 1.52;
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.875rem;
-  margin: 0;
-  padding-top: 0.25rem;
-  color: var(--s-muted);
-  font-size: 0.9375rem;
-}
-
-.author {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.sep {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--s-muted);
-}
-
-@media (max-width: 860px) {
-  .header {
-    padding-top: 3.5rem;
-  }
-
-  .summary {
-    font-size: 1.125rem;
-  }
-
-  /* The date wraps under the author here, so the dot between them would dangle. */
-  .sep {
-    display: none;
-  }
-
-  time {
-    flex-basis: 100%;
-  }
-}
-</style>

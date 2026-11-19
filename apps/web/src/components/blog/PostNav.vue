@@ -12,19 +12,40 @@ const [, blog] = DATA.navbar;
 </script>
 
 <template>
-  <nav class="container" :aria-label="navLabel">
-    <div class="glass tray" :class="{ alone: !next }">
-      <RouterLink class="back" :to="blog.href">
+  <nav class="container pt-2 pb-6" :aria-label="navLabel">
+    <!-- On the last post the link back is all there is: a tray across the page for it alone
+         would be mostly empty. -->
+    <div
+      class="glass flex gap-1 rounded-[20px] p-1 shadow-[0_16px_36px_var(--color-glass-shadow)]"
+      :class="{ 'w-1/2': !next }"
+    >
+      <!-- A third of the tray, or all of the half-width one on the last post. On a phone it
+           gives the next post's title the room: it is only as wide as its text. -->
+      <RouterLink
+        class="link flex-3 gap-1.5 px-3 text-s-muted hover:bg-chip hover:text-ink"
+        :class="{ 'max-sm:flex-none': next }"
+        :to="blog.href"
+      >
         <AppIcon name="arrow-left" :size="14" />
         {{ backLabel }}
       </RouterLink>
 
-      <RouterLink v-if="next" class="next" :to="postPath(next.slug)" rel="next">
-        <span class="text">
-          <span class="title">{{ next.title }}</span>
-          <span class="summary">{{ next.summary }}</span>
+      <RouterLink
+        v-if="next"
+        class="link flex-7 justify-end bg-accent/15 text-right text-accent hover:bg-accent/20 hover:inset-ring hover:inset-ring-accent/30"
+        :to="postPath(next.slug)"
+        rel="next"
+      >
+        <span class="flex min-w-0 flex-col px-5 max-sm:px-3">
+          <span class="truncate font-semibold">{{ next.title }}</span>
+          <span class="ml-auto max-w-72 truncate text-xs opacity-75 max-sm:hidden">
+            {{ next.summary }}
+          </span>
         </span>
-        <span class="label">
+        <!-- "Next" and its arrow, set off by a hairline. -->
+        <span
+          class="flex flex-none items-center gap-1.5 border-l border-accent/20 py-2 pr-3 pl-5 opacity-75 max-sm:pr-2 max-sm:pl-3"
+        >
           {{ nextLabel }}
           <AppIcon name="arrow-right" :size="14" />
         </span>
@@ -34,117 +55,10 @@ const [, blog] = DATA.navbar;
 </template>
 
 <style scoped>
-nav {
-  padding-block: 0.5rem 1.5rem;
-}
+@reference "../../style.css";
 
-.tray {
-  --glass-radius: 20px;
-  --glass-elevation: 0 16px 36px;
-  display: flex;
-  gap: 4px;
-  padding: 4px;
-}
-
-/* On the last post the link back is all there is: a tray across the page for it alone would
-   be mostly empty. */
-.tray.alone {
-  width: 50%;
-}
-
-.back,
-.next {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  min-height: 4rem;
-  border-radius: 16px;
-  font-size: 0.875rem;
-  text-decoration: none;
-  transition:
-    background 0.15s,
-    color 0.15s,
-    box-shadow 0.15s;
-}
-
-/* A third of the tray, or all of the half-width one on the last post. */
-.back {
-  flex: 3;
-  gap: 0.375rem;
-  padding-inline: 0.75rem;
-  color: var(--s-muted);
-}
-
-.back:hover {
-  background: var(--chip);
-  color: var(--ink);
-}
-
-.next {
-  flex: 7;
-  justify-content: flex-end;
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent);
-  text-align: right;
-}
-
-.next:hover {
-  background: color-mix(in srgb, var(--accent) 20%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
-}
-
-.text {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  padding-inline: 1.25rem;
-}
-
-.title,
-.summary {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.title {
-  font-weight: 600;
-}
-
-.summary {
-  max-width: 18rem;
-  margin-left: auto;
-  font-size: 0.75rem;
-  opacity: 0.75;
-}
-
-/* "Next" and its arrow, set off by a hairline. */
-.label {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
-  border-left: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-  opacity: 0.75;
-}
-
-@media (max-width: 640px) {
-  .summary {
-    display: none;
-  }
-
-  /* Give the next post's title the room: the link back is only as wide as its text. */
-  .back:not(:only-child) {
-    flex: none;
-  }
-
-  .text {
-    padding-inline: 0.75rem;
-  }
-
-  .label {
-    padding-inline: 0.75rem 0.5rem;
-  }
+/* The link back and the next post: a block of the tray each. */
+.link {
+  @apply flex min-h-16 min-w-0 items-center rounded-2xl text-sm transition-[background,color,box-shadow] duration-150 ease-[ease];
 }
 </style>

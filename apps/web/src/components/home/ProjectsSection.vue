@@ -23,7 +23,7 @@ const cards = computed(() =>
       name,
       url: repo?.url ?? githubUrl(name),
       repo,
-      color: LANGUAGE_COLORS[repo?.language ?? ""] ?? "var(--s-muted)",
+      color: LANGUAGE_COLORS[repo?.language ?? ""] ?? "var(--color-s-muted)",
     };
   }),
 );
@@ -36,25 +36,48 @@ const groups = computed(() => [
 </script>
 
 <template>
-  <section id="projects" class="section container projects" aria-labelledby="projects-title">
-    <header class="header">
+  <section id="projects" class="section container pt-7 pb-12" aria-labelledby="projects-title">
+    <header class="flex max-w-160 flex-col gap-4">
       <SectionEyebrow :label="DATA.ui.eyebrows.projects" />
-      <h2 id="projects-title" class="title">{{ DATA.projects.title }}</h2>
-      <p class="sub">{{ DATA.projects.sub }}</p>
+      <h2
+        id="projects-title"
+        class="mt-3.5 px-2 text-[clamp(2rem,5vw,3rem)] leading-[1.05] font-semibold tracking-[-0.033em] text-ink"
+      >
+        {{ DATA.projects.title }}
+      </h2>
+      <p class="-mt-2 px-2 text-[1.0625rem] leading-[1.55] text-s-muted">
+        {{ DATA.projects.sub }}
+      </p>
     </header>
 
-    <div class="grid">
+    <!-- The list's hairlines sit on top of each card after the first, not under each but the
+         last (divide-y): the cards are spread apart, and the line belongs to the card below. -->
+    <div class="mt-4.5 grid gap-6 md:grid-cols-[1.04fr_1fr]">
       <ul
         v-for="group in groups"
         :key="group.featured ? 'featured' : 'list'"
         class="glass"
-        :class="group.featured ? 'featured' : 'list divided'"
+        :class="{
+          'flex flex-col justify-between px-9 py-3.5 *:border-glass-line *:not-first:border-t':
+            !group.featured,
+        }"
       >
         <li v-for="card in group.cards" :key="card.name">
-          <a class="card" :href="card.url" target="_blank" rel="noopener noreferrer">
+          <a
+            class="flex min-w-0 flex-col"
+            :class="{
+              'transition-transform duration-200 ease-[ease] hover:-translate-y-[3px]':
+                group.featured,
+            }"
+            :href="card.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <!-- The height attribute holds the place before the picture arrives; the ratio
+                 sizes it. -->
             <img
               v-if="group.featured"
-              class="preview"
+              class="mx-3 mt-3 aspect-[535/323] h-auto w-[calc(100%-1.5rem)] rounded-[22px] object-cover object-top"
               :src="DATA.projects.preview"
               alt=""
               width="1070"
@@ -62,27 +85,52 @@ const groups = computed(() => [
               loading="lazy"
               decoding="async"
             />
-            <div class="body">
-              <h3 class="name">
+            <div
+              class="flex flex-col"
+              :class="group.featured ? 'gap-3.5 px-5 pt-6 pb-4.5' : 'gap-3 py-6'"
+            >
+              <h3
+                class="flex items-center justify-between gap-3 font-mono font-semibold tracking-[-0.02em] wrap-anywhere text-ink"
+                :class="group.featured ? 'text-lg' : 'text-base'"
+              >
                 {{ card.name }}
                 <AppIcon name="arrow-up-right" :size="group.featured ? 18 : 16" />
               </h3>
               <template v-if="card.repo">
-                <p v-if="card.repo.description" class="muted-text description">
+                <p
+                  v-if="card.repo.description"
+                  class="muted-text"
+                  :class="{ 'text-base leading-[1.6] text-ink-2': group.featured }"
+                >
                   {{ card.repo.description }}
                 </p>
-                <p class="meta">
-                  <span v-if="card.repo.language" class="lang">
-                    <span class="lang-dot" :style="{ background: card.color }" aria-hidden="true" />
+                <p
+                  class="flex flex-wrap items-center gap-x-4.5 gap-y-2 font-mono text-xs text-s-muted"
+                >
+                  <span
+                    v-if="card.repo.language"
+                    class="inline-flex items-center gap-1.75 font-sans text-[0.8125rem] text-ink-2"
+                  >
+                    <span
+                      class="size-[9px] rounded-full"
+                      :style="{ background: card.color }"
+                      aria-hidden="true"
+                    />
                     {{ card.repo.language }}
                   </span>
-                  <span class="stat" :title="`${card.repo.stars} ${DATA.ui.projects.stars}`">
+                  <span
+                    class="inline-flex items-center gap-1.25"
+                    :title="`${card.repo.stars} ${DATA.ui.projects.stars}`"
+                  >
                     <AppIcon name="star" :size="13" />{{ card.repo.stars
-                    }}<span class="visually-hidden"> {{ DATA.ui.projects.stars }}</span>
+                    }}<span class="sr-only"> {{ DATA.ui.projects.stars }}</span>
                   </span>
-                  <span class="stat" :title="`${card.repo.forks} ${DATA.ui.projects.forks}`">
+                  <span
+                    class="inline-flex items-center gap-1.25"
+                    :title="`${card.repo.forks} ${DATA.ui.projects.forks}`"
+                  >
                     <AppIcon name="git-fork" :size="13" />{{ card.repo.forks
-                    }}<span class="visually-hidden"> {{ DATA.ui.projects.forks }}</span>
+                    }}<span class="sr-only"> {{ DATA.ui.projects.forks }}</span>
                   </span>
                   <span>{{ DATA.ui.projects.lastCommit }} · {{ ago(card.repo.pushedAt) }}</span>
                 </p>
@@ -94,156 +142,3 @@ const groups = computed(() => [
     </div>
   </section>
 </template>
-
-<style scoped>
-.projects {
-  padding-block: 1.75rem 3rem;
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 40rem;
-}
-
-.title {
-  margin: 0.875rem 0 0;
-  padding-inline: 0.5rem;
-  color: var(--ink);
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 600;
-  letter-spacing: -0.033em;
-  line-height: 1.05;
-}
-
-.sub {
-  margin: -0.5rem 0 0;
-  padding-inline: 0.5rem;
-  color: var(--s-muted);
-  font-size: 1.0625rem;
-  line-height: 1.55;
-}
-
-.grid {
-  display: grid;
-  gap: 1.5rem;
-  margin-top: 1.125rem;
-}
-
-.featured,
-.list {
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0.875rem 2.25rem;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  color: inherit;
-  text-decoration: none;
-}
-
-.featured .card {
-  transition: transform 0.2s;
-}
-
-.featured .card:hover {
-  transform: translateY(-3px);
-}
-
-.preview {
-  aspect-ratio: 535 / 323;
-  margin: 0.75rem 0.75rem 0;
-  width: calc(100% - 1.5rem);
-  /* The height attribute holds the place before the picture arrives; the ratio sizes it. */
-  height: auto;
-  border-radius: 22px;
-  object-fit: cover;
-  object-position: top;
-}
-
-.list .body {
-  padding-inline: 0;
-}
-
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.5rem;
-}
-
-.name {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin: 0;
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  overflow-wrap: anywhere;
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 1.125rem;
-  margin: 0;
-  color: var(--s-muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-}
-
-.lang {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4375rem;
-  color: var(--ink-2);
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-}
-
-.lang-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-}
-
-.stat {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3125rem;
-}
-
-.featured .body {
-  gap: 0.875rem;
-  padding: 1.5rem 1.25rem 1.125rem;
-}
-
-.featured .name {
-  font-size: 1.125rem;
-}
-
-.featured .description {
-  color: var(--ink-2);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-@media (min-width: 860px) {
-  .grid {
-    grid-template-columns: 1.04fr 1fr;
-  }
-}
-</style>

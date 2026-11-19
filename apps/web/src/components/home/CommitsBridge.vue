@@ -23,7 +23,7 @@ const inView = useInView(figure);
 const behind = ref(0);
 let frame = 0;
 
-// While they run, the two digits are set at one width each (see .running), in a box held at the
+// While they run, the two digits are set at one width each (see the template), in a box held at the
 // width they have at rest, so that the digits in front never move.
 const tail = ref<{ $el: HTMLElement } | null>(null);
 const hold = (width = "") => tail.value && (tail.value.$el.style.width = width);
@@ -68,96 +68,45 @@ const parts = computed(() => {
 </script>
 
 <template>
-  <section class="bridge" :aria-label="DATA.ui.commits.label">
-    <span class="blob glow" aria-hidden="true" />
-    <span class="link"><GlassTube from="bottom" /></span>
-    <p ref="figure" class="count">
-      <span class="visually-hidden">{{ number ?? DATA.ui.commits.unknown }}</span>
+  <section
+    class="relative z-1 flex flex-col items-center gap-3.5"
+    :aria-label="DATA.ui.commits.label"
+  >
+    <span
+      class="blob top-16 left-1/2 h-64 w-[min(40rem,100%)] -translate-x-1/2 bg-blob-c blur-[55px] max-md:h-40"
+      aria-hidden="true"
+    />
+    <span class="h-18"><GlassTube from="bottom" /></span>
+    <p
+      ref="figure"
+      class="max-w-full pb-4 text-[clamp(5rem,24vw,14.75rem)] leading-none tracking-[-0.04em]"
+    >
+      <span class="sr-only">{{ number ?? DATA.ui.commits.unknown }}</span>
       <GlassText :text="parts.head" :depth="10" gloss aria-hidden="true" />
+      <!-- Digits of one width while they run, in the middle of the box the script holds for
+           them: this font's digits differ a lot in width, and the number would shake as they
+           changed. -->
       <GlassText
         v-if="parts.tail"
         ref="tail"
-        :class="{ running: behind }"
+        :class="{ 'text-center tabular-nums': behind }"
         :text="parts.tail"
         :depth="10"
         gloss
         aria-hidden="true"
       />
     </p>
-    <p class="unit">{{ DATA.ui.commits.unit }}</p>
-    <a class="more" :href="githubUrl" target="_blank" rel="noopener noreferrer">
+    <p class="text-[clamp(1.125rem,4vw,1.5rem)] font-semibold tracking-[-0.02em] text-ink">
+      {{ DATA.ui.commits.unit }}
+    </p>
+    <a
+      class="inline-flex items-center gap-1.5 font-mono text-[0.8125rem] tracking-wide text-s-muted hover:text-ink"
+      :href="githubUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {{ DATA.ui.commits.more }} <AppIcon name="arrow-up-right" :size="13" />
     </a>
-    <span class="link"><GlassTube from="top" /></span>
+    <span class="h-18"><GlassTube from="top" /></span>
   </section>
 </template>
-
-<style scoped>
-.bridge {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.875rem;
-}
-
-.glow {
-  top: 4rem;
-  left: 50%;
-  width: min(40rem, 100%);
-  height: 16rem;
-  transform: translateX(-50%);
-  background: var(--blob-c);
-  --blob-blur: 55px;
-}
-
-.link {
-  height: 4.5rem;
-}
-
-.count {
-  margin: 0;
-  padding-bottom: 1rem;
-  line-height: 1;
-  font-size: clamp(5rem, 24vw, 14.75rem);
-  letter-spacing: -0.04em;
-  max-width: 100%;
-}
-
-/* Digits of one width while they run, in the middle of the box the script holds for them:
-   this font's digits differ a lot in width, and the number would shake as they changed. */
-.running {
-  font-variant-numeric: tabular-nums;
-  text-align: center;
-}
-
-.unit {
-  margin: 0;
-  color: var(--ink);
-  font-size: clamp(1.125rem, 4vw, 1.5rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  color: var(--s-muted);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.025em;
-  text-decoration: none;
-}
-
-.more:hover {
-  color: var(--ink);
-}
-
-@media (max-width: 860px) {
-  .glow {
-    height: 10rem;
-  }
-}
-</style>

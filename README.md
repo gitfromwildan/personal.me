@@ -36,7 +36,7 @@ CHROMIUM_PATH="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" vp 
 
 The versions every package shares are declared once, in the `catalog` of the root `package.json`: Vite+ (which brings Vite, Vitest, the linter and the formatter), Vue and the packages that go with it (its router, vue-i18n, vue-tsc, the Vite plugin and the tsconfig), TypeScript, Tailwind CSS and the Node types. A package asks for one with `"<name>": "catalog:"` in its own `package.json`, so an upgrade is one edit in the root followed by `vp install`.
 
-Vite and Vitest come from Vite+: their catalog entries must match the versions that `vite-plus` release depends on (`npm view vite-plus dependencies`). Tailwind CSS is in the catalog but no package uses it yet.
+Vite and Vitest come from Vite+: their catalog entries must match the versions that `vite-plus` release depends on (`npm view vite-plus dependencies`).
 
 Dependabot (`.github/dependabot.yml`) opens pull requests for newer versions once a week, for the packages and for the actions the CI workflow uses. It leaves `vite`, `vitest` and `@vitest/browser-playwright` alone, since those follow `vite-plus`, and does not move `@types/node` or `@typescript/typescript6` to a new major. Pull requests that fix a known vulnerability are turned on in the repository's settings; GitHub does not make them for Bun packages, which get the weekly update only.
 
@@ -47,8 +47,8 @@ apps/
 └── web/          # the site (Vite + Vue)
     └── src/
         ├── data/              # every piece of copy the pages show, one file per section
-        ├── styles/tokens.css  # colour tokens from the design, light and dark
-        ├── style.css          # shared classes: .glass, .chip, .btn, .section, ...
+        ├── styles/tokens.css  # the design's tokens as Tailwind theme variables, light and dark
+        ├── style.css          # Tailwind, its overrides, and shared classes: .glass, .chip, .btn, ...
         ├── components/ui/     # shared pieces: glass text, tube, meter, icons
         ├── components/home/   # one component per home page section
         ├── components/blog/   # post card, header, body, table of contents, navigation
@@ -59,6 +59,15 @@ packages/
 content/          # blog posts (Markdown + DocuBook directives); content/id/ holds their Indonesian
 public/           # static assets, served by apps/web
 ```
+
+## Styling
+
+The site is styled with [Tailwind CSS](https://tailwindcss.com/) 4, through its Vite plugin. Utilities in the templates do the work; what Tailwind already has is used as it is, and changed by overriding it rather than replaced:
+
+- The design's colours, fonts, breakpoints (640, 860 and 1000px) and type scale are theme variables in `apps/web/src/styles/tokens.css`: `bg-stage`, `text-ink`, `max-md:`, `text-sm`. Each is also a CSS variable, `var(--color-ink)`. The type scale carries no line height: text keeps its parent's unless a `leading-*` says otherwise.
+- Tailwind's own pieces are overridden where the design differs: `container` is the 1120px page column at every width, `animate-ping` is the 404 page's sonar, and `dark:` follows the `data-theme` attribute the dock's switch sets, not the system.
+- Pieces the pages share (`.glass`, `.chip`, `.btn`, `.bead`, `.mono-label`, ...) are in the `components` layer of `apps/web/src/style.css`, so a utility on the element overrides them: `class="glass rounded-[26px]"`.
+- What utilities cannot say (keyframes, gradients of several layers, pseudo-elements, the hero's artboard) stays in a component's `<style scoped>`, written with Tailwind's own means: `@reference "../../style.css"`, `@apply`, `@variant motion-reduce`, `@variant awake` (once the visitor first moves, see `main.ts`), and the theme's variables.
 
 ## Languages
 

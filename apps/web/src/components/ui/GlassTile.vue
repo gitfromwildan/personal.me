@@ -9,29 +9,22 @@ defineProps<{ icon: keyof typeof ICONS }>();
 </script>
 
 <template>
-  <span class="glass tile">
+  <!-- The mark is a share of the tile, whatever size the tile is shown at. -->
+  <span class="glass tile grid place-items-center overflow-hidden text-ink-2 *:size-[46%]">
     <AppIcon :name="icon" />
   </span>
 </template>
 
 <style scoped>
+@reference "../../style.css";
+
 .tile {
   --phase: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
   background:
-    linear-gradient(125deg, light-dark(#ffffff5c, #ffffff22) 15%, var(--stage-0) 37%),
-    linear-gradient(140deg, var(--tint, transparent) 15%, var(--stage-0) 68%),
-    linear-gradient(180deg, var(--glass-hi), var(--glass-lo));
-  color: var(--ink-2);
+    linear-gradient(125deg, light-dark(#ffffff5c, #ffffff22) 15%, var(--color-stage-0) 37%),
+    linear-gradient(140deg, var(--tint, transparent) 15%, var(--color-stage-0) 68%),
+    linear-gradient(180deg, var(--color-glass-hi), var(--color-glass-lo));
   animation: hover 10s ease-in-out calc(var(--phase) * -10s) infinite;
-}
-
-/* The mark, at a share of the tile whatever size the tile is shown at. */
-.tile :deep(svg) {
-  width: 46%;
-  height: 46%;
 }
 
 /* The scanning sheen: a band of light that crosses the tile, then waits. The band is drawn
@@ -39,11 +32,22 @@ defineProps<{ icon: keyof typeof ICONS }>();
    main thread, where redrawing it at each step is not. */
 .tile::after {
   content: "";
-  position: absolute;
-  inset: 0 -100%;
-  background: linear-gradient(115deg, transparent 42%, var(--gloss) 50%, transparent 58%);
-  opacity: 0.5;
+  @apply absolute -inset-x-full inset-y-0 opacity-50;
+  background: linear-gradient(115deg, transparent 42%, var(--color-gloss) 50%, transparent 58%);
   animation: scan 8s ease-in-out calc(var(--phase) * -8s) infinite;
+}
+
+.tile {
+  @variant motion-reduce {
+    animation: none;
+  }
+}
+
+.tile::after {
+  @variant motion-reduce {
+    @apply hidden;
+    animation: none;
+  }
 }
 
 @keyframes hover {
@@ -64,17 +68,6 @@ defineProps<{ icon: keyof typeof ICONS }>();
   90%,
   100% {
     translate: 53.33% 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tile,
-  .tile::after {
-    animation: none;
-  }
-
-  .tile::after {
-    display: none;
   }
 }
 </style>

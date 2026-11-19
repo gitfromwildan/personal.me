@@ -23,14 +23,14 @@ onMounted(() => (arrived.value = true));
 // past, and the zero of "404" is a bubble that sends out sonar pings nothing answers.
 const blobs = [
   {
-    color: "--blob-d",
+    color: "--color-blob-d",
     width: "min(760px, 92%)",
     height: 340,
     top: -90,
     left: "max(4%, 50% - 380px)",
   },
-  { color: "--blob-a", width: 520, top: "36%", right: -230 },
-  { color: "--blob-c", width: 520, top: "56%", left: -250 },
+  { color: "--color-blob-a", width: 520, top: "36%", right: -230 },
+  { color: "--color-blob-c", width: 520, top: "56%", left: -250 },
 ];
 
 // Each shaft leans away from the middle, where the light is: `tilt` is in degrees, `pace` the
@@ -70,19 +70,25 @@ const DEVICES = [
   <main class="stage">
     <PageBlobs :blobs="blobs" />
 
-    <div class="water" aria-hidden="true">
-      <span class="chart" />
+    <!-- Behind the copy and over the blobs, which come first in the page. A size container, so
+         a bubble can be told to rise the height of the water (100cqh). -->
+    <div
+      class="pointer-events-none absolute inset-0 -z-1 overflow-hidden @container-size"
+      aria-hidden="true"
+    >
+      <span class="chart absolute inset-0" />
       <span
         v-for="r in RAYS"
         :key="r.x"
-        class="ray"
+        class="ray absolute -top-16 left-(--x) h-[85%] w-(--w) origin-top rotate-(--tilt) opacity-60 blur-[14px]"
         :style="{ '--x': r.x, '--w': r.width, '--tilt': `${r.tilt}deg`, '--pace': `${r.pace}s` }"
       />
+      <!-- On a narrow screen the tiles are smaller (--u), and only those above the copy stay. -->
       <GlassTile
         v-for="(d, i) in DEVICES"
         :key="d.icon"
-        class="device"
-        :class="{ top: 'top' in d }"
+        class="absolute top-(--y) left-(--x) size-[calc(var(--w)*var(--u))] rotate-(--tilt) rounded-[calc(var(--w)*0.26*var(--u))] opacity-80 shadow-[0_18px_36px_var(--color-glass-shadow)] backdrop-blur-[9px] [--tint:light-dark(#7dd3fc42,#38bdf81f)] [--u:1px] max-md:[--u:0.6px]"
+        :class="'top' in d ? 'max-md:top-[3%]' : 'max-md:hidden'"
         :icon="d.icon"
         :style="{
           '--x': `${d.x}%`,
@@ -95,7 +101,7 @@ const DEVICES = [
       <span
         v-for="(b, i) in RISERS"
         :key="b.x"
-        class="riser"
+        class="riser absolute top-full left-(--x) w-(--w) *:block *:w-full"
         :style="{
           '--x': `${b.x}%`,
           '--w': `${b.size}px`,
@@ -107,28 +113,49 @@ const DEVICES = [
       </span>
     </div>
 
-    <div class="container content">
-      <p class="glass chip mono-label status">
+    <div
+      class="container flex min-h-svh flex-col items-center justify-center gap-7 pt-20 pb-30 text-center"
+    >
+      <p class="glass chip mono-label py-1.75 pr-3.5 pl-2.75 text-xs font-medium text-ink">
         <span class="dot" />
         {{ status }} · 404
       </p>
 
-      <!-- A picture of the number: the chip above and the page's title say it in words. -->
-      <p class="code" aria-hidden="true">
-        <span class="sonar">
-          <span v-for="i in 3" :key="i" class="ping" :style="{ '--i': i - 1 }" />
+      <!-- A picture of the number: the chip above and the page's title say it in words. The
+           sonar is centred on the zero, which is in the middle of the number, under the digits;
+           the zero is as tall as the digits beside it. -->
+      <p
+        class="relative flex items-center gap-[0.03em] text-[clamp(7rem,31vw,16rem)] tracking-[-0.04em]"
+        aria-hidden="true"
+      >
+        <span class="absolute top-1/2 left-1/2 -z-1 aspect-square w-[0.74em] -translate-1/2">
+          <!-- One ping after another. Only a ring's upper arc is drawn, the part that heads for
+               the surface: a full ring would cross the headline below. -->
+          <span
+            v-for="i in 3"
+            :key="i"
+            class="absolute inset-0 animate-ping rounded-full opacity-0 shadow-[inset_0_0_0_1.5px_var(--color-accent),0_0_1rem_var(--color-bubble-edge)] mask-b-from-50% mask-b-to-72% motion-reduce:animate-none"
+            :style="{ animationDelay: `${(i - 1) * 1.6}s` }"
+          />
         </span>
         <GlassText text="4" :depth="12" gloss />
-        <GlassBubble class="zero" />
+        <GlassBubble class="w-[0.74em] flex-none" />
         <GlassText text="4" :depth="12" gloss />
       </p>
 
-      <h1 class="headline">
-        <span v-for="(line, i) in headline" :key="i" :class="{ muted: i === 1 }">{{ line }}</span>
+      <h1 class="text-[clamp(1.75rem,5vw,2.75rem)] leading-[1.1] font-semibold tracking-[-0.038em]">
+        <span
+          v-for="(line, i) in headline"
+          :key="i"
+          class="block"
+          :class="{ 'text-s-muted': i === 1 }"
+        >
+          {{ line }}
+        </span>
       </h1>
-      <p class="body">{{ body }}</p>
+      <p class="max-w-136 text-[1.0625rem] leading-[1.55] text-ink-2">{{ body }}</p>
 
-      <div class="actions">
+      <div class="flex flex-wrap justify-center gap-3">
         <RouterLink class="btn solid" :to="home.href">
           <AppIcon :name="home.icon" />
           {{ cta }}
@@ -140,9 +167,9 @@ const DEVICES = [
       </div>
 
       <!-- Keeps its line while it is empty, so nothing moves when the address arrives. -->
-      <p class="mono-label plain echo">
+      <p class="echo mono-label plain min-h-[1.5em] max-w-full truncate leading-[1.5]">
         <template v-if="arrived">
-          {{ echo }} <span class="address">{{ route.path }}</span>
+          {{ echo }} <span class="text-ink">{{ route.path }}</span>
         </template>
       </p>
     </div>
@@ -150,36 +177,17 @@ const DEVICES = [
 </template>
 
 <style scoped>
-/* Behind the copy and over the blobs, which come first in the page. A size container, so a
-   bubble can be told to rise the height of the water (100cqh). */
-.water {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  container-type: size;
-  pointer-events: none;
-}
+@reference "../style.css";
 
 /* A sounding chart: a field of dots, clearest around the number. */
 .chart {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, var(--track) 1px, transparent 1.5px) center / 1.75rem 1.75rem;
+  background: radial-gradient(circle, var(--color-track) 1px, transparent 1.5px) center / 1.75rem
+    1.75rem;
   mask-image: radial-gradient(ellipse 62% 58% at 50% 40%, #000, transparent);
 }
 
 .ray {
-  position: absolute;
-  top: -4rem;
-  left: var(--x);
-  width: var(--w);
-  height: 85%;
-  background: linear-gradient(180deg, var(--gloss), var(--blob-d) 40%, transparent);
-  filter: blur(14px);
-  opacity: 0.6;
-  rotate: var(--tilt);
-  transform-origin: 50% 0;
+  background: linear-gradient(180deg, var(--color-gloss), var(--color-blob-d) 40%, transparent);
   animation: shimmer var(--pace) ease-in-out infinite alternate;
 }
 
@@ -191,37 +199,13 @@ const DEVICES = [
   }
 }
 
-.device {
-  --u: 1px;
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: calc(var(--w) * var(--u));
-  height: calc(var(--w) * var(--u));
-  --glass-radius: calc(var(--w) * 0.26 * var(--u));
-  --glass-blur: 9px;
-  --glass-elevation: 0 18px 36px;
-  --tint: light-dark(#7dd3fc42, #38bdf81f);
-  rotate: var(--tilt);
-  opacity: 0.8;
-}
-
 /* A bubble starts below the water and ends above it, swaying as it goes: the way up and the
    sway are two properties, so each keeps its own pace. */
 .riser {
   --sway: calc(var(--w) * 0.45);
-  position: absolute;
-  top: 100%;
-  left: var(--x);
-  width: var(--w);
   animation:
     rise var(--pace) linear calc(var(--phase) * var(--pace) * -1) infinite,
     sway calc(var(--pace) / 4) ease-in-out infinite alternate;
-}
-
-.riser > * {
-  display: block;
-  width: 100%;
 }
 
 /* A rising bubble keeps still inside: its own wobble is too small to see at this size, and
@@ -255,143 +239,16 @@ const DEVICES = [
   }
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.75rem;
-  min-height: 100svh;
-  padding-block: 5rem 7.5rem;
-  text-align: center;
-}
-
-.status {
-  padding: 7px 14px 7px 11px;
-  color: var(--ink);
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.code {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.03em;
-  margin: 0;
-  font-size: clamp(7rem, 31vw, 16rem);
-  letter-spacing: -0.04em;
-}
-
-/* As tall as the digits beside it. */
-.zero {
-  flex: none;
-  width: 0.74em;
-}
-
-/* Centred on the zero, which is in the middle of the number, and under the digits. */
-.sonar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: -1;
-  width: 0.74em;
-  aspect-ratio: 1;
-  translate: -50% -50%;
-}
-
-/* One ping after another leaves the bubble and fades with distance. Only its upper arc is
-   drawn, the part that heads for the surface: a full ring would cross the headline below. */
-.ping {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  mask-image: linear-gradient(#000 50%, transparent 72%);
-  box-shadow:
-    inset 0 0 0 1.5px var(--accent),
-    0 0 1rem var(--bubble-edge);
-  opacity: 0;
-  animation: ping 4.8s cubic-bezier(0.2, 0.6, 0.4, 1) calc(var(--i) * 1.6s) infinite;
-}
-
-@keyframes ping {
-  from {
-    scale: 0.9;
-    opacity: 0.6;
-  }
-  to {
-    scale: 3.4;
-    opacity: 0;
-  }
-}
-
-.headline {
-  margin: 0;
-  font-size: clamp(1.75rem, 5vw, 2.75rem);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.038em;
-}
-
-.headline span {
-  display: block;
-}
-
-.muted {
-  color: var(--s-muted);
-}
-
-.body {
-  max-width: 34rem;
-  margin: 0;
-  color: var(--ink-2);
-  font-size: 1.0625rem;
-  line-height: 1.55;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.echo {
-  max-width: 100%;
-  min-height: 1.5em;
-  overflow: hidden;
-  line-height: 1.5;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.address {
-  color: var(--ink);
-}
-
-@media (max-width: 860px) {
-  .device {
-    --u: 0.6px;
-  }
-
-  .device:not(.top) {
-    display: none;
-  }
-
-  .device.top {
-    top: 3%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ray,
-  .ping {
+/* Without the way up, the bubbles would wait below the water, out of sight. */
+.ray {
+  @variant motion-reduce {
     animation: none;
   }
+}
 
-  /* Without the way up, the bubbles would wait below the water, out of sight. */
-  .riser {
-    display: none;
+.riser {
+  @variant motion-reduce {
+    @apply hidden;
   }
 }
 </style>

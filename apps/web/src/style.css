@@ -1,207 +1,140 @@
+@import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 @import "./styles/tokens.css";
 
-*,
-::before,
-::after {
-  box-sizing: border-box;
-}
+/* The theme is the data-theme attribute on <html> (see composables/useTheme.ts), not the
+   system's setting: dark:* follows it. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-body {
-  margin: 0;
-  background: var(--stage);
-  color: var(--ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-}
+/* Once the visitor has first moved (see main.ts). Until then the page is a still picture. */
+@custom-variant awake (&:where(.awake, .awake *));
 
-a {
-  color: inherit;
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-/* Until the visitor's first move (see main.ts), every animation holds still: the page arrives
-   as a still picture, and its loops do not compete with loading for the browser's attention. */
-:root:not(.awake) *,
-:root:not(.awake) *::before,
-:root:not(.awake) *::after {
-  animation-play-state: paused !important;
-}
-
-/* For headings and labels that only assistive technology needs. */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-/* A page with colour blobs behind it. isolate keeps the z-index -1 blobs above the page
-   background and below the content. */
-.stage {
-  position: relative;
-  isolation: isolate;
-  overflow-x: clip;
-}
-
-/* Page column: 1120px in the design, with a gutter on narrow screens. */
-.container {
+/* Tailwind's container, as the design's page column: 1120px, with a gutter on narrow screens,
+   at every width (Tailwind's own steps up with the breakpoints). */
+@utility container {
   width: min(1120px, 100% - 2.5rem);
+  max-width: none;
   margin-inline: auto;
 }
 
-/* A home page section, used together with .container: an eyebrow, then the content. */
-.section {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 1.375rem;
-  padding-block: 3rem;
+@layer base {
+  :root {
+    /* The tokens' light-dark() colours follow this: the system's, or the dock's choice. */
+    color-scheme: light dark;
+    /* A glass bead's fill. */
+    --bead-fill: radial-gradient(ellipse 60% 60% at 35% 30%, #fff, var(--color-meniscus));
+  }
+
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  /* The design was drawn with the fonts' own line height. */
+  html {
+    line-height: normal;
+  }
+
+  body {
+    @apply bg-stage text-ink antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-3 outline-accent;
+  }
+
+  /* Until the visitor's first move (see main.ts), every animation holds still: the page arrives
+     as a still picture, and its loops do not compete with loading for the browser's attention. */
+  :root:not(.awake) *,
+  :root:not(.awake) *::before,
+  :root:not(.awake) *::after {
+    animation-play-state: paused !important;
+  }
 }
 
-/* Small uppercase mono text: eyebrows, board labels, meta rows. */
-.mono-label {
-  margin: 0;
-  color: var(--s-muted);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
+/* The pieces the pages share. A utility on the element overrides any of them: rounded-[26px] on
+   a .glass card, say. */
+@layer components {
+  /* A page with colour blobs behind it. isolate keeps the -z-1 blobs above the page background
+     and below the content. */
+  .stage {
+    @apply relative isolate overflow-x-clip;
+  }
 
-/* A mono label in sentence case, for counts and notes. */
-.mono-label.plain {
-  letter-spacing: 0;
-  text-transform: none;
-}
+  /* A home page section, in a container: an eyebrow, then the content. */
+  .section {
+    @apply relative flex flex-col gap-5.5 py-12;
+  }
 
-/* The glass surface. Tune per use with --glass-radius, --glass-blur and --glass-elevation. */
-.glass {
-  position: relative;
-  border-radius: var(--glass-radius, 32px);
-  background: linear-gradient(180deg, var(--glass-hi), var(--glass-lo));
-  backdrop-filter: blur(var(--glass-blur, 14px));
-  box-shadow: var(--glass-elevation, 0 24px 56px) var(--glass-shadow);
-}
+  /* Small uppercase mono text: eyebrows, board labels, meta rows. */
+  .mono-label {
+    @apply font-mono text-[0.8125rem] font-normal tracking-wider text-s-muted uppercase;
+  }
 
-/* Gradient rim, drawn as a masked ring because border-image ignores border-radius. */
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(180deg, var(--rim-hi), var(--rim-lo));
-  mask:
-    linear-gradient(#000 0 0) content-box exclude,
-    linear-gradient(#000 0 0);
-  pointer-events: none;
-}
+  /* A mono label in sentence case, for counts and notes. */
+  .mono-label.plain {
+    @apply tracking-normal normal-case;
+  }
 
-/* Pill variant of the glass surface: tags, status chips, small buttons. */
-.glass.chip {
-  --glass-radius: 999px;
-  --glass-elevation: 0 8px 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--chip);
-}
+  /* Secondary body text inside cards and lists. */
+  .muted-text {
+    @apply text-[0.9375rem] leading-[1.6] text-s-muted;
+  }
 
-/* Status dot inside chips and tags. */
-.dot {
-  flex: none;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-}
+  /* The glass surface. */
+  .glass {
+    @apply relative rounded-[32px] bg-linear-to-b/srgb from-glass-hi to-glass-lo shadow-[0_24px_56px_var(--color-glass-shadow)] backdrop-blur-[14px];
+  }
 
-/* A glass bead on a rail or meter. Size it with --bead-size and ring it with --bead-ring. */
-.bead {
-  width: var(--bead-size, 18px);
-  height: var(--bead-size, 18px);
-  border-radius: 50%;
-  background: var(--bead-fill);
-  outline: 1.5px solid var(--bead-ring, var(--rim-hi));
-  outline-offset: -0.75px;
-  box-shadow: 0 4px 10px var(--glass-shadow);
-}
+  /* Its gradient rim, drawn as a masked ring because border-image ignores border-radius. */
+  .glass::before {
+    @apply pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-b/srgb from-rim-hi to-rim-lo p-px content-[''];
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
 
-/* Pill button: add .glass for the glass one or .solid for the filled one. */
-.btn {
-  --glass-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 15px 24px;
-  border-radius: 999px;
-  color: var(--ink);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  text-decoration: none;
-}
+  /* Pill variant of the glass surface: tags, status chips, small buttons. */
+  .glass.chip {
+    @apply inline-flex items-center gap-2 rounded-full bg-chip bg-none shadow-[0_8px_18px_var(--color-glass-shadow)];
+  }
 
-.btn.solid {
-  background: var(--ink);
-  color: var(--bg);
-  box-shadow: 0 14px 28px var(--glass-shadow);
-}
+  /* A round chip holding one icon, such as the arrow on a card. */
+  .glass.chip.round {
+    @apply size-11 flex-none justify-center shadow-none;
+  }
 
-.btn:hover {
-  transform: translateY(-1px);
-}
+  /* Pill button: add .glass for the glass one or .solid for the filled one. */
+  .btn {
+    @apply inline-flex items-center gap-2.5 rounded-full px-6 py-3.75 text-[0.9375rem] font-medium text-ink hover:-translate-y-px;
+  }
 
-/* Lists with a class are layout, not prose: no bullets, no indent. */
-:is(ul, ol)[class] {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  .btn.solid {
+    @apply bg-ink text-bg shadow-[0_14px_28px_var(--color-glass-shadow)];
+  }
 
-/* Secondary body text inside cards and lists. */
-.muted-text {
-  margin: 0;
-  color: var(--s-muted);
-  font-size: 0.9375rem;
-  line-height: 1.6;
-}
+  /* Status dot inside chips and tags. */
+  .dot {
+    @apply size-[7px] flex-none rounded-full bg-accent;
+  }
 
-/* Rows separated by hairlines. */
-.divided > * + * {
-  border-top: 1px solid var(--glass-line);
-}
+  /* A glass bead on a rail or meter. Size it with size-* and ring it with outline-*. */
+  .bead {
+    @apply size-4.5 rounded-full outline-[1.5px] -outline-offset-[0.75px] outline-rim-hi shadow-[0_4px_10px_var(--color-glass-shadow)];
+    background: var(--bead-fill);
+  }
 
-/* A round chip holding one icon, such as the arrow on a card. */
-.glass.chip.round {
-  --glass-elevation: 0 0;
-  flex: none;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-}
+  /* The owner's picture: round, with a glass rim. */
+  .avatar {
+    @apply rounded-full object-cover outline-[1.5px] -outline-offset-[0.75px] outline-rim-hi;
+  }
 
-/* The owner's picture: round, with a glass rim. Size it with width and height. */
-.avatar {
-  border-radius: 50%;
-  object-fit: cover;
-  outline: 1.5px solid var(--rim-hi);
-  outline-offset: -0.75px;
-}
-
-/* Blurred colour blobs behind the glass. Position and size them where they are used. */
-.blob {
-  position: absolute;
-  z-index: -1;
-  border-radius: 50%;
-  filter: blur(var(--blob-blur, 60px));
-  pointer-events: none;
+  /* Blurred colour blobs behind the glass. Place and size them where they are used. */
+  .blob {
+    @apply pointer-events-none absolute -z-1 rounded-[50%] blur-[60px];
+  }
 }

@@ -9,23 +9,41 @@ const { title, body, cta, social } = DATA.contact;
 
 <template>
   <section id="contact" class="section container" aria-labelledby="contact-title">
-    <div class="glass panel">
-      <div class="copy">
-        <SectionEyebrow :label="DATA.ui.eyebrows.contact" />
-        <h2 id="contact-title" class="title">{{ title }}</h2>
-        <p class="body">{{ body }}</p>
+    <div
+      class="glass flex items-end gap-18 rounded-[40px] p-16 max-md:flex-col max-md:items-stretch max-md:gap-8 max-md:px-6 max-md:py-8"
+    >
+      <div class="flex min-w-0 flex-1 flex-col items-start gap-6.5">
+        <SectionEyebrow :label="DATA.ui.eyebrows.contact" flush />
+        <h2
+          id="contact-title"
+          class="text-[clamp(2.5rem,6vw,4rem)] leading-[1.015] font-semibold tracking-[-0.0375em] text-ink"
+        >
+          {{ title }}
+        </h2>
+        <p class="max-w-115 text-lg leading-[1.55] text-ink-2">{{ body }}</p>
         <a class="btn solid" :href="social.Threads.url" target="_blank" rel="noopener noreferrer">
           {{ cta }}
           <AppIcon name="arrow-up-right" />
         </a>
       </div>
 
-      <ul class="channels divided">
+      <!-- On one column, the panel's own gap and padding already space the list's two ends. -->
+      <ul class="w-100 flex-none divide-y divide-glass-line max-md:w-full">
         <li v-for="c in Object.values(social)" :key="c.name">
-          <a class="channel" :href="c.url" v-bind="linkTarget(c.url)">
+          <a
+            class="group flex items-center gap-3.5 py-4.5 text-ink max-md:gap-3 max-md:py-3.5 max-md:[li:first-child>&]:pt-0 max-md:[li:last-child>&]:pb-0"
+            :href="c.url"
+            v-bind="linkTarget(c.url)"
+          >
             <AppIcon :name="c.icon" :size="18" />
-            <span class="name">{{ c.name }}</span>
-            <span class="handle">{{ c.handle }}</span>
+            <span class="w-22.5 flex-none text-[0.9375rem] font-medium max-md:w-19">
+              {{ c.name }}
+            </span>
+            <span
+              class="min-w-0 flex-1 font-mono text-[0.8125rem] wrap-anywhere text-s-muted group-hover:text-ink"
+            >
+              {{ c.handle }}
+            </span>
             <AppIcon name="arrow-up-right" :size="14" />
           </a>
         </li>
@@ -33,109 +51,3 @@ const { title, body, cta, social } = DATA.contact;
     </div>
   </section>
 </template>
-
-<style scoped>
-.panel {
-  --glass-radius: 40px;
-  display: flex;
-  align-items: flex-end;
-  gap: 4.5rem;
-  padding: 4rem;
-}
-
-.copy {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.625rem;
-  min-width: 0;
-}
-
-/* Inside the panel the eyebrow lines up with the title. */
-.copy .eyebrow {
-  padding-inline: 0;
-}
-
-.title {
-  margin: 0;
-  color: var(--ink);
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 600;
-  letter-spacing: -0.0375em;
-  line-height: 1.015;
-}
-
-.body {
-  max-width: 28.75rem;
-  margin: 0;
-  color: var(--ink-2);
-  font-size: 1.125rem;
-  line-height: 1.55;
-}
-
-.channels {
-  flex: none;
-  width: 25rem;
-}
-
-.channel {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  padding-block: 1.125rem;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.name {
-  flex: none;
-  width: 5.625rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.handle {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  color: var(--s-muted);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-}
-
-.channel:hover .handle {
-  color: var(--ink);
-}
-
-@media (max-width: 860px) {
-  .panel {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 2rem;
-    padding: 2rem 1.5rem;
-  }
-
-  .channels {
-    width: 100%;
-  }
-
-  .channel {
-    gap: 0.75rem;
-    padding-block: 0.875rem;
-  }
-
-  /* The panel's own gap and padding already space the list's two ends. */
-  li:first-child .channel {
-    padding-top: 0;
-  }
-
-  li:last-child .channel {
-    padding-bottom: 0;
-  }
-
-  .name {
-    width: 4.75rem;
-  }
-}
-</style>

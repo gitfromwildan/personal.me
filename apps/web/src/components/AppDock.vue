@@ -67,16 +67,18 @@ function onLeave() {
 </script>
 
 <template>
-  <footer class="dock-area">
+  <footer class="flex justify-center px-5 pt-10 pb-32 max-md:pb-26">
     <!-- The year is as of the day the page was built: Vue corrects it on arrival, and is told
          here not to report the difference. -->
-    <p class="copyright" data-allow-mismatch="text">
+    <p class="text-center font-mono text-xs text-s-muted" data-allow-mismatch="text">
       © {{ year }} {{ DATA.name }} · {{ DATA.location }}
     </p>
 
+    <!-- The bar keeps its height: magnified tiles stand on its floor and rise out of it. A
+         smaller dock on narrow screens: 40px tiles instead of 48px. -->
     <nav
       ref="dock"
-      class="dock glass"
+      class="dock glass fixed bottom-6 left-1/2 z-50 flex h-[calc(var(--tile)+2*var(--pad))] -translate-x-1/2 items-end gap-1 rounded-full p-(--pad) shadow-[0_24px_28px_var(--color-glass-shadow)] [--icon:19px] [--pad:8px] [--tile:48px] max-md:bottom-4 max-md:gap-0.5 max-md:[--icon:17px] max-md:[--pad:6px] max-md:[--tile:40px]"
       :class="{ mouse }"
       :aria-label="DATA.ui.dock.main"
       @keydown.esc="tocOpen = false"
@@ -134,75 +136,43 @@ function onLeave() {
         <AppIcon :name="s.icon" :size="19" />
       </a>
 
-      <!-- The same page in the other language, named after the language it leads to. -->
+      <!-- The same page in the other language, named after the language it leads to. Its code
+           sits in the tile's top corner, above the icon. -->
       <RouterLink
         :to="inOtherLocale(route.path)"
         class="tile language"
         :aria-label="DATA.ui.dock.language"
       >
         <AppIcon name="globe" :size="19" />
-        <span class="code" aria-hidden="true">{{ DATA.ui.dock.languageCode }}</span>
+        <span
+          class="absolute top-[8%] right-[10%] rounded-[3px] bg-ink px-0.5 font-mono text-[calc(0.5rem*var(--grow,1))] leading-[1.35] font-semibold text-bg"
+          aria-hidden="true"
+        >
+          {{ DATA.ui.dock.languageCode }}
+        </span>
       </RouterLink>
 
       <span class="sep" aria-hidden="true"></span>
 
+      <!-- The theme switch shows where a press takes the page: the moon by day, the sun by
+           night. The theme is read from <html>, where index.html sets it before the first paint,
+           so no script is needed and a built page is right from the start. -->
       <button type="button" class="tile" :aria-label="DATA.ui.dock.theme" @click="toggleTheme">
-        <AppIcon class="moon" name="moon" :size="19" />
-        <AppIcon class="sun" name="sun" :size="19" />
+        <AppIcon class="dark:hidden" name="moon" :size="19" />
+        <AppIcon class="hidden dark:block" name="sun" :size="19" />
       </button>
     </nav>
   </footer>
 </template>
 
 <style scoped>
-.dock-area {
-  display: flex;
-  justify-content: center;
-  padding: 2.5rem 1.25rem 8rem;
-}
+@reference "../style.css";
 
-.copyright {
-  margin: 0;
-  color: var(--s-muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-align: center;
-}
-
-.dock {
-  --glass-radius: 999px;
-  --glass-elevation: 0 24px 28px;
-  position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
-  z-index: 50;
-  transform: translateX(-50%);
-  /* The bar keeps its height: magnified tiles stand on its floor and rise out of it. */
-  --tile: 48px;
-  --icon: 19px;
-  --pad: 8px;
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  box-sizing: border-box;
-  height: calc(var(--tile) + 2 * var(--pad));
-  padding: var(--pad);
-}
-
+/* --grow is set on hover by onMove. */
 .tile {
-  position: relative;
-  display: grid;
-  place-items: center;
-  flex: none;
-  /* --grow is set on hover by onMove. */
+  @apply relative grid flex-none cursor-pointer place-items-center rounded-full text-ink hover:bg-chip;
   width: calc(var(--tile) * var(--grow, 1));
   height: calc(var(--tile) * var(--grow, 1));
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: none;
-  color: var(--ink);
-  cursor: pointer;
   transition:
     background 0.15s,
     width 0.12s ease-out,
@@ -217,79 +187,38 @@ function onLeave() {
     height 0.12s ease-out;
 }
 
-.tile:hover {
-  background: var(--chip);
+.tile.active {
+  @apply bg-ink text-bg hover:bg-ink;
 }
 
-/* The theme switch shows where a press takes the page: the moon by day, the sun by night. The
-   theme is read from <html>, where index.html sets it before the first paint, so no script is
-   needed and a built page is right from the start. */
-.sun,
-:root[data-theme="dark"] .moon {
-  display: none;
-}
-
-:root[data-theme="dark"] .sun {
-  display: block;
-}
-
-/* The code of the language the switch leads to, in the tile's top corner, above the icon. */
-.code {
-  position: absolute;
-  top: 8%;
-  right: 10%;
-  padding: 0 2px;
-  border-radius: 3px;
-  background: var(--ink);
-  color: var(--bg);
-  font-family: var(--font-mono);
-  font-size: calc(0.5rem * var(--grow, 1));
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-.tile.active,
-.tile.active:hover {
-  background: var(--ink);
-  color: var(--bg);
-}
-
-/* Tooltip with the tile's name, on hover and keyboard focus. Not on touch, where hover sticks after a tap. */
+/* Tooltip with the tile's name, on hover and keyboard focus. Not on touch, where hover sticks
+   after a tap. */
 .tile::after {
   content: attr(aria-label) / "";
-  position: absolute;
-  bottom: calc(100% + 14px);
-  left: 50%;
-  padding: 5px 10px;
-  border-radius: 8px;
-  background: var(--ink);
-  color: var(--bg);
-  font-size: 0.75rem;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
+  @apply pointer-events-none absolute bottom-[calc(100%+14px)] left-1/2 rounded-lg bg-ink px-2.5 py-1.25 text-xs font-medium whitespace-nowrap text-bg opacity-0;
   transform: translate(-50%, 4px);
   transition:
     opacity 0.15s,
     transform 0.15s;
-  pointer-events: none;
 }
 
 /* The open popover sits where the tooltip would. */
 .tile[aria-expanded="true"]::after {
-  display: none;
+  @apply hidden;
+}
+
+/* Only under a mouse, as the dock itself sees it: some phones say they can hover, and there the
+   tooltip of a tapped tile came up and stayed. */
+.tile:focus-visible::after,
+.mouse .tile:hover::after {
+  @apply opacity-100;
+  transform: translate(-50%, 0);
 }
 
 .popover {
-  position: absolute;
-  bottom: calc(100% + 0.75rem);
-  left: 50%;
-  width: min(20rem, 100vw - 2rem);
-  max-height: 60vh;
-  overflow-y: auto;
-  border-radius: 26px;
+  @apply absolute bottom-[calc(100%+0.75rem)] left-1/2 max-h-[60vh] w-[min(20rem,100vw-2rem)] overflow-y-auto rounded-[26px];
   /* Opaque under the glass card: inside the dock, the card cannot blur the page behind it. */
-  background: var(--stage);
+  @apply bg-stage;
   transform: translateX(-50%);
 }
 
@@ -302,57 +231,20 @@ function onLeave() {
 }
 
 .pop-leave-active {
-  pointer-events: none;
+  @apply pointer-events-none;
 }
 
 .pop-enter-from,
 .pop-leave-to {
-  opacity: 0;
+  @apply opacity-0;
   transform: translate(-50%, 0.75rem);
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .pop-enter-from,
-  .pop-leave-to {
+  @variant motion-reduce {
     transform: translateX(-50%);
   }
 }
 
-.tile:focus-visible::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-/* Only under a mouse, as the dock itself sees it: some phones say they can hover, and there the
-   tooltip of a tapped tile came up and stayed. */
-.mouse .tile:hover::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
 .sep {
-  width: 1px;
-  height: 28px;
-  background: var(--glass-line);
-  align-self: center;
-}
-
-/* A smaller dock on narrow screens: six 40px tiles instead of 48px. */
-@media (max-width: 860px) {
-  .dock-area {
-    padding-bottom: 6.5rem;
-  }
-
-  .dock {
-    --tile: 40px;
-    --icon: 17px;
-    --pad: 6px;
-    bottom: 1rem;
-    gap: 2px;
-  }
-
-  .sep {
-    height: 22px;
-  }
+  @apply h-7 w-px self-center bg-glass-line max-md:h-5.5;
 }
 </style>

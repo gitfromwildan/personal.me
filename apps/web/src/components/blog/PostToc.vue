@@ -20,18 +20,21 @@ const activeIndex = computed(() => props.toc.findIndex((item) => item.href === p
 </script>
 
 <template>
-  <aside class="glass toc" :aria-label="reading.label">
-    <div class="progress">
-      <p class="mono-label plain head">
-        <span class="time"
+  <aside
+    class="glass flex flex-col gap-5 rounded-[26px] px-6.5 pt-6.5 pb-6 shadow-[0_20px_44px_var(--color-glass-shadow)]"
+    :aria-label="reading.label"
+  >
+    <div class="flex flex-col gap-2.5">
+      <p class="mono-label plain flex justify-between text-xs">
+        <span class="flex items-center gap-1.75"
           ><AppIcon name="clock" :size="14" />{{
             left ? `${left} ${reading.left}` : reading.done
           }}</span
         >
-        <span class="percent">{{ percent }}%</span>
+        <span class="font-semibold text-ink">{{ percent }}%</span>
       </p>
       <div
-        class="track"
+        class="track h-2.5 rounded-[5px] inset-ring inset-ring-rim-lo"
         role="progressbar"
         :aria-label="reading.label"
         :aria-valuenow="percent"
@@ -41,17 +44,33 @@ const activeIndex = computed(() => props.toc.findIndex((item) => item.href === p
       />
     </div>
 
-    <nav v-if="toc.length" class="contents" :aria-label="tocLabel">
-      <p class="mono-label label">{{ tocLabel }}</p>
-      <!-- The rail is drawn per item: read items fill it, the current one holds the bead. -->
-      <ol class="items">
+    <nav
+      v-if="toc.length"
+      class="flex flex-col gap-5 border-t border-glass-line pt-5"
+      :aria-label="tocLabel"
+    >
+      <p class="mono-label text-xs tracking-[0.08em]">{{ tocLabel }}</p>
+      <!-- The rail is drawn per item: read items fill it, the current one holds the bead. The
+           vertical padding is on the item, not on the link: padding on a clamped box shows the
+           cut line. Long headings stop after two lines; the full text is in the link's title. -->
+      <ol>
         <li
           v-for="(item, i) in toc"
           :key="item.href"
-          :class="{ read: i < activeIndex, current: i === activeIndex, sub: item.level > 2 }"
+          class="relative flex min-h-9 items-center py-1.75 pl-6"
+          :class="{ read: i < activeIndex, current: i === activeIndex }"
         >
-          <span v-if="i === activeIndex" class="bead" aria-hidden="true" />
+          <span
+            v-if="i === activeIndex"
+            class="bead absolute top-[calc(50%-8px)] -left-1 size-4 outline-accent"
+            aria-hidden="true"
+          />
           <a
+            class="line-clamp-2 text-sm leading-[1.35] hover:text-ink"
+            :class="[
+              i === activeIndex ? 'font-semibold text-ink' : 'text-s-muted',
+              { 'pl-3': item.level > 2 },
+            ]"
             :href="item.href"
             :title="item.text"
             :aria-current="i === activeIndex ? 'location' : undefined"
@@ -65,125 +84,39 @@ const activeIndex = computed(() => props.toc.findIndex((item) => item.href === p
 </template>
 
 <style scoped>
-.toc {
-  --glass-radius: 26px;
-  --glass-elevation: 0 20px 44px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding: 1.625rem 1.625rem 1.5rem;
-}
-
-.progress {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-
-.head {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-}
-
-.time {
-  display: flex;
-  align-items: center;
-  gap: 0.4375rem;
-}
-
-.percent {
-  color: var(--ink);
-  font-weight: 600;
-}
+@reference "../../style.css";
 
 .track {
-  height: 10px;
-  border-radius: 5px;
   background:
-    linear-gradient(90deg, var(--liquid-hi), var(--liquid-lo)) left / var(--value) 100% no-repeat,
-    var(--track);
-  box-shadow: inset 0 0 0 1px var(--rim-lo);
-}
-
-.contents {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--glass-line);
-}
-
-.label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-}
-
-.items li {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 2.25rem;
-  /* The vertical padding is here, not on the link: padding on a clamped box shows the cut line. */
-  padding: 0.4375rem 0 0.4375rem 1.5rem;
+    linear-gradient(90deg, var(--color-liquid-hi), var(--color-liquid-lo)) left / var(--value) 100%
+      no-repeat,
+    var(--color-track);
 }
 
 /* One 8px slice of the rail per item, so it follows items of any height. */
-.items li::before {
+li::before {
   content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 8px;
-  background: var(--track);
+  @apply absolute inset-y-0 left-0 w-2 bg-track;
 }
 
-.items li:first-child::before {
-  border-radius: 4px 4px 0 0;
+li:first-child::before {
+  @apply rounded-t-sm;
 }
 
-.items li:last-child::before {
-  border-radius: 0 0 4px 4px;
+li:last-child::before {
+  @apply rounded-b-sm;
 }
 
-.items .read::before {
-  background: var(--liquid-lo);
+.read::before {
+  @apply bg-liquid-lo;
 }
 
-.items .current::before {
-  background: linear-gradient(180deg, var(--liquid-lo), var(--liquid-hi) 50%, var(--track) 50%);
-}
-
-.bead {
-  --bead-size: 16px;
-  --bead-ring: var(--accent);
-  position: absolute;
-  top: calc(50% - 8px);
-  left: -4px;
-}
-
-.items a {
-  color: var(--s-muted);
-  font-size: 0.875rem;
-  line-height: 1.35;
-  text-decoration: none;
-  /* Long headings stop after two lines; the full text is in the link's title. */
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-
-.items .sub a {
-  padding-left: 0.75rem;
-}
-
-.items a:hover,
-.items .current a {
-  color: var(--ink);
-}
-
-.items .current a {
-  font-weight: 600;
+.current::before {
+  background: linear-gradient(
+    180deg,
+    var(--color-liquid-lo),
+    var(--color-liquid-hi) 50%,
+    var(--color-track) 50%
+  );
 }
 </style>
