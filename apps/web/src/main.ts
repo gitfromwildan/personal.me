@@ -15,7 +15,14 @@ const router = makeRouter();
 const app = (built ? createSSRApp : createApp)(App).use(router).use(i18n);
 // A page that is loaded on demand must be there before Vue starts: taking over HTML only works
 // if Vue draws the same thing.
-void router.isReady().then(() => app.mount(root));
+// A built page is already whole: the browser paints it first, and Vue takes it over in the frame
+// after. Taking over is the longest piece of work at load, and the page needs none of it to be
+// seen.
+void router
+  .isReady()
+  .then(() =>
+    built ? requestAnimationFrame(() => setTimeout(() => app.mount(root))) : app.mount(root),
+  );
 
 // The page first shows as a still picture: its looping animations wait (see :root:not(.awake)
 // in style.css) for the visitor's first move, so they cost nothing while the page loads.

@@ -9,14 +9,21 @@ const server = new URL("./dist/server/entry-server.js", import.meta.url).href;
 // What src/entry-server.ts exports.
 const { render, routes } = (await import(server)) as {
   routes: string[];
-  render: (
-    url: string,
-  ) => Promise<{ html: string; title?: string; lang: string; modules: string[] }>;
+  render: (url: string) => Promise<{
+    html: string;
+    title?: string;
+    lang: string;
+    modules: string[];
+    preloadImage?: { src: string; srcset: string; sizes: string };
+  }>;
 };
 
-/** Text made safe to put inside an HTML element. */
+/** Text made safe to put inside an HTML element, or an attribute in double quotes. */
 const escape = (text: string) =>
-  text.replace(/[&<>]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[char]!);
+  text.replace(
+    /[&<>"]/g,
+    (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]!,
+  );
 
 // dist/index.html is both the shell every page is written into and where the home page goes,
 // so it is read before anything is written.
@@ -50,7 +57,7 @@ const manifest: Record<string, string[]> = JSON.parse(
 );
 
 for (const url of routes) {
-  const { html, title, lang, modules } = await render(url);
+  const { html, title, lang, modules, preloadImage } = await render(url);
   // The files of the page's own components that the shell does not already load: without the
   // styles the page would show unstyled until the script fetched them.
   const files = new Set(modules.flatMap((id) => manifest[id] ?? []));
@@ -77,6 +84,16 @@ for (const url of routes) {
     page
       .replace(/(?<=<html lang=")[^"]*/, () => lang)
       .replace(/(?<=<title>).*(?=<\/title>)/, (shellTitle) => (title ? escape(title) : shellTitle))
+      // The page's largest image is asked for straight after its title: the browser finds it in
+      // the first bytes of the page, not after the styles the page carries in its head.
+      .replace(
+        "</title>",
+        () =>
+          "</title>" +
+          (preloadImage
+            ? `<link rel="preload" as="image" fetchpriority="high" href="${escape(preloadImage.src)}" imagesrcset="${escape(preloadImage.srcset)}" imagesizes="${escape(preloadImage.sizes)}">`
+            : ""),
+      )
       .replace("<!--app-head-->", () => head)
       // The page says which address it was built for, so the script only takes over HTML that
       // is this address's own (see main.ts).
