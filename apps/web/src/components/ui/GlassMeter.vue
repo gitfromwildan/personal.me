@@ -13,9 +13,11 @@ const inView = useInView(meter, "0px 0px -8% 0px");
 </script>
 
 <template>
+  <!-- --slack is how far the liquid reaches back past the start of the tube, out of sight: the
+       room it has to run past its level without leaving the start of the tube dry. -->
   <div
     ref="meter"
-    class="meter"
+    class="meter relative h-4.5 [--slack:12px]"
     :class="{ pour: inView }"
     role="meter"
     :aria-label="label"
@@ -24,77 +26,58 @@ const inView = useInView(meter, "0px 0px -8% 0px");
     aria-valuemax="100"
     :style="{ '--value': `${value}%` }"
   >
-    <span class="glass track"><span class="liquid" /></span>
-    <span class="level"><span class="bead" /></span>
+    <span
+      class="glass absolute inset-x-0 inset-y-1 overflow-hidden rounded-[5px] bg-track bg-none shadow-[0_4px_10px_var(--color-glass-shadow)] backdrop-blur-[5px]"
+    >
+      <span class="liquid fill-to-value overflow-hidden" />
+    </span>
+    <span class="level fill-to-value pointer-events-none">
+      <span class="bead absolute top-0 -right-[9px] outline-accent" />
+    </span>
   </div>
 </template>
 
 <style scoped>
-.meter {
-  /* How far the liquid reaches back past the start of the tube, out of sight: the room it has
-     to run past its level without leaving the start of the tube dry. */
-  --slack: 12px;
-  position: relative;
-  height: 18px;
-}
-
-.track {
-  --glass-radius: 5px;
-  --glass-blur: 5px;
-  --glass-elevation: 0 4px 10px;
-  position: absolute;
-  inset: 4px 0;
-  overflow: hidden;
-  background: var(--track);
-}
+@reference "../../style.css";
 
 /* The liquid and the level are the same width, so sliding either by its own width takes it
    from empty to full. They are slid, not resized: that costs the page nothing. */
-.liquid,
-.level {
-  position: absolute;
-  inset: 0 auto 0 calc(-1 * var(--slack));
-  width: calc(var(--value) + var(--slack));
+.fill-to-value {
+  @apply absolute inset-y-0 -left-(--slack) w-[calc(var(--value)+var(--slack))];
 }
 
+/* The glint along the top, the shade where a round tube's liquid is deepest, the liquid. */
 .liquid {
-  overflow: hidden;
-  /* The glint along the top, the shade where a round tube's liquid is deepest, the liquid. */
   background:
-    linear-gradient(var(--gloss), var(--gloss)) calc(5px + var(--slack)) 2px /
+    linear-gradient(var(--color-gloss), var(--color-gloss)) calc(5px + var(--slack)) 2px /
       calc(100% - 14px - var(--slack)) 2px no-repeat,
     linear-gradient(180deg, transparent 50%, light-dark(#064e3b40, #00000059)),
-    linear-gradient(90deg, var(--liquid-hi), var(--liquid-lo));
+    linear-gradient(90deg, var(--color-liquid-hi), var(--color-liquid-lo));
 }
 
 /* A band of light that crosses the liquid once it has settled, as on wet glass. */
 .liquid::after {
   content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, transparent 30%, var(--gloss) 50%, transparent 70%);
-  translate: -100%;
-}
-
-.level {
-  pointer-events: none;
-}
-
-.bead {
-  --bead-ring: var(--accent);
-  position: absolute;
-  top: 0;
-  right: -9px;
+  @apply absolute inset-0 -translate-x-full;
+  background: linear-gradient(100deg, transparent 30%, var(--color-gloss) 50%, transparent 70%);
 }
 
 /* Only once the page is awake (see style.css): held at its first step, the tube would sit
    empty. The liquid rushes in, runs a little past its level and settles back, as water does. */
-:root.awake .pour :is(.liquid, .level) {
-  animation: pour 1.9s both;
+.pour .fill-to-value {
+  @variant awake {
+    @variant motion-safe {
+      animation: pour 1.9s both;
+    }
+  }
 }
 
-:root.awake .pour .liquid::after {
-  animation: glint 1.2s 1.3s ease-in-out both;
+.pour .liquid::after {
+  @variant awake {
+    @variant motion-safe {
+      animation: glint 1.2s 1.3s ease-in-out both;
+    }
+  }
 }
 
 @keyframes pour {
@@ -118,13 +101,6 @@ const inView = useInView(meter, "0px 0px -8% 0px");
 @keyframes glint {
   to {
     translate: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root.awake .pour :is(.liquid, .level),
-  :root.awake .pour .liquid::after {
-    animation: none;
   }
 }
 </style>

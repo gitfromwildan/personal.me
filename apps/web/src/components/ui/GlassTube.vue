@@ -9,74 +9,58 @@ withDefaults(defineProps<{ fill?: number; from?: "top" | "bottom"; travel?: bool
 </script>
 
 <template>
+  <!-- --far is the way to the other end: down from the top, up from the bottom. -->
   <span
-    class="glass tube"
-    :class="[from, { travel }]"
-    :style="{ '--fill': fill }"
+    class="glass tube block h-full w-3 overflow-hidden rounded-md shadow-[0_8px_18px_var(--color-glass-shadow)] backdrop-blur-[5px]"
+    :class="{ travel }"
+    :style="{
+      '--fill': fill,
+      '--far': from === 'top' ? 1 : -1,
+      '--angle': from === 'top' ? '180deg' : '0deg',
+    }"
     aria-hidden="true"
   >
-    <span class="liquid" />
+    <span
+      class="liquid absolute left-px h-[calc(var(--fill)*100%)] w-2.5"
+      :class="from === 'top' ? 'top-0' : 'bottom-0'"
+    />
   </span>
 </template>
 
 <style scoped>
+@reference "../../style.css";
+
 .tube {
-  --glass-radius: 6px;
-  --glass-blur: 5px;
-  --glass-elevation: 0 8px 18px;
-  display: block;
-  overflow: hidden;
-  width: 12px;
-  height: 100%;
   background:
-    linear-gradient(var(--track), var(--track)),
-    linear-gradient(90deg, var(--glass-hi), var(--glass-lo));
+    linear-gradient(var(--color-track), var(--color-track)),
+    linear-gradient(90deg, var(--color-glass-hi), var(--color-glass-lo));
 }
 
 /* An element of its own, not one more background: it can then be slid along the tube, which
    costs the page nothing, where moving a background means redrawing the tube at every step. */
 .liquid {
-  position: absolute;
-  left: 1px;
-  width: 10px;
-  height: calc(var(--fill) * 100%);
-  background: linear-gradient(var(--angle), var(--liquid-lo), var(--liquid-hi) 60%, transparent);
+  background: linear-gradient(
+    var(--angle),
+    var(--color-liquid-lo),
+    var(--color-liquid-hi) 60%,
+    transparent
+  );
 }
 
 /* The glint down the glass, over the liquid. */
 .tube::after {
   content: "";
-  position: absolute;
-  top: 6px;
-  left: 3px;
-  width: 2.5px;
-  height: calc(100% - 12px);
-  background: var(--gloss);
-}
-
-/* --far is the way to the other end: down from the top, up from the bottom. */
-.tube.top {
-  --angle: 180deg;
-  --far: 1;
-}
-
-.tube.top .liquid {
-  top: 0;
-}
-
-.tube.bottom {
-  --angle: 0deg;
-  --far: -1;
-}
-
-.tube.bottom .liquid {
-  bottom: 0;
+  @apply absolute top-1.5 left-0.75 h-[calc(100%-12px)] w-[2.5px] bg-gloss;
 }
 
 /* Only once the page is awake (see style.css): held at its first step, the liquid would sit at
    the wrong end. */
-:root.awake .travel .liquid {
-  animation: travel 2.4s cubic-bezier(0.3, 0, 0.2, 1);
+.travel .liquid {
+  @variant awake {
+    @variant motion-safe {
+      animation: travel 2.4s cubic-bezier(0.3, 0, 0.2, 1);
+    }
+  }
 }
 
 /* From the far end, which is the rest of the tube away: 1 / fill - 1 of the liquid's own
@@ -84,12 +68,6 @@ withDefaults(defineProps<{ fill?: number; from?: "top" | "bottom"; travel?: bool
 @keyframes travel {
   from {
     translate: 0 calc(var(--far) * (1 / var(--fill) - 1) * 100%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root.awake .travel .liquid {
-    animation: none;
   }
 }
 </style>

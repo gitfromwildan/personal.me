@@ -35,6 +35,20 @@ onBeforeUnmount(() => root?.unmount());
   styles, so matching them to this site's design takes !important throughout.
 -->
 <style>
+@reference "../../style.css";
+
+/* What Tailwind's reset takes away and DocuBook's components count on the browser for. In the
+   base layer, as the browser's own were: DocuBook's styles and inline styles still win. */
+@layer base {
+  .post-body a {
+    @apply underline;
+  }
+
+  .post-body button {
+    @apply leading-[normal];
+  }
+}
+
 /* The HSL triplets DocuBook's components read, for the parts not restyled below. */
 .post-body {
   --primary: 163 94% 24%;
@@ -47,7 +61,7 @@ onBeforeUnmount(() => root?.unmount());
   --muted: 220 16% 90%;
   /* DocuBook bleeds code blocks over this gutter on phones. Here they stay in the column. */
   --docubook-content-gutter: 0px;
-  color: var(--ink-2);
+  color: var(--color-ink-2);
   font-size: 1.125rem;
   line-height: 1.72;
 }
@@ -71,7 +85,7 @@ onBeforeUnmount(() => root?.unmount());
 }
 
 .post-body > p:first-child {
-  color: var(--ink);
+  color: var(--color-ink);
   font-size: 1.25rem;
   line-height: 1.7;
 }
@@ -79,7 +93,7 @@ onBeforeUnmount(() => root?.unmount());
 .post-body :is(h2, h3, h4) {
   margin: 0 0 1.375rem;
   padding-top: 1.625rem;
-  color: var(--ink);
+  color: var(--color-ink);
   font-size: 1.375rem;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -93,28 +107,28 @@ onBeforeUnmount(() => root?.unmount());
 }
 
 .post-body a:not([data-card-hover], [aria-hidden]) {
-  color: var(--accent);
+  color: var(--color-accent);
   text-underline-offset: 3px;
 }
 
 .post-body > blockquote {
   padding-left: 1rem;
-  border-left: 2px solid var(--accent);
-  color: var(--ink);
+  border-left: 2px solid var(--color-accent);
+  color: var(--color-ink);
 }
 
 /* Callouts tint their text with their own colour, which is too faint to read on the glass. */
 .post-body .mdx-callout-content {
-  color: var(--ink-2) !important;
+  color: var(--color-ink-2) !important;
 }
 
 .post-body :not(pre) > code {
   padding: 1px 7px;
   border-radius: 6px;
-  background: var(--code-chip);
-  outline: 1px solid var(--glass-line);
+  background: var(--color-code-chip);
+  outline: 1px solid var(--color-glass-line);
   outline-offset: -0.5px;
-  color: var(--ink);
+  color: var(--color-ink);
   font-family: var(--font-mono);
   font-size: 0.86em;
 }
@@ -151,17 +165,17 @@ onBeforeUnmount(() => root?.unmount());
 /* Card: glass, icon tile beside the text */
 .post-body [data-card-hover] {
   padding: 1.25rem !important;
-  border: 1px solid var(--rim-lo) !important;
+  border: 1px solid var(--color-rim-lo) !important;
   border-radius: 20px !important;
-  background: linear-gradient(180deg, var(--glass-hi), var(--glass-lo)) !important;
+  background: linear-gradient(180deg, var(--color-glass-hi), var(--color-glass-lo)) !important;
   backdrop-filter: blur(12px);
-  box-shadow: 0 14px 30px var(--glass-shadow);
+  box-shadow: 0 14px 30px var(--color-glass-shadow);
 }
 
 /* DocuBook's own hover border and blue shadow, in this site's colours. */
 .post-body [data-card-hover]:hover {
-  border-color: var(--accent) !important;
-  box-shadow: 0 18px 36px var(--glass-shadow) !important;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 18px 36px var(--color-glass-shadow) !important;
 }
 
 .post-body [data-card-hover] > svg {
@@ -180,7 +194,7 @@ onBeforeUnmount(() => root?.unmount());
   right: 1.25rem;
   width: 18px;
   height: 18px;
-  background: var(--ink);
+  background: var(--color-ink);
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10M7 17 17 7'/%3E%3C/svg%3E");
 }
 
@@ -195,19 +209,19 @@ onBeforeUnmount(() => root?.unmount());
   height: 2.75rem !important;
   margin: 0 !important;
   border-radius: 14px !important;
-  background: var(--chip) !important;
-  color: var(--accent) !important;
+  background: var(--color-chip) !important;
+  color: var(--color-accent) !important;
 }
 
 .post-body [data-card-hover] > div > div > div > :first-child {
   margin-bottom: 0.25rem !important;
-  color: var(--ink) !important;
+  color: var(--color-ink) !important;
   font-size: 1.0625rem !important;
 }
 
 .post-body [data-card-hover] p {
   max-width: none;
-  color: var(--s-muted);
+  color: var(--color-s-muted);
   font-size: 0.9375rem;
   line-height: 1.55;
 }
@@ -220,10 +234,10 @@ onBeforeUnmount(() => root?.unmount());
   padding: 4px;
   border: 0 !important;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--glass-hi), var(--glass-lo));
+  background: linear-gradient(180deg, var(--color-glass-hi), var(--color-glass-lo));
   box-shadow:
-    0 8px 18px var(--glass-shadow),
-    inset 0 0 0 1px var(--rim-lo);
+    0 8px 18px var(--color-glass-shadow),
+    inset 0 0 0 1px var(--color-rim-lo);
 }
 
 .post-body [role="tab"] {
@@ -231,15 +245,15 @@ onBeforeUnmount(() => root?.unmount());
   border: 0 !important;
   border-radius: 999px;
   background: none !important;
-  color: var(--s-muted) !important;
+  color: var(--color-s-muted) !important;
   font-family: inherit;
   font-size: 0.875rem !important;
   font-weight: 500 !important;
 }
 
 .post-body [role="tab"][aria-selected="true"] {
-  background: var(--ink) !important;
-  color: var(--bg) !important;
+  background: var(--color-ink) !important;
+  color: var(--color-bg) !important;
 }
 
 .post-body [role="tabpanel"] {
@@ -249,9 +263,9 @@ onBeforeUnmount(() => root?.unmount());
 
 /* Code block: dark in both themes */
 .post-body .code-block-container {
-  border: 1px solid var(--rim-lo) !important;
+  border: 1px solid var(--color-rim-lo) !important;
   border-radius: 16px !important;
-  background: var(--code-bg);
+  background: var(--color-code-bg);
 }
 
 .post-body :is([role="tabpanel"], li, .mdx-accordion-content) .code-block-container {
@@ -267,7 +281,7 @@ onBeforeUnmount(() => root?.unmount());
 .post-body .code-block-header,
 .post-body .code-block-header div,
 .post-body .code-block-header button {
-  color: var(--code-dim) !important;
+  color: var(--color-code-dim) !important;
   font-family: var(--font-mono) !important;
   font-size: 0.6875rem !important;
   letter-spacing: 0.07em;
@@ -279,7 +293,7 @@ onBeforeUnmount(() => root?.unmount());
 }
 
 .post-body .code-block-header button:hover {
-  color: var(--code-ink) !important;
+  color: var(--color-code-ink) !important;
 }
 
 .post-body .code-block-body {
@@ -288,7 +302,7 @@ onBeforeUnmount(() => root?.unmount());
 
 .post-body pre {
   padding: 0.875rem 1rem !important;
-  color: var(--code-ink);
+  color: var(--color-code-ink);
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.65;
@@ -296,7 +310,7 @@ onBeforeUnmount(() => root?.unmount());
 
 /* @docubook/core highlights with Prism but ships no token colours. */
 .post-body .token.comment {
-  color: var(--code-dim);
+  color: var(--color-code-dim);
 }
 .post-body .token.string {
   color: #7ee787;
@@ -316,7 +330,7 @@ onBeforeUnmount(() => root?.unmount());
   display: inline-block;
   width: 1.5rem;
   margin-right: 1rem;
-  color: var(--code-dim);
+  color: var(--color-code-dim);
   text-align: right;
 }
 
@@ -341,9 +355,9 @@ onBeforeUnmount(() => root?.unmount());
   border: 0 !important;
   border-radius: 999px !important;
   background: var(--bead-fill) !important;
-  outline: 1.5px solid var(--accent);
+  outline: 1.5px solid var(--color-accent);
   outline-offset: -0.75px;
-  box-shadow: 0 5px 12px var(--glass-shadow);
+  box-shadow: 0 5px 12px var(--color-glass-shadow);
   color: #065f46 !important;
   font-family: var(--font-mono);
   font-size: 0.8125rem !important;
@@ -351,14 +365,14 @@ onBeforeUnmount(() => root?.unmount());
 
 .post-body ol[data-mdx-wrapper] > li > div:first-of-type {
   margin-bottom: 0.75rem !important;
-  color: var(--ink) !important;
+  color: var(--color-ink) !important;
   font-size: 1.1875rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.016em;
 }
 
 .post-body ol[data-mdx-wrapper] > li > div:last-child {
-  color: var(--ink-2) !important;
+  color: var(--color-ink-2) !important;
   font-size: 1.0625rem;
 }
 
@@ -375,7 +389,7 @@ onBeforeUnmount(() => root?.unmount());
   left: 12px;
   z-index: -1;
   width: 8px;
-  background: var(--liquid-lo);
+  background: var(--color-liquid-lo);
 }
 
 .post-body ol[data-mdx-wrapper] > li:first-of-type::before {
@@ -383,7 +397,7 @@ onBeforeUnmount(() => root?.unmount());
 }
 
 .post-body ol[data-mdx-wrapper] > li:nth-last-of-type(2)::before {
-  background: linear-gradient(180deg, var(--liquid-lo), var(--liquid-hi));
+  background: linear-gradient(180deg, var(--color-liquid-lo), var(--color-liquid-hi));
 }
 
 /* Accordions: one glass card each, chevron on the right */
@@ -396,16 +410,16 @@ onBeforeUnmount(() => root?.unmount());
 }
 
 .post-body .mdx-accordion {
-  border: 1px solid var(--rim-lo) !important;
+  border: 1px solid var(--color-rim-lo) !important;
   border-radius: 16px !important;
-  background: linear-gradient(180deg, var(--glass-hi), var(--glass-lo)) !important;
+  background: linear-gradient(180deg, var(--color-glass-hi), var(--color-glass-lo)) !important;
   backdrop-filter: blur(12px);
-  box-shadow: 0 10px 24px var(--glass-shadow);
+  box-shadow: 0 10px 24px var(--color-glass-shadow);
 }
 
 .post-body .mdx-accordion-header {
   padding: 1rem 1.25rem !important;
-  color: var(--ink) !important;
+  color: var(--color-ink) !important;
   font-size: 0.9375rem !important;
   font-weight: 600 !important;
 }
@@ -422,20 +436,20 @@ onBeforeUnmount(() => root?.unmount());
 }
 
 .post-body .mdx-accordion-icon {
-  color: var(--accent) !important;
+  color: var(--color-accent) !important;
 }
 
 .post-body .mdx-accordion-content {
   padding: 0 1.25rem 1rem !important;
   background: none !important;
-  color: var(--ink-2) !important;
+  color: var(--color-ink-2) !important;
   font-size: 1.0625rem;
 }
 
 /* On phones DocuBook also squares the block and drops its side borders: keep the card. */
 @media (max-width: 639.98px) {
   .post-body div.code-block-container.not-prose {
-    border-inline: 1px solid var(--rim-lo) !important;
+    border-inline: 1px solid var(--color-rim-lo) !important;
     border-radius: 16px !important;
   }
 }

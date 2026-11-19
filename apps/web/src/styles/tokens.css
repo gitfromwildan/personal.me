@@ -1,53 +1,94 @@
-/* Design tokens from UI-personal.pen (light, dark). */
-:root {
-  color-scheme: light dark;
-  --font-sans: "Geist Variable", system-ui, sans-serif;
-  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
-  --code-bg: light-dark(#0e1116, #050608cc);
-  --code-ink: #e6edf3;
-  --code-dim: #8b949e;
-  --code-chip: light-dark(#0a0a0a0f, #ffffff1a);
-  --bead-fill: radial-gradient(ellipse 60% 60% at 35% 30%, #fff, var(--meniscus));
-  --bg: light-dark(#ffffff, #08090a);
-  --ink: light-dark(#0a0a0a, #fafafa);
-  --ink-2: light-dark(#404040, #d4d4d4);
-  --accent: light-dark(#047857, #34d399);
-  --accent-soft: light-dark(#e8f7f0, #0c2a20);
-  --logo-tile: light-dark(#ffffff, #e5e5e5);
-  --stage: light-dark(#e8ebf1, #07080b);
-  --stage-0: light-dark(#e8ebf100, #07080b00);
-  --glass-hi: light-dark(#ffffffb8, #ffffff16);
-  --glass-lo: light-dark(#ffffff70, #ffffff0f);
-  --rim-hi: light-dark(#ffffff, #ffffff47);
-  --rim-lo: light-dark(#ffffff59, #ffffff24);
-  --glass-shadow: light-dark(#2a355026, #00000080);
-  --glass-line: light-dark(#0a0a0a17, #ffffff1f);
-  --chip: light-dark(#ffffffd9, #ffffff1f);
-  --s-muted: light-dark(#565b66, #bec3cd);
-  --blob-a: light-dark(#42ebd4a6, #22d3ee4d);
-  --blob-b: light-dark(#a78bfa8c, #a855f752);
-  --blob-c: light-dark(#34d39980, #10b9814d);
-  --blob-d: light-dark(#7dd3fca6, #38bdf84d);
-  --liquid-hi: light-dark(#5eead4cc, #2dd4bfb3);
-  --liquid-lo: light-dark(#059669f2, #047857e6);
-  --meniscus: light-dark(#a7f3d0, #6ee7b7);
-  --gloss: light-dark(#ffffff99, #ffffff38);
-  --bubble-core: light-dark(#ffffffe6, #d1fae5b3);
-  --bubble-mid: light-dark(#ffffff24, #10b98124);
-  --bubble-edge: light-dark(#10b98180, #34d39973);
-  --track: light-dark(#2a355038, #ffffff1a);
-  --bubble-hi: light-dark(#ffffffe6, #a7f3d0d9);
-  --gnum-top: light-dark(#fffffff5, #ecfdf5eb);
-  --gnum-mid: light-dark(#a7f3d0d9, #6ee7b7bf);
-  --gnum-bot: light-dark(#34d399c7, #10b981b8);
-  --gnum-side: light-dark(#047857, #065f46);
-  --gnum-shadow: light-dark(#04785747, #00000099);
+/* Design tokens from UI-personal.pen, as Tailwind theme variables. Each one is a utility
+   (bg-stage, text-ink, from-glass-hi, ...) and a CSS variable (var(--color-ink)) for the CSS
+   that utilities cannot write. */
+
+@theme {
+  /* The site's widths, in px: 640, 860 (one column below it) and 1000 (a post's contents get a
+     column of their own from here on, see composables/useDockToc.ts). */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 53.75rem;
+  --breakpoint-lg: 62.5rem;
+
+  /* The type scale, in px: 11, then Tailwind's own. A size carries no line height: text keeps
+     its parent's unless a leading-* says otherwise. Sizes off the scale are written as they
+     are, such as text-[0.9375rem]. */
+  --text-*: initial;
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+
+  /* Tailwind's ping, as the 404 page's sonar: a ring that leaves the bubble and fades with
+     distance. */
+  --animate-ping: ping 4.8s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+
+  @keyframes ping {
+    from {
+      scale: 0.9;
+      opacity: 0.6;
+    }
+    to {
+      scale: 3.4;
+      opacity: 0;
+    }
+  }
 }
 
-/* Set by the dock's theme button, see composables/useTheme.ts. */
-:root[data-theme="light"] {
-  color-scheme: light;
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
+/* Static: also there for the CSS that reads them as variables, not only for utilities. Each
+   colour is its light and its dark value, picked by the page's color-scheme (see style.css). */
+@theme static {
+  --font-sans: "Geist Variable", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --color-bg: light-dark(#ffffff, #08090a);
+  --color-ink: light-dark(#0a0a0a, #fafafa);
+  --color-ink-2: light-dark(#404040, #d4d4d4);
+  --color-s-muted: light-dark(#565b66, #bec3cd);
+  --color-accent: light-dark(#047857, #34d399);
+  --color-accent-soft: light-dark(#e8f7f0, #0c2a20);
+  --color-logo-tile: light-dark(#ffffff, #e5e5e5);
+
+  --color-stage: light-dark(#e8ebf1, #07080b);
+  --color-stage-0: light-dark(#e8ebf100, #07080b00);
+  --color-glass-hi: light-dark(#ffffffb8, #ffffff16);
+  --color-glass-lo: light-dark(#ffffff70, #ffffff0f);
+  --color-rim-hi: light-dark(#ffffff, #ffffff47);
+  --color-rim-lo: light-dark(#ffffff59, #ffffff24);
+  --color-glass-shadow: light-dark(#2a355026, #00000080);
+  --color-glass-line: light-dark(#0a0a0a17, #ffffff1f);
+  --color-chip: light-dark(#ffffffd9, #ffffff1f);
+  --color-gloss: light-dark(#ffffff99, #ffffff38);
+  --color-track: light-dark(#2a355038, #ffffff1a);
+
+  --color-blob-a: light-dark(#42ebd4a6, #22d3ee4d);
+  --color-blob-b: light-dark(#a78bfa8c, #a855f752);
+  --color-blob-c: light-dark(#34d39980, #10b9814d);
+  --color-blob-d: light-dark(#7dd3fca6, #38bdf84d);
+
+  --color-liquid-hi: light-dark(#5eead4cc, #2dd4bfb3);
+  --color-liquid-lo: light-dark(#059669f2, #047857e6);
+  --color-meniscus: light-dark(#a7f3d0, #6ee7b7);
+
+  --color-bubble-core: light-dark(#ffffffe6, #d1fae5b3);
+  --color-bubble-mid: light-dark(#ffffff24, #10b98124);
+  --color-bubble-edge: light-dark(#10b98180, #34d39973);
+  --color-bubble-hi: light-dark(#ffffffe6, #a7f3d0d9);
+
+  /* The extruded glass numbers (components/ui/GlassText.vue). */
+  --color-gnum-top: light-dark(#fffffff5, #ecfdf5eb);
+  --color-gnum-mid: light-dark(#a7f3d0d9, #6ee7b7bf);
+  --color-gnum-bot: light-dark(#34d399c7, #10b981b8);
+  --color-gnum-side: light-dark(#047857, #065f46);
+  --color-gnum-shadow: light-dark(#04785747, #00000099);
+
+  /* Code blocks are dark in both themes. */
+  --color-code-bg: light-dark(#0e1116, #050608cc);
+  --color-code-ink: #e6edf3;
+  --color-code-dim: #8b949e;
+  --color-code-chip: light-dark(#0a0a0a0f, #ffffff1a);
 }

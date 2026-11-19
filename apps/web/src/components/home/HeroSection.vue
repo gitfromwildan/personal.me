@@ -16,8 +16,8 @@ const FACTS = [
 // Positions and sizes are artboard coordinates (1440px wide, hero top at 0), given to CSS as
 // plain numbers (--x, --y, --w, --h) so the whole stage can be drawn at another scale.
 const BLOBS = [
-  { x: 790, y: 90, color: "var(--blob-c)" },
-  { x: 1120, y: 250, color: "var(--blob-a)" },
+  { x: 790, y: 90, color: "var(--color-blob-c)" },
+  { x: 1120, y: 250, color: "var(--color-blob-a)" },
 ];
 
 // Glass tiles around the portrait, each with the mark of a technology this page is about: the
@@ -109,20 +109,22 @@ function pop(event: MouseEvent) {
 </script>
 
 <template>
+  <!-- --stage is the width of the picture on one column: a percentage in it is of the hero's
+       width wherever it is used. -->
   <section
     id="top"
-    class="hero"
+    class="hero relative overflow-hidden pt-33 pb-18 max-md:flex max-md:flex-col max-md:gap-10 max-md:pt-24 max-md:pb-14 max-md:[--stage:min(26rem,100%_-_2.5rem)]"
+    :class="burst ? 'burst' : 'cursor-pointer'"
     aria-labelledby="hero-title"
     @pointerenter="gather"
     @pointermove="follow"
     @pointerleave="home"
-    :class="{ burst }"
     @click="pop"
   >
     <!-- The water the hero is seen through while a ripple crosses it (see .burst): the ripple
          picture, growing from the bubble, over grey, which leaves pixels where they are. It is
          made anew for each pop, which is what starts its animations. -->
-    <svg v-if="burst" class="water" width="0" height="0" aria-hidden="true">
+    <svg v-if="burst" class="water absolute" width="0" height="0" aria-hidden="true">
       <filter
         id="hero-water"
         x="0"
@@ -158,23 +160,25 @@ function pop(event: MouseEvent) {
       </filter>
     </svg>
 
-    <!-- Decoration, apart from the big bubble, which the keyboard can pop too. -->
+    <!-- Decoration, apart from the big bubble, which the keyboard can pop too. The 1440px
+         artboard, centred, so layers keep their right-hand place. On one column it comes after
+         the copy, scaled to the column. -->
     <div
       ref="art"
-      class="art"
+      class="art absolute inset-y-0 left-1/2 -ml-[720px] w-[1440px] max-md:relative max-md:inset-auto max-md:order-1 max-md:mx-auto max-md:aspect-[680/742] max-md:w-(--stage) max-md:@container"
       :style="{ '--bx': BIG.x + BIG.size / 2, '--by': BIG.y + BIG.size / 2 }"
     >
       <span
         v-for="b in BLOBS"
         :key="b.x"
-        class="blob"
+        class="blob z-8 blur-[45px]"
         aria-hidden="true"
         :style="{ '--x': b.x, '--y': b.y, '--w': 420, background: b.color }"
       />
       <span
         v-for="(w, i) in WIRES"
         :key="i"
-        class="wire"
+        class="wire z-9 origin-left bg-accent/32"
         aria-hidden="true"
         :style="{ '--x': w.x, '--y': w.y, '--w': w.length, '--i': i, rotate: `${w.angle}rad` }"
       >
@@ -183,22 +187,22 @@ function pop(event: MouseEvent) {
       <GlassTile
         v-for="(t, i) in TILES"
         :key="t.icon"
-        class="tile"
+        class="z-10 shadow-[0_18px_36px_var(--color-glass-shadow)] backdrop-blur-[9px]"
         :icon="t.icon"
         :style="{
           '--x': t.x,
           '--y': t.y,
           '--w': t.size,
-          '--glass-radius': `calc(${t.size * 0.26} * var(--u))`,
-          '--glass-blur': '9px',
-          '--glass-elevation': '0 18px 36px',
+          borderRadius: `calc(${t.size * 0.26} * var(--u))`,
           '--tint': TINTS[i % TINTS.length],
           '--phase': i / TILES.length,
         }"
       />
-      <!-- The photo is 1672 by 941, in the box the design gives it. -->
+      <!-- The photo is 1672 by 941, in the box the design gives it. It fades out at the bottom
+           itself: a gradient box laid over it would show as a box wherever it reaches past the
+           person. -->
       <img
-        class="portrait"
+        class="z-16 max-w-none mask-b-from-77% mask-b-to-94%"
         src="/hero-portrait-1250.webp"
         srcset="
           /hero-portrait-900.webp   900w,
@@ -239,21 +243,39 @@ function pop(event: MouseEvent) {
       </button>
     </div>
 
-    <div class="container content">
-      <!-- --art-start is how far right of the hero's middle its picture starts: where the big
-           bubble rests, on the artboard, whose middle is at 720. -->
-      <div class="copy" :style="{ '--art-start': BIG.x - 720 }">
-        <p class="glass chip status mono-label">
+    <!-- On one column this box steps aside (display: contents): the copy, the picture and the
+         profile strip are then rows of the hero itself, in that order. -->
+    <div class="container relative z-19 flex flex-col gap-20 max-md:contents">
+      <!-- The copy stops a gutter (1.5rem) short of the picture. Both are placed from the hero's
+           middle, which is also the middle of this column: so the picture starts at 50% plus
+           --art-start, however wide the window is and however long the text of a language
+           runs. --art-start is where the big bubble rests, on the artboard, whose middle is at
+           720. -->
+      <div
+        class="flex max-w-[min(680px,50%+var(--art-start)*1px-1.5rem)] flex-col items-start gap-7.5 max-md:mx-auto max-md:w-[min(1120px,100%-2.5rem)] max-md:max-w-[680px]"
+        :style="{ '--art-start': BIG.x - 720 }"
+      >
+        <p
+          class="glass chip mono-label status origin-center py-1.75 pr-3.5 pl-2.75 text-xs font-medium text-ink"
+        >
           <span class="dot" />
           {{ DATA.hero.status }}
         </p>
-        <h1 id="hero-title" class="headline">
-          <span v-for="(line, i) in DATA.hero.headline" :key="i" :class="{ muted: i === 1 }">
+        <h1
+          id="hero-title"
+          class="headline text-[clamp(2.25rem,7vw,3.75rem)] leading-[1.033] font-semibold tracking-[-0.038em]"
+        >
+          <span
+            v-for="(line, i) in DATA.hero.headline"
+            :key="i"
+            class="block"
+            :class="{ 'text-s-muted': i === 1 }"
+          >
             {{ line }}
           </span>
         </h1>
-        <p class="subhead">{{ DATA.hero.subhead }}</p>
-        <div class="actions">
+        <p class="max-w-145 text-[1.1875rem] leading-[1.53] text-ink-2">{{ DATA.hero.subhead }}</p>
+        <div class="actions flex flex-wrap gap-3">
           <a class="btn solid" href="#projects">
             {{ DATA.hero.cta }}
             <AppIcon name="arrow-down" />
@@ -265,18 +287,28 @@ function pop(event: MouseEvent) {
         </div>
       </div>
 
-      <div class="glass strip">
-        <div class="identity">
+      <!-- On one column the strip is pulled up over the foot of the picture, where the portrait
+           fades out, so the photo runs behind its glass as it does on a wide screen. -->
+      <div
+        class="glass flex items-center gap-8 rounded-[28px] px-8 py-5.5 max-md:z-19 max-md:order-2 max-md:mx-auto max-md:-mt-[calc(2.5rem+0.28*var(--stage))] max-md:w-[min(1120px,100%-2.5rem)] max-md:flex-col max-md:items-stretch max-md:gap-4"
+      >
+        <div class="flex items-center gap-3.5">
           <img class="avatar" :src="DATA.avatarUrl" alt="" width="56" height="56" />
           <div>
-            <p class="name">{{ DATA.name }}</p>
-            <p class="place">{{ DATA.location }}</p>
+            <p class="mb-0.75 text-[1.0625rem] font-semibold tracking-[-0.018em]">
+              {{ DATA.name }}
+            </p>
+            <p class="text-sm text-s-muted">{{ DATA.location }}</p>
           </div>
         </div>
-        <dl class="facts">
-          <div v-for="f in FACTS" :key="f.key" class="fact">
-            <dt class="mono-label">{{ f.key }}</dt>
-            <dd>{{ f.value }}</dd>
+        <dl class="flex flex-1 gap-8 max-md:flex-col max-md:gap-4">
+          <div
+            v-for="f in FACTS"
+            :key="f.key"
+            class="flex flex-1 flex-col gap-1.5 border-l border-glass-line pl-8 max-md:border-t max-md:border-l-0 max-md:pt-4 max-md:pl-0"
+          >
+            <dt class="mono-label text-2xs tracking-[0.07em]">{{ f.key }}</dt>
+            <dd class="text-sm font-medium">{{ f.value }}</dd>
           </div>
         </dl>
       </div>
@@ -285,59 +317,49 @@ function pop(event: MouseEvent) {
 </template>
 
 <style scoped>
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding-block: 132px 72px;
+@reference "../../style.css";
+
+/* While the ripple travels, the hero is drawn through the #hero-water filter, which bends it. */
+.hero.burst {
+  animation: water 1.6s;
+
+  @variant motion-reduce {
+    animation: none;
+  }
 }
 
-/* While the bubble is whole it rides under the mouse, and a click anywhere pops it (see pop):
-   only then is the hero something to press. */
-.hero:not(.burst) {
-  cursor: pointer;
+@keyframes water {
+  from,
+  to {
+    filter: url(#hero-water);
+  }
 }
 
-.water {
-  position: absolute;
-}
-
-/* Decorative stage: the 1440px artboard, centred, so layers keep their right-hand place. */
-.art {
-  position: absolute;
-  inset: 0 auto 0 50%;
-  width: 1440px;
-  margin-left: -720px;
-}
-
-/* --u is the length of one artboard pixel, and (--ox, --oy) the artboard point drawn at the
-   stage's top left corner. A layer without --h is square. */
+/* Each layer of the artboard. --u is the length of one artboard pixel, and (--ox, --oy) the
+   artboard point drawn at the stage's top left corner. A layer without --h is square. On one
+   column the stage shows the part of the artboard that holds the portrait (680 by 742 artboard
+   pixels from 760, 60), scaled to the column. */
 .art > * {
   --u: 1px;
   --ox: 0;
   --oy: 0;
-  position: absolute;
+  @apply absolute;
   left: calc((var(--x) - var(--ox)) * var(--u));
   top: calc((var(--y) - var(--oy)) * var(--u));
   width: calc(var(--w) * var(--u));
   height: calc(var(--h, var(--w)) * var(--u));
-}
 
-.art .blob {
-  z-index: 8;
-  --blob-blur: 45px;
-}
-
-.art .tile {
-  z-index: 10;
+  @variant max-md {
+    --u: calc(100cqw / 680);
+    --ox: 760;
+    --oy: 60;
+  }
 }
 
 /* A wire is a hairline laid from its start along the x axis, then turned about that start to
    point at the tile it leads to. Under the tiles, so each end is seen through the glass. */
-.art .wire {
-  z-index: 9;
+.art > .wire {
   height: 1.5px;
-  background: color-mix(in srgb, var(--accent) 32%, transparent);
-  transform-origin: 0 50%;
 }
 
 /* The pulse is as long as its wire and drawn only at its tail end, so sliding it by its own
@@ -345,26 +367,20 @@ function pop(event: MouseEvent) {
    turns, a sixth of the round each: the signal goes once round the ring every 7.2 seconds. */
 .pulse {
   --dash: 2.25rem;
-  position: absolute;
-  inset: -1.5px 0;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, var(--accent)) left / var(--dash) 100% no-repeat;
-  opacity: 0;
+  @apply absolute inset-x-0 -inset-y-[1.5px] rounded-full opacity-0;
+  background: linear-gradient(90deg, transparent, var(--color-accent)) left / var(--dash) 100%
+    no-repeat;
   animation: signal 7.2s linear calc(var(--i) * 1.2s) infinite;
+
+  @variant motion-reduce {
+    @apply hidden;
+  }
 }
 
 /* The head of the pulse: a bright point with a glow, at the leading end of the dash. */
 .pulse::after {
   content: "";
-  position: absolute;
-  top: 50%;
-  left: calc(var(--dash) - 4px);
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 10px 3px var(--accent);
-  translate: 0 -50%;
+  @apply absolute top-1/2 left-[calc(var(--dash)-4px)] size-[7px] -translate-y-1/2 rounded-full bg-white shadow-[0_0_10px_3px_var(--color-accent)];
 }
 
 @keyframes signal {
@@ -381,13 +397,6 @@ function pop(event: MouseEvent) {
     translate: calc(100% - var(--dash));
     opacity: 0;
   }
-}
-
-/* The photo itself fades out at the bottom. A gradient box laid over it would show as a box
-   wherever it reaches past the person. */
-.portrait {
-  z-index: 16;
-  mask-image: linear-gradient(180deg, #000 77%, transparent 94%);
 }
 
 /* Where the big bubble is, in the stage: at the mouse (--mx, --my, set by the script) or, with
@@ -428,23 +437,24 @@ function pop(event: MouseEvent) {
 /* The big bubble trails the mouse a little, over everything in the hero, and never takes a
    click: the hero does (see pop), so the buttons under it still work. */
 .art > .big {
-  top: 0;
-  left: 0;
-  z-index: 30;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: none;
-  pointer-events: none;
+  @apply pointer-events-none top-0 left-0 z-30 rounded-[50%];
   translate: calc(var(--cx) - 50%) calc(var(--cy) - 50%);
   transition: translate 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 .big > * {
-  width: 100%;
+  @apply w-full;
   transition:
     scale 0.45s cubic-bezier(0.2, 1.4, 0.4, 1),
     opacity 0.3s;
+}
+
+.art > .bubble,
+.art > .big,
+.big > * {
+  @variant motion-reduce {
+    transition: none;
+  }
 }
 
 /* The pop: it swells and is gone. */
@@ -461,9 +471,7 @@ function pop(event: MouseEvent) {
 .big::before,
 .big::after {
   content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0;
+  @apply absolute inset-0 opacity-0;
 }
 
 /* Each bubble is a ring drawn at a place given in percent, so growing the box (not scaling it)
@@ -493,11 +501,11 @@ function pop(event: MouseEvent) {
 }
 
 .big::after {
-  border-radius: 50%;
+  @apply rounded-[50%];
   box-shadow:
-    inset 0 0 0 0.5px var(--gloss),
-    inset 0 0 0.75rem var(--bubble-edge),
-    0 0 0.5rem var(--bubble-edge);
+    inset 0 0 0 0.5px var(--color-gloss),
+    inset 0 0 0.75rem var(--color-bubble-edge),
+    0 0 0.5rem var(--color-bubble-edge);
 }
 
 .burst .big::before {
@@ -506,6 +514,13 @@ function pop(event: MouseEvent) {
 
 .burst .big::after {
   animation: ripple 1.6s cubic-bezier(0.2, 0.6, 0.4, 1);
+}
+
+.burst .big::before,
+.burst .big::after {
+  @variant motion-reduce {
+    animation: none;
+  }
 }
 
 @keyframes spray {
@@ -534,64 +549,12 @@ function pop(event: MouseEvent) {
   }
 }
 
-/* While the ripple travels, the hero is drawn through the #hero-water filter, which bends it. */
-.hero.burst {
-  animation: water 1.6s;
-}
+.status {
+  animation: balloon 3.6s ease-in-out infinite;
 
-@keyframes water {
-  from,
-  to {
-    filter: url(#hero-water);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pulse {
-    display: none;
-  }
-
-  .art > .bubble,
-  .art > .big,
-  .big > * {
-    transition: none;
-  }
-
-  .hero.burst,
-  .burst .big::before,
-  .burst .big::after {
+  @variant motion-reduce {
     animation: none;
   }
-}
-
-.content {
-  position: relative;
-  z-index: 19;
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
-}
-
-.copy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 30px;
-  /* The copy stops a gutter short of the picture. Both are placed from the hero's middle, which
-     is also the middle of this column's container: so the picture starts at 50% plus
-     --art-start, however wide the window is and however long the text of a language runs. */
-  --gutter: 1.5rem;
-  max-width: min(680px, 50% + var(--art-start) * 1px - var(--gutter));
-}
-
-.status {
-  padding: 7px 14px 7px 11px;
-  color: var(--ink);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  transform-origin: center;
-  animation: balloon 3.6s ease-in-out infinite;
 }
 
 /* A water balloon: it swells, wobbles between wide and tall as the water settles, then rests. */
@@ -615,168 +578,6 @@ function pop(event: MouseEvent) {
   }
   54% {
     transform: scale(1.01, 0.99);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .status {
-    animation: none;
-  }
-}
-
-.headline {
-  margin: 0;
-  font-size: clamp(2.25rem, 7vw, 3.75rem);
-  font-weight: 600;
-  line-height: 1.033;
-  letter-spacing: -0.038em;
-}
-
-.headline span {
-  display: block;
-}
-
-.muted {
-  color: var(--s-muted);
-}
-
-.subhead {
-  max-width: 580px;
-  margin: 0;
-  color: var(--ink-2);
-  font-size: 1.1875rem;
-  line-height: 1.53;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.strip {
-  --glass-radius: 28px;
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  padding: 22px 32px;
-}
-
-.identity {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.name {
-  margin: 0 0 3px;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: -0.018em;
-}
-
-.place {
-  margin: 0;
-  color: var(--s-muted);
-  font-size: 0.875rem;
-}
-
-.facts {
-  display: flex;
-  flex: 1;
-  gap: 32px;
-  margin: 0;
-}
-
-.fact {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding-left: 32px;
-  border-left: 1px solid var(--glass-line);
-}
-
-.fact dt {
-  font-size: 0.6875rem;
-  letter-spacing: 0.07em;
-}
-
-.fact dd {
-  margin: 0;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-@media (max-width: 860px) {
-  .hero {
-    padding-block: 96px 56px;
-  }
-
-  /* One column: the copy, then the stage, then the profile strip. --stage is the stage's
-     width: a percentage in it is of the hero's width wherever it is used below. */
-  .hero {
-    --stage: min(26rem, 100% - 2.5rem);
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-
-  .content {
-    display: contents;
-  }
-
-  .copy,
-  .strip {
-    width: min(1120px, 100% - 2.5rem);
-    margin-inline: auto;
-  }
-
-  /* The picture is below the copy here, not beside it. */
-  .copy {
-    max-width: 680px;
-  }
-
-  .art {
-    order: 1;
-  }
-
-  /* The strip is pulled up over the foot of the stage, where the portrait fades out, so the
-     photo runs behind its glass as it does on a wide screen. */
-  .strip {
-    order: 2;
-    z-index: 19;
-    margin-top: calc(-2.5rem - 0.28 * var(--stage));
-  }
-
-  /* The stage shows the part of the artboard that holds the portrait (680 by 742 artboard
-     pixels from 760, 60), scaled to the column. */
-  .art {
-    position: relative;
-    inset: auto;
-    width: var(--stage);
-    aspect-ratio: 680 / 742;
-    margin: 0 auto;
-    container-type: inline-size;
-  }
-
-  .art > * {
-    --u: calc(100cqw / 680);
-    --ox: 760;
-    --oy: 60;
-  }
-
-  .strip,
-  .facts {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-  }
-
-  .fact {
-    padding: 16px 0 0;
-    border-left: 0;
-    border-top: 1px solid var(--glass-line);
   }
 }
 </style>

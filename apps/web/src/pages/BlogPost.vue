@@ -53,10 +53,10 @@ onBeforeUnmount(() => {
 
 // The page-wide colour blobs.
 const blobs = [
-  { color: "--blob-c", width: 380, height: 240, top: 150, right: 100 },
-  { color: "--blob-a", width: 520, height: 520, top: 900, right: -180 },
-  { color: "--blob-b", width: 520, height: 520, top: 1500, left: -300 },
-  { color: "--blob-d", width: 520, height: 520, top: 2300, right: -200 },
+  { color: "--color-blob-c", width: 380, height: 240, top: 150, right: 100 },
+  { color: "--color-blob-a", width: 520, height: 520, top: 900, right: -180 },
+  { color: "--color-blob-b", width: 520, height: 520, top: 1500, left: -300 },
+  { color: "--color-blob-d", width: 520, height: 520, top: 2300, right: -200 },
 ];
 </script>
 
@@ -66,15 +66,20 @@ const blobs = [
 
     <PostHeader :post="post" />
 
-    <div class="container body">
-      <div ref="article" class="article">
+    <div
+      class="post-columns container grid grid-cols-[minmax(0,47rem)_18rem] items-start justify-between gap-10 pt-18 pb-14 max-lg:grid-cols-[minmax(0,1fr)] max-lg:py-10"
+    >
+      <div ref="article">
         <!-- Keyed: each post gets its own React root. -->
         <PostBody :key="post.slug" :slug="post.slug" :html="post.html" @drawn="update" />
       </div>
-      <!-- Beside the article when there is room, otherwise in the dock's popover. -->
+      <!-- Beside the article when there is room, otherwise in the dock's popover (see
+           useDockToc.ts). Until Vue has moved it there, it is still here in the built page: out
+           of sight. Sticky, and capped to the window: a sticky card taller than it could never
+           be scrolled to its end. -->
       <Teleport to="#dock-toc" defer :disabled="!narrow">
         <PostToc
-          class="toc"
+          class="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto max-lg:static max-lg:max-h-none max-lg:[.post-columns>&]:hidden"
           :toc="post.toc"
           :minutes="post.minutes"
           :progress="progress"
@@ -88,40 +93,3 @@ const blobs = [
 
   <NotFound v-else />
 </template>
-
-<style scoped>
-.body {
-  display: grid;
-  grid-template-columns: minmax(0, 47rem) 18rem;
-  justify-content: space-between;
-  align-items: start;
-  gap: 2.5rem;
-  padding-block: 4.5rem 3.5rem;
-}
-
-/* Capped to the window: a sticky card taller than it could never be scrolled to its end. */
-.toc {
-  position: sticky;
-  top: 2rem;
-  max-height: calc(100vh - 4rem);
-  overflow-y: auto;
-}
-
-@media (max-width: 1000px) {
-  .body {
-    grid-template-columns: minmax(0, 1fr);
-    padding-block: 2.5rem;
-  }
-
-  /* One column: the contents live in the dock's popover, see useDockToc.ts. */
-  .toc {
-    position: static;
-    max-height: none;
-  }
-
-  /* Until Vue has moved them there, they are still here in the built page: out of sight. */
-  .body > .toc {
-    display: none;
-  }
-}
-</style>

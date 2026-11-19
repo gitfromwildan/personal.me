@@ -9,101 +9,36 @@ defineProps<{
 </script>
 
 <template>
-  <RouterLink class="glass card" :to="postPath(post.slug)">
-    <time class="date" :datetime="post.date">
-      <span class="day">{{ post.date.slice(8) }}</span>
-      <span class="mono-label month">{{ shortMonth(post.date) }}</span>
+  <!-- One row: the date, the text, the arrow. Below md the card is stacked: the date and the
+       arrow on top, the text under a hairline across the card. There the date is a small label
+       over the title, not a figure beside it. -->
+  <RouterLink
+    class="glass group flex min-h-33 items-center gap-6 rounded-[26px] px-7 py-6 text-ink shadow-[0_20px_44px_var(--color-glass-shadow)] max-md:grid max-md:grid-cols-[1fr_auto] max-md:gap-x-3 max-md:gap-y-3.5 max-md:p-5"
+    :to="postPath(post.slug)"
+  >
+    <time
+      class="flex w-13 flex-none flex-col items-center gap-1 max-md:w-auto max-md:flex-row max-md:items-baseline max-md:gap-2"
+      :datetime="post.date"
+    >
+      <span
+        class="font-mono text-[1.375rem] leading-none font-semibold tracking-[-0.045em] text-ink-2 max-md:text-sm max-md:tracking-normal"
+      >
+        {{ post.date.slice(8) }}
+      </span>
+      <span class="mono-label text-2xs tracking-[0.11em]">{{ shortMonth(post.date) }}</span>
     </time>
-    <div class="text">
-      <h2 class="title">{{ post.title }}</h2>
+    <div
+      class="flex min-w-0 flex-1 flex-col gap-2 border-l border-glass-line pl-6 max-md:col-span-2 max-md:row-start-2 max-md:border-t max-md:border-l-0 max-md:pt-3.5 max-md:pl-0"
+    >
+      <h2 class="text-2xl leading-[1.2] font-semibold tracking-[-0.02em] max-md:text-lg">
+        {{ post.title }}
+      </h2>
       <p class="muted-text">{{ post.summary }}</p>
     </div>
-    <span class="glass chip round open"><AppIcon name="arrow-right" :size="18" /></span>
+    <span
+      class="glass chip round transition-transform duration-150 ease-[ease] group-hover:translate-x-[3px] max-md:col-start-2 max-md:row-start-1 max-md:flex max-md:size-9"
+    >
+      <AppIcon name="arrow-right" :size="18" />
+    </span>
   </RouterLink>
 </template>
-
-<style scoped>
-.card {
-  --glass-radius: 26px;
-  --glass-elevation: 0 20px 44px;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  min-height: 8.25rem;
-  padding: 1.5rem 1.75rem;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.date {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  width: 3.25rem;
-}
-
-.day {
-  color: var(--ink-2);
-  font-family: var(--font-mono);
-  font-size: 1.375rem;
-  font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 1;
-}
-
-.month {
-  font-size: 0.6875rem;
-  letter-spacing: 0.11em;
-}
-
-.text {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-left: 1.5rem;
-  border-left: 1px solid var(--glass-line);
-}
-
-.title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-.open {
-  transition: transform 0.15s;
-}
-
-.card:hover .open {
-  transform: translateX(3px);
-}
-
-@media (max-width: 860px) {
-  .card {
-    gap: 1rem;
-    padding: 1.25rem;
-  }
-
-  .date {
-    width: 2.5rem;
-  }
-
-  .text {
-    padding-left: 1rem;
-  }
-
-  .title {
-    font-size: 1.125rem;
-  }
-
-  .open {
-    display: none;
-  }
-}
-</style>

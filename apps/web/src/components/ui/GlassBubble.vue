@@ -8,62 +8,78 @@ const id = useId();
 </script>
 
 <template>
-  <svg class="bubble" viewBox="-52 -52 104 104" aria-hidden="true">
+  <svg
+    class="bubble aspect-square overflow-visible drop-shadow-[0_0.5rem_1rem_var(--color-glass-shadow)]"
+    viewBox="-52 -52 104 104"
+    aria-hidden="true"
+  >
     <defs>
       <radialGradient :id="`${id}-body`" cx="0.34" cy="0.28" r="0.675">
-        <stop offset="0" stop-color="var(--bubble-core)" />
-        <stop offset="0.2" stop-color="var(--bubble-mid)" />
-        <stop offset="0.58" stop-color="var(--bubble-mid)" />
-        <stop offset="1" stop-color="var(--bubble-edge)" />
+        <stop offset="0" stop-color="var(--color-bubble-core)" />
+        <stop offset="0.2" stop-color="var(--color-bubble-mid)" />
+        <stop offset="0.58" stop-color="var(--color-bubble-mid)" />
+        <stop offset="1" stop-color="var(--color-bubble-edge)" />
       </radialGradient>
       <linearGradient :id="`${id}-rim`" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="var(--rim-hi)" />
-        <stop offset="1" stop-color="var(--rim-lo)" />
+        <stop offset="0" stop-color="var(--color-rim-hi)" />
+        <stop offset="1" stop-color="var(--color-rim-lo)" />
       </linearGradient>
       <radialGradient :id="`${id}-caustic`">
-        <stop offset="0" stop-color="var(--bubble-edge)" />
-        <stop offset="1" stop-color="var(--bubble-edge)" stop-opacity="0" />
+        <stop offset="0" stop-color="var(--color-bubble-edge)" />
+        <stop offset="1" stop-color="var(--color-bubble-edge)" stop-opacity="0" />
       </radialGradient>
     </defs>
     <!-- Not quite round, so the wobble shows in the outline. -->
     <path
-      class="skin"
+      class="skin transform-fill origin-center stroke-[0.8]"
       :fill="`url(#${id}-body)`"
       :stroke="`url(#${id}-rim)`"
       d="M0 -46C10.4 -45.8 22.7 -38.2 30.5 -30.5C38.4 -22.9 47.1 -10.3 47.2 0C47.3 10.3 39.3 23.6 31.4 31.4C23.5 39.2 10.3 46.8 0 46.6C-10.3 46.4 -22.4 38 -30.3 30.3C-38.2 22.5 -47.2 10.3 -47.4 0C-47.6 -10.3 -39.6 -24 -31.7 -31.7C-23.8 -39.3 -10.4 -46.2 0 -46Z"
     />
-    <ellipse class="caustic" :fill="`url(#${id}-caustic)`" cx="0" cy="35" rx="23" ry="7" />
-    <ellipse class="shine" cx="-17" cy="-27" rx="13" ry="7" transform="rotate(-24 -17 -27)" />
+    <ellipse
+      class="transform-fill origin-center"
+      :fill="`url(#${id}-caustic)`"
+      cx="0"
+      cy="35"
+      rx="23"
+      ry="7"
+    />
+    <ellipse
+      class="shine transform-fill origin-center fill-bubble-hi"
+      cx="-17"
+      cy="-27"
+      rx="13"
+      ry="7"
+      transform="rotate(-24 -17 -27)"
+    />
   </svg>
 </template>
 
 <style scoped>
+@reference "../../style.css";
+
 .bubble {
   --pace: 7s;
   --phase: 0;
-  overflow: visible;
-  aspect-ratio: 1;
-  filter: drop-shadow(0 0.5rem 1rem var(--glass-shadow));
   animation: bob var(--pace) ease-in-out calc(var(--phase) * var(--pace) * -1) infinite;
 }
 
-.skin,
-.shine,
-.caustic {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
 .skin {
-  stroke-width: 0.8;
   animation: wobble calc(var(--pace) * 0.62) ease-in-out calc(var(--phase) * var(--pace) * -1)
     infinite;
 }
 
 .shine {
-  fill: var(--bubble-hi);
   animation: drift calc(var(--pace) * 0.62) ease-in-out calc(var(--phase) * var(--pace) * -1)
     infinite;
+}
+
+.bubble,
+.skin,
+.shine {
+  @variant motion-reduce {
+    animation: none;
+  }
 }
 
 /* Rises and sinks, leaning a little as it goes. */
@@ -107,14 +123,6 @@ const id = useId();
   50% {
     transform: translate(6%, 10%) scale(0.9, 1.1);
     opacity: 0.8;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bubble,
-  .skin,
-  .shine {
-    animation: none;
   }
 }
 </style>

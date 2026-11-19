@@ -23,7 +23,7 @@ let following = false;
 export function followWidth() {
   if (following) return;
   following = true;
-  const query = matchMedia("(max-width: 1000px)");
+  const query = matchMedia("(width < 62.5rem)");
   const sync = () => {
     narrow.value = query.matches;
     tocOpen.value = false;

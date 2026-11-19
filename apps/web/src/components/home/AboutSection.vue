@@ -7,34 +7,52 @@ import SectionEyebrow from "../ui/SectionEyebrow.vue";
 
 <template>
   <section id="about" class="section container" aria-labelledby="about-title">
-    <SectionEyebrow id="about-title" as="h2" :label="DATA.ui.eyebrows.about" />
+    <SectionEyebrow id="about-title" class="text-xs" as="h2" :label="DATA.ui.eyebrows.about" />
 
-    <div class="glass panel">
-      <span class="bar" aria-hidden="true" />
+    <div
+      class="glass flex gap-16 pt-23 pr-14 pb-14 pl-18 max-md:flex-col max-md:gap-8 max-md:px-6 max-md:pt-18 max-md:pb-8"
+    >
+      <span
+        class="bar absolute top-23 left-10 h-[16.4rem] w-1.5 rounded-[3px] max-md:hidden"
+        aria-hidden="true"
+      />
 
-      <div class="story">
-        <p class="lead">{{ DATA.about.lead }}</p>
-        <p class="body">{{ DATA.about.body }}</p>
-        <p class="signature">— {{ DATA.name }} · {{ DATA.location }}</p>
+      <div class="flex min-w-0 flex-1 flex-col gap-6">
+        <p
+          class="text-[clamp(1.375rem,3vw,1.875rem)] leading-[1.27] font-semibold tracking-[-0.027em] text-ink"
+        >
+          {{ DATA.about.lead }}
+        </p>
+        <p class="max-w-140 text-lg leading-[1.6] text-ink-2">{{ DATA.about.body }}</p>
+        <p class="pt-2 text-[0.9375rem] text-s-muted">— {{ DATA.name }} · {{ DATA.location }}</p>
       </div>
 
-      <div class="board">
+      <div class="flex w-72 flex-none flex-col justify-between gap-6 max-md:w-full">
         <div>
-          <h3 class="mono-label">{{ DATA.about.owned.label }}</h3>
-          <ul class="rows divided">
-            <li v-for="system in DATA.about.owned.systems" :key="system">
-              <AppIcon name="check" :size="15" />
+          <h3 class="mono-label text-xs">{{ DATA.about.owned.label }}</h3>
+          <ul class="divide-y divide-glass-line pt-2.5">
+            <li
+              v-for="system in DATA.about.owned.systems"
+              :key="system"
+              class="flex items-center gap-2.5 py-3.5 text-[0.9375rem] font-medium text-ink-2"
+            >
+              <AppIcon class="flex-none text-s-muted" name="check" :size="15" />
               {{ system }}
             </li>
           </ul>
         </div>
-        <div class="stayed-up">
-          <h3 class="mono-label">{{ DATA.about.owned.stayedUpLabel }}</h3>
-          <p>{{ DATA.about.owned.stayedUp.join(" · ") }}</p>
+        <div class="flex flex-col gap-2 border-t border-glass-line pt-4">
+          <h3 class="mono-label text-xs">{{ DATA.about.owned.stayedUpLabel }}</h3>
+          <p class="text-[0.9375rem] font-medium text-ink-2">
+            {{ DATA.about.owned.stayedUp.join(" · ") }}
+          </p>
         </div>
       </div>
 
-      <span class="quote-mark" aria-hidden="true">
+      <span
+        class="pointer-events-none absolute -top-[58px] left-[92px] z-3 text-[230px] leading-none max-md:-top-10 max-md:left-6 max-md:text-[8rem]"
+        aria-hidden="true"
+      >
         <GlassText text="“" />
       </span>
     </div>
@@ -42,133 +60,10 @@ import SectionEyebrow from "../ui/SectionEyebrow.vue";
 </template>
 
 <style scoped>
-.panel {
-  display: flex;
-  gap: 4rem;
-  padding: 5.75rem 3.5rem 3.5rem 4.5rem;
-}
-
+/* A tube of liquid down the side of the story, with a glint along it. */
 .bar {
-  position: absolute;
-  top: 5.75rem;
-  left: 2.5rem;
-  width: 6px;
-  height: 16.4rem;
-  border-radius: 3px;
   background:
-    linear-gradient(var(--gloss), var(--gloss)) 1.5px 0 / 1.5px 100% no-repeat,
-    linear-gradient(180deg, var(--liquid-lo), var(--liquid-hi));
-}
-
-.story {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.lead {
-  margin: 0;
-  color: var(--ink);
-  font-size: clamp(1.375rem, 3vw, 1.875rem);
-  font-weight: 600;
-  letter-spacing: -0.027em;
-  line-height: 1.27;
-}
-
-.body {
-  margin: 0;
-  max-width: 35rem;
-  color: var(--ink-2);
-  font-size: 1.125rem;
-  line-height: 1.6;
-}
-
-.signature {
-  margin: 0;
-  padding-top: 0.5rem;
-  color: var(--s-muted);
-  font-size: 0.9375rem;
-}
-
-.board {
-  flex: none;
-  width: 18rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
-.mono-label {
-  font-size: 0.75rem;
-  font-weight: 400;
-}
-
-.rows {
-  padding: 0.625rem 0 0;
-}
-
-.rows li {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding-block: 0.875rem;
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.rows li svg {
-  flex: none;
-  color: var(--s-muted);
-}
-
-.stayed-up {
-  border-top: 1px solid var(--glass-line);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-top: 1rem;
-}
-
-.stayed-up p {
-  margin: 0;
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.quote-mark {
-  position: absolute;
-  top: -58px;
-  left: 92px;
-  z-index: 3;
-  font-size: 230px;
-  line-height: 1;
-  pointer-events: none;
-}
-
-@media (max-width: 860px) {
-  .panel {
-    flex-direction: column;
-    gap: 2rem;
-    padding: 4.5rem 1.5rem 2rem;
-  }
-
-  .bar {
-    display: none;
-  }
-
-  .board {
-    width: 100%;
-  }
-
-  .quote-mark {
-    top: -2.5rem;
-    left: 1.5rem;
-    font-size: 8rem;
-  }
+    linear-gradient(var(--color-gloss), var(--color-gloss)) 1.5px 0 / 1.5px 100% no-repeat,
+    linear-gradient(180deg, var(--color-liquid-lo), var(--color-liquid-hi));
 }
 </style>

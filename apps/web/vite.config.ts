@@ -1,4 +1,5 @@
 import { release } from "node:os";
+import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite-plus";
 import { lazyPlugins } from "vite-plus";
@@ -22,7 +23,7 @@ if (!engines.length) console.warn("No browser to test in: set CHROMIUM_PATH or W
 export default defineConfig({
   // Static assets live in the repo-root public/.
   publicDir: "../../public",
-  plugins: lazyPlugins(() => [vue(), posts()]),
+  plugins: lazyPlugins(() => [tailwindcss(), vue(), posts()]),
   // Made ready before the tests start: a package first met in the middle of a run makes Vite
   // bundle again and reload the tests, which fails whichever were loading. The server renderer
   // is only used by a test (App.test.ts); the JSX runtime is what a compiled post imports.
