@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, useSSRContext } from "vue";
 import AppIcon from "../ui/AppIcon.vue";
 import GlassBubble from "../ui/GlassBubble.vue";
 import GlassTile from "../ui/GlassTile.vue";
 import { DATA } from "../../data";
 import { linkTarget } from "../../links";
 import ripple from "./ripple.webp?inline";
+
+// The portrait is the largest thing on the first screen: the page that is built is told to
+// fetch it first of all (see prerender.ts), before its styles and scripts.
+const PORTRAIT = {
+  src: "/hero-portrait-1250.webp",
+  srcset:
+    "/hero-portrait-900.webp 900w, /hero-portrait-1250.webp 1250w, /hero-portrait-1670.webp 1670w",
+  sizes: "(max-width: 860px) min(26rem, 100vw - 2.5rem), 1250px",
+};
+if (import.meta.env.SSR) useSSRContext()!.preloadImage = PORTRAIT;
 
 const [current] = DATA.work;
 const FACTS = [
@@ -203,13 +213,9 @@ function pop(event: MouseEvent) {
            person. -->
       <img
         class="z-16 max-w-none mask-b-from-77% mask-b-to-94%"
-        src="/hero-portrait-1250.webp"
-        srcset="
-          /hero-portrait-900.webp   900w,
-          /hero-portrait-1250.webp 1250w,
-          /hero-portrait-1670.webp 1670w
-        "
-        sizes="(max-width: 860px) min(26rem, 100vw - 2.5rem), 1250px"
+        :src="PORTRAIT.src"
+        :srcset="PORTRAIT.srcset"
+        :sizes="PORTRAIT.sizes"
         width="1250"
         height="703"
         alt=""
