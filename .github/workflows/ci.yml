@@ -29,11 +29,30 @@ jobs:
       # Format, lint and type-check the .ts files.
       - run: vp check
 
-      # The web app's tests run in real browsers (apps/web/vite.config.ts): Chromium and WebKit,
-      # with the system libraries WebKit needs on Linux.
+      # The web app's tests run in real browsers (apps/web/vite.config.ts): Chromium and WebKit.
+      # The browsers are kept from run to run, until Playwright moves to a new version.
+      - name: Playwright version
+        id: playwright
+        working-directory: apps/web
+        run: echo "version=$(vpx playwright --version | cut -d" " -f2)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Chromium and WebKit
+        id: browsers
+        uses: actions/cache@v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
       - name: Install Chromium and WebKit
+        if: steps.browsers.outputs.cache-hit != 'true'
         working-directory: apps/web
         run: vpx playwright install --with-deps chromium webkit
+
+      # A kept browser still needs the system libraries WebKit runs on, which live outside it.
+      - name: Install the system libraries the browsers need
+        if: steps.browsers.outputs.cache-hit == 'true'
+        working-directory: apps/web
+        run: vpx playwright install-deps chromium webkit
 
       - name: Test
         run: vp run -r test
