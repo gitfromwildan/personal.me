@@ -10,7 +10,14 @@ import PageBlobs from "../components/ui/PageBlobs.vue";
 import { usePageTitle } from "../composables/usePageTitle";
 import { DATA } from "../data";
 
-usePageTitle(() => DATA.navbar[0].label);
+usePageTitle(
+  () => DATA.navbar[0].label,
+  () => ({
+    page: DATA.navbar[0].label,
+    title: DATA.hero.headline.join(" "),
+    summary: DATA.hero.subhead,
+  }),
+);
 
 // The page-wide colour blobs behind the sections, placed as a share of the page's height.
 const blobs = [
