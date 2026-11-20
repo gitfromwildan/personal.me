@@ -16,7 +16,10 @@ const { title, tagline, endNote } = DATA.blog;
 const [home] = DATA.navbar;
 // The posts in the language being shown: the page is made anew when that changes.
 const posts = postsIn[i18n.global.locale.value];
-usePageTitle(() => title);
+usePageTitle(
+  () => title,
+  () => ({ page: title, title, summary: tagline }),
+);
 // A post is likely the next page: its heavy script is fetched ahead while this one is read, from
 // the visitor's first move on, so that it is no part of loading this page.
 onMounted(() => onFirstMove(() => import("../components/blog/postIsland")));

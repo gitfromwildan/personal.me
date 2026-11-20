@@ -3,8 +3,16 @@ import { renderToString } from "vue/server-renderer";
 import { postsIn } from "virtual:posts";
 import App from "./App.vue";
 import { messages } from "./data/messages";
+import type { PageCard } from "./composables/usePageTitle";
+import { profile } from "./data/profile";
 import { i18n } from "./i18n";
 import { makeRouter } from "./router";
+
+export { inOtherLocale } from "./i18n";
+// The social cards draw the 404 page's hardware tiles (see prerender.ts).
+export { ICONS } from "./components/ui/icons";
+/** Where the site is served: pages link to each other in full for crawlers and social cards. */
+export const site = profile.url;
 
 // The build's side of the app: prerender.ts calls this once per page to get the HTML that page
 // is served with.
@@ -37,11 +45,17 @@ export async function render(url: string) {
   await router.isReady();
   // As it renders, each component adds its own module id here, the page its title (see
   // usePageTitle), and the hero its portrait.
-  const context: { modules?: Set<string>; title?: string; preloadImage?: PreloadImage } = {};
+  const context: {
+    modules?: Set<string>;
+    title?: string;
+    card?: PageCard;
+    preloadImage?: PreloadImage;
+  } = {};
   const html = await renderToString(app, context);
   return {
     html,
     title: context.title,
+    card: context.card,
     lang: i18n.global.locale.value,
     modules: [...(context.modules ?? [])],
     preloadImage: context.preloadImage,

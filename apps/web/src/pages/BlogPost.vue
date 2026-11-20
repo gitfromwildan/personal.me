@@ -17,6 +17,7 @@ import PageBlobs from "../components/ui/PageBlobs.vue";
 import { hasToc, narrow, tocOpen } from "../composables/useDockToc";
 import { usePageTitle } from "../composables/usePageTitle";
 import { useReadingProgress } from "../composables/useReadingProgress";
+import { DATA } from "../data";
 import { i18n } from "../i18n";
 
 // What an address with no post behind it shows. Fetched only then: a post that exists does
@@ -29,7 +30,11 @@ const posts = postsIn[i18n.global.locale.value];
 
 const index = computed(() => posts.findIndex((p) => p.slug === props.slug));
 const post = computed(() => posts[index.value]);
-usePageTitle(() => post.value?.title);
+usePageTitle(
+  () => post.value?.title,
+  () =>
+    post.value && { page: DATA.blog.title, title: post.value.title, summary: post.value.summary },
+);
 
 const article = ref<HTMLElement | null>(null);
 const { progress, active, update } = useReadingProgress(
