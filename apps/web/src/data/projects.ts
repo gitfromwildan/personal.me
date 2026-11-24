@@ -5,10 +5,5 @@ export const projects = {
   preview: "/docubook-home.webp",
   // Only the names: description, language, stars, forks and last commit come from the GitHub API
   // (composables/useGithub.ts).
-  repos: [
-    "DocuBook/docubook",
-    "lotype/lotype",
-    "DocuBook/editor",
-    "rustasea/framework",
-  ],
+  repos: ["DocuBook/docubook", "lotype/lotype", "DocuBook/editor", "rustasea/framework"],
 } as const;
