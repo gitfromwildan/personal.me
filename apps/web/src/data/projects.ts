@@ -7,8 +7,8 @@ export const projects = {
   // (composables/useGithub.ts).
   repos: [
     "DocuBook/docubook",
+    "https://github.com/lotype/lotype",
     "DocuBook/editor",
-    "rustasea/rustasea.github.io",
     "rustasea/framework",
   ],
 } as const;
