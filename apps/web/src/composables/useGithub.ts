@@ -66,7 +66,8 @@ function fetchAll() {
   ).then((count) => (commitCount.value = count));
 
   const query = DATA.projects.repos.map((repo) => `repo:${repo}`).join("+");
-  void load("github:repos", `/search/repositories?q=${query}`, (json) =>
+  // The list is in the key, so changing DATA.projects.repos skips a cache made for the old list.
+  void load(`github:repos:${query}`, `/search/repositories?q=${query}`, (json) =>
     Object.fromEntries(
       (json.items as any[]).map((item): [string, Repo] => [
         item.full_name,
